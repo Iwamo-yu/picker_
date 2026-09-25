@@ -1,0 +1,317 @@
+<title>IX73 Capillary Picker Layout</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+:root{
+  --bg:#EDF0F1; --panel:#F8FAFA; --ink:#1B2328; --muted:#5B6870; --line:#CDD5D8;
+  --accent:#0F7483; --accent-ink:#FFFFFF; --scene:#E4E9EB;
+  --ok:#2F7D4F; --warn:#B7791F; --bad:#C0392F; --der:#3A64B0;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#12171A; --panel:#192024; --ink:#E3EAEC; --muted:#93A2A9; --line:#2C373C;
+  --accent:#3FB6C6; --accent-ink:#06181B; --scene:#0E1315;
+  --ok:#5BBF83; --warn:#E0A84A; --bad:#EE6B5F; --der:#7C9EE6; color-scheme:dark;}}
+:root[data-theme="dark"]{
+  --bg:#12171A; --panel:#192024; --ink:#E3EAEC; --muted:#93A2A9; --line:#2C373C;
+  --accent:#3FB6C6; --accent-ink:#06181B; --scene:#0E1315;
+  --ok:#5BBF83; --warn:#E0A84A; --bad:#EE6B5F; --der:#7C9EE6; color-scheme:dark;}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{background:var(--bg);color:var(--ink);font:14px/1.5 "IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;padding-inline:16px;padding-block:14px}
+.wrap{max-width:1380px;margin:0 auto;display:grid;gap:14px}
+header{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 18px}
+h1{font-size:20px;font-weight:600;margin:0;text-wrap:balance}
+.sub{color:var(--muted);font-size:13px}
+.main{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:14px}
+@media (max-width:900px){.main{grid-template-columns:1fr}}
+.stage{position:relative;background:var(--scene);border:1px solid var(--line);border-radius:6px;min-height:420px;height:min(72vh,760px);overflow:hidden}
+#c{width:100%;height:100%;display:block}
+.views{position:absolute;left:10px;top:10px;display:flex;gap:6px;flex-wrap:wrap}
+.btn{font:500 12px "IBM Plex Mono",ui-monospace,monospace;letter-spacing:.02em;border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:4px;padding:5px 9px;cursor:pointer}
+.btn[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.btn:focus-visible,.well:focus-visible,select:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.status{position:absolute;left:10px;bottom:10px;right:10px;display:flex;flex-wrap:wrap;gap:6px;pointer-events:none}
+.pill{font:500 12px "IBM Plex Mono",monospace;padding:4px 9px;border-radius:999px;background:var(--panel);border:1px solid var(--line)}
+.pill.ok{border-color:var(--ok);color:var(--ok)} .pill.bad{border-color:var(--bad);color:var(--bad)}
+aside{background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:14px;display:grid;gap:14px;align-content:start}
+.lab{font:500 11px "IBM Plex Mono",monospace;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.seg{display:flex;flex-wrap:wrap;gap:6px}
+select{width:100%;font:inherit;padding:6px;border:1px solid var(--line);border-radius:4px;background:var(--bg);color:var(--ink)}
+.plate{display:grid;grid-template-columns:14px repeat(12,1fr);gap:3px;font:10px "IBM Plex Mono",monospace;color:var(--muted);align-items:center}
+.well{aspect-ratio:1;border-radius:50%;border:1px solid var(--line);background:var(--bg);padding:0;cursor:pointer}
+.well.okp{background:color-mix(in srgb,var(--ok) 35%,var(--bg))}
+.well.badp{background:color-mix(in srgb,var(--bad) 45%,var(--bg))}
+.well.sel{outline:2px solid var(--accent);outline-offset:1px}
+.colh{text-align:center}
+.legend{display:grid;grid-template-columns:auto 1fr;gap:4px 8px;font-size:12px;align-items:center}
+.sw{width:14px;height:14px;border-radius:3px;border:1px solid var(--line)}
+.kv{display:grid;grid-template-columns:auto 1fr;gap:2px 10px;font-size:12.5px}
+.kv b{font-weight:500;font-family:"IBM Plex Mono",monospace;font-variant-numeric:tabular-nums}
+.notes{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px}
+.note{background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:12px 14px}
+.note h2{font-size:14px;margin:0 0 6px;font-weight:600}
+.note p{margin:0;color:var(--muted);font-size:13px;max-width:65ch}
+.tbl{overflow-x:auto}
+table{border-collapse:collapse;font-size:12.5px;width:100%;font-variant-numeric:tabular-nums}
+th,td{border-bottom:1px solid var(--line);padding:5px 8px;text-align:left;white-space:nowrap}
+th{font:500 11px "IBM Plex Mono",monospace;letter-spacing:.05em;color:var(--muted);text-transform:uppercase}
+td.ok{color:var(--ok);font-weight:600} td.bad{color:var(--bad);font-weight:600}
+.render-only .views,.render-only .status{display:none}
+</style>
+
+<div class="wrap">
+  <header>
+    <h1>IX73 Capillary Picker Layout</h1>
+    <span class="sub">Stage-1 spatial model · external side tower · all dimensions tagged by data confidence · placeholders are shown, not hidden</span>
+  </header>
+  <div class="main">
+    <div class="stage" id="stage">
+      <canvas id="c" aria-label="3D layout of IX73, 96-well plate and XYZ picker"></canvas>
+      <div class="views" role="group" aria-label="Camera view">
+        <button class="btn" id="v-iso" aria-pressed="true">ISO</button>
+        <button class="btn" id="v-top" aria-pressed="false">TOP</button>
+        <button class="btn" id="v-front" aria-pressed="false">FRONT</button>
+        <button class="btn" id="v-side" aria-pressed="false">SIDE</button>
+        <button class="btn" id="v-head" aria-pressed="false">HEAD</button>
+      </div>
+      <div class="status" id="status"></div>
+    </div>
+    <aside>
+      <div>
+        <div class="lab">Capillary approach</div>
+        <div class="seg" role="group" aria-label="Head variant" id="variants"></div>
+      </div>
+      <div>
+        <div class="lab">Condenser</div>
+        <select id="cond" aria-label="Condenser"></select>
+      </div>
+      <div>
+        <div class="lab">Tip height</div>
+        <div class="seg" role="group" aria-label="Tip height">
+          <button class="btn" id="z-pick" aria-pressed="true">PICK</button>
+          <button class="btn" id="z-safe" aria-pressed="false">SAFE-Z</button>
+        </div>
+      </div>
+      <div>
+        <div class="lab">Target well · click to move XYZ</div>
+        <div class="plate" id="plate"></div>
+      </div>
+      <div>
+        <div class="lab">Colour by</div>
+        <div class="seg" role="group" aria-label="Colour mode">
+          <button class="btn" id="c-role" aria-pressed="true">ROLE</button>
+          <button class="btn" id="c-conf" aria-pressed="false">DATA CONFIDENCE</button>
+        </div>
+      </div>
+      <div class="legend" id="legend"></div>
+      <div class="seg">
+        <button class="btn" id="t-zones" aria-pressed="true">ZONES</button>
+        <button class="btn" id="t-scope" aria-pressed="true">IX73</button>
+      </div>
+    </aside>
+  </div>
+
+  <div class="notes">
+    <div class="note"><h2>Why near-vertical</h2><p>A Corning 7007 U-bottom well is Ø6.86 mm at the rim and 11.30 mm deep. A 1.0 mm capillary reaches the bottom centre only below about 14.8° from vertical. At 30° it stops 4.9 mm below the rim, at 45° after 2.7 mm. The 8° head keeps 1.4 mm rim clearance and moves the holder 4 mm off the optical axis.</p></div>
+    <div class="note"><h2>Why the dog-leg arm</h2><p>The condenser sits on the optical axis. The tall Z actuator therefore stays 175 mm outboard of the tip, and only a thin 12 mm arm runs under the condenser. That fits under the IX-ULWCD (WD 73 mm). It does not fit under the IX2-LWUCD (WD 27 mm) or the IX2-MLWCD (WD 45 mm). The alternative is tilting the illumination column back.</p></div>
+    <div class="note"><h2>What is still a guess</h2><p>Stage height above the table, condenser outer diameter, pillar and arm position, and the eyepiece tube envelope are placeholders (red in confidence mode). Every clearance near the condenser depends on them. Measure these first; the model re-runs in about 4 minutes.</p></div>
+  </div>
+
+  <div class="note">
+    <h2>Clearance sweep · 96 wells at pick height and at safe-Z</h2>
+    <div class="tbl"><table id="sweep"></table></div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/three@0.147.0/build/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/controls/OrbitControls.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/loaders/STLLoader.js"></script>
+<script>
+const DATA = /*__DATA__*/null;
+const STL = /*__STL__*/null;
+
+const ROLE = {table:0x9aa5a8, ix73:0xb8c1c5, plate:0xdfe7ea, condenser:0x7d6aa8, frame:0x48657a,
+  actuator:0x2f6f8a, motor:0x39444a, switch:0xe0a84a, cable:0x6b7780, moving:0x2f9d74, holder:0x1f6f55,
+  capillary:0x38c4d8, tubing:0xf0c040, pump:0x8a8f93, electronics:0x5a6a73, zone:0x3fb6c6};
+const CONF = {STD:0x2f7d4f, MFR:0x2f7d4f, DER:0x3a64b0, DES:0x3a64b0, APX:0xd49a2a, PH:0xc0392f};
+const CONF_LABEL = [["STD / MFR · standard or manufacturer data","#2f7d4f"],["DER / DES · derived or design choice","#3a64b0"],
+  ["APX · approximate catalogue envelope","#d49a2a"],["PH · placeholder, must be measured","#c0392f"]];
+const ROLE_LABEL = [["IX73 envelope","#b8c1c5"],["condenser (on optical axis)","#7d6aa8"],["fixed frame","#48657a"],
+  ["actuators","#2f6f8a"],["moving head (Z group)","#2f9d74"],["glass capillary","#38c4d8"],["liquid-filled tubing","#f0c040"],
+  ["zones: tip travel, safe-Z, condenser keep-out, light cone","#3fb6c6"]];
+
+const state = {variant:"R08", cond:"IX-ULWCD", well:"D6", z:"pick", colour:"role", zones:true, scope:true, view:"iso"};
+
+const stage = document.getElementById("stage");
+const canvas = document.getElementById("c");
+const renderer = new THREE.WebGLRenderer({canvas, antialias:true, preserveDrawingBuffer:true});
+renderer.setPixelRatio(Math.min(window.devicePixelRatio||1, 2));
+const scene = new THREE.Scene();
+const persp = new THREE.PerspectiveCamera(35, 1, 1, 8000);
+const ortho = new THREE.OrthographicCamera(-1,1,1,-1,-4000,4000);
+[persp, ortho].forEach(c=>c.up.set(0,0,1));
+let camera = persp;
+let controls = new THREE.OrbitControls(camera, canvas);
+scene.add(new THREE.HemisphereLight(0xffffff, 0x445055, 0.85));
+const dl = new THREE.DirectionalLight(0xffffff, 0.75); dl.position.set(300,-500,900); scene.add(dl);
+const dl2 = new THREE.DirectionalLight(0xffffff, 0.3); dl2.position.set(-600,400,300); scene.add(dl2);
+
+const groups = {fixed:new THREE.Group(), Y:new THREE.Group(), X:new THREE.Group(), Z:new THREE.Group()};
+Object.values(groups).forEach(g=>scene.add(g));
+const meshes = [];
+const loader = new THREE.STLLoader();
+function b64ToBuf(b){const s=atob(b);const u=new Uint8Array(s.length);for(let i=0;i<s.length;i++)u[i]=s.charCodeAt(i);return u.buffer;}
+
+for (const [key, meta] of Object.entries(DATA.parts)) {
+  const geo = loader.parse(b64ToBuf(STL[key])); geo.computeVertexNormals();
+  const zone = meta.category === "zone";
+  const mat = new THREE.MeshStandardMaterial({color:0xffffff, metalness:0.05, roughness:0.75,
+    transparent: zone || meta.category==="plate" || meta.category==="condenser", opacity: zone ? 0.13 : (meta.category==="plate"?0.85:0.9),
+    depthWrite: !zone, side: zone?THREE.DoubleSide:THREE.FrontSide});
+  const m = new THREE.Mesh(geo, mat);
+  m.userData = {key, ...meta};
+  groups[meta.group].add(m);
+  meshes.push(m);
+}
+// well markers (all 96 well centres at pick height)
+const wm = new THREE.InstancedMesh(new THREE.CylinderGeometry(0.9,0.9,0.4,12).rotateX(Math.PI/2),
+  new THREE.MeshBasicMaterial({color:0x0f7483}), 96);
+DATA.wells.forEach((w,i)=>{const o=new THREE.Object3D();o.position.set(w.x,w.y,DATA.Z_PICK-0.2);o.updateMatrix();wm.setMatrixAt(i,o.matrix);});
+groups.fixed.add(wm);
+
+function applyColours(){
+  for (const m of meshes){
+    const d = m.userData;
+    const c = d.category==="zone" ? ROLE.zone : (state.colour==="role" ? (ROLE[d.category]??0x999999) : (CONF[d.status]??0x999999));
+    m.material.color.setHex(c);
+  }
+  const L = state.colour==="role" ? ROLE_LABEL : CONF_LABEL;
+  document.getElementById("legend").innerHTML = L.map(([t,c])=>`<span class="sw" style="background:${c}"></span><span>${t}</span>`).join("");
+}
+function applyVisibility(){
+  for (const m of meshes){
+    const d = m.userData;
+    let v = true;
+    if (d.group==="Z") v = d.variant===state.variant;
+    if (d.condenser){
+      const cz = d.category==="zone" ? (state.cond.startsWith("IX2-LWUCD")?"IX2-LWUCD":"IX-ULWCD") : state.cond;
+      v = d.condenser===cz;
+      if (d.category==="zone" && state.cond.startsWith("NONE") && !/tip_travel|safe_z/.test(d.note)) v=false;
+    }
+    if (d.category==="zone" && !state.zones) v = false;
+    if (!state.scope && (d.category==="ix73" || d.category==="condenser" || d.category==="table")) v = false;
+    m.visible = v;
+  }
+}
+function wellXY(name){return DATA.wells.find(w=>w.name===name);}
+function applyPose(){
+  const w = wellXY(state.well);
+  const dz = state.z==="pick" ? 0 : DATA.safe_z - DATA.Z_PICK;
+  groups.Y.position.set(0, w.y, 0);
+  groups.X.position.set(w.x, w.y, 0);
+  groups.Z.position.set(w.x, w.y, dz);
+  const key = state.variant+"|"+state.cond;
+  const r = DATA.sweep[key].wells[state.well];
+  const hits = state.z==="pick" ? r.pick_hits : r.safe_hits;
+  const clr = state.z==="pick" ? r.pick_clear : r.safe_clear;
+  const acc = DATA.access[state.variant];
+  const st = document.getElementById("status");
+  const bits = [];
+  bits.push(`<span class="pill">${state.well} · tip x ${w.x.toFixed(1)} y ${w.y.toFixed(1)} z ${(DATA.Z_PICK+dz).toFixed(1)} mm</span>`);
+  bits.push(hits.length ? `<span class="pill bad">collision: ${hits.join(", ")}</span>` : `<span class="pill ok">clear · min ${clr.toFixed(1)} mm to envelopes</span>`);
+  bits.push(acc.ok ? `<span class="pill ok">well bottom reachable · rim clearance ${acc.rim.toFixed(2)} mm</span>` : `<span class="pill bad">well bottom NOT reachable · stops ${acc.depth.toFixed(1)} mm below rim</span>`);
+  st.innerHTML = bits.join("");
+  // plate map
+  document.querySelectorAll(".well").forEach(b=>{
+    const rr = DATA.sweep[key].wells[b.dataset.w];
+    const bad = (state.z==="pick" ? rr.pick_hits : rr.safe_hits).length>0;
+    b.classList.toggle("okp", !bad); b.classList.toggle("badp", bad); b.classList.toggle("sel", b.dataset.w===state.well);
+    b.setAttribute("aria-pressed", b.dataset.w===state.well ? "true":"false");
+  });
+}
+
+// camera presets
+const TARGET = new THREE.Vector3(120, 0, 20);
+function setView(v){
+  state.view = v;
+  ["iso","top","front","side","head"].forEach(k=>document.getElementById("v-"+k).setAttribute("aria-pressed", k===v));
+  const isoLike = v==="iso" || v==="head";
+  camera = isoLike ? persp : ortho;
+  controls.dispose(); controls = new THREE.OrbitControls(camera, canvas); controls.enableDamping = true;
+  if (v==="iso"){ persp.position.set(-620,-980,720); controls.target.copy(TARGET); }
+  if (v==="head"){ persp.position.set(-150,-260,140); controls.target.set(10,0,35); }
+  const span = 1100;
+  if (v==="top"){ ortho.position.set(150,0,1500); ortho.up.set(0,1,0); controls.target.set(150,0,0); ortho.userData.span=span; }
+  if (v==="front"){ ortho.position.set(150,-1500,60); ortho.up.set(0,0,1); controls.target.set(150,0,60); ortho.userData.span=span; }
+  if (v==="side"){ ortho.position.set(1600,0,60); ortho.up.set(0,0,1); controls.target.set(0,0,60); ortho.userData.span=span*0.95; }
+  if (!isoLike) controls.enableRotate = false;
+  resize(); controls.update();
+}
+function resize(){
+  const w = stage.clientWidth, h = stage.clientHeight;
+  renderer.setSize(w, h, false);
+  persp.aspect = w/h; persp.updateProjectionMatrix();
+  const s = (ortho.userData.span||1000)/2, a = w/h;
+  if (a>=1){ ortho.left=-s*a*0.62; ortho.right=s*a*0.62; ortho.top=s*0.62; ortho.bottom=-s*0.62; }
+  else { ortho.left=-s*0.62; ortho.right=s*0.62; ortho.top=s*0.62/a; ortho.bottom=-s*0.62/a; }
+  ortho.updateProjectionMatrix();
+}
+window.addEventListener("resize", resize);
+
+function bg(){ const c = getComputedStyle(document.documentElement).getPropertyValue("--scene").trim(); scene.background = new THREE.Color(c||"#e4e9eb"); }
+new MutationObserver(bg).observe(document.documentElement,{attributes:true,attributeFilter:["data-theme"]});
+try{ matchMedia("(prefers-color-scheme: dark)").addEventListener("change", bg); }catch(e){}
+
+// UI
+const vwrap = document.getElementById("variants");
+for (const [k,v] of Object.entries(DATA.variants)){
+  const b = document.createElement("button"); b.className="btn"; b.id="var-"+k;
+  b.textContent = k==="R08" ? "8° ★" : v.theta+"°"; b.title = v.label;
+  b.onclick = ()=>{state.variant=k; syncButtons(); applyVisibility(); applyPose();};
+  vwrap.appendChild(b);
+}
+const sel = document.getElementById("cond");
+DATA.condenser_choices.forEach(c=>{const o=document.createElement("option");o.value=c;
+  const m = DATA.condensers[c]; o.textContent = m ? `${c} · WD ${m.WD} mm · NA ${m.NA}` : c; sel.appendChild(o);});
+sel.value = state.cond;
+sel.onchange = ()=>{state.cond = sel.value; applyVisibility(); applyPose(); renderTable();};
+const plate = document.getElementById("plate");
+plate.innerHTML = "<span></span>" + Array.from({length:12},(_,i)=>`<span class="colh">${i+1}</span>`).join("");
+"ABCDEFGH".split("").forEach(r=>{
+  plate.insertAdjacentHTML("beforeend", `<span>${r}</span>`);
+  for (let c=1;c<=12;c++){ const b=document.createElement("button"); b.className="well"; b.dataset.w=r+c; b.title=r+c; b.setAttribute("aria-label","well "+r+c);
+    b.onclick=()=>{state.well=r+c; applyPose();}; plate.appendChild(b); }
+});
+function tog(id, fn){ document.getElementById(id).onclick = fn; }
+tog("z-pick", ()=>{state.z="pick"; syncButtons(); applyPose();});
+tog("z-safe", ()=>{state.z="safe"; syncButtons(); applyPose();});
+tog("c-role", ()=>{state.colour="role"; syncButtons(); applyColours();});
+tog("c-conf", ()=>{state.colour="conf"; syncButtons(); applyColours();});
+tog("t-zones", ()=>{state.zones=!state.zones; syncButtons(); applyVisibility();});
+tog("t-scope", ()=>{state.scope=!state.scope; syncButtons(); applyVisibility();});
+["iso","top","front","side","head"].forEach(v=>tog("v-"+v, ()=>setView(v)));
+function syncButtons(){
+  Object.keys(DATA.variants).forEach(k=>document.getElementById("var-"+k).setAttribute("aria-pressed", k===state.variant));
+  document.getElementById("z-pick").setAttribute("aria-pressed", state.z==="pick");
+  document.getElementById("z-safe").setAttribute("aria-pressed", state.z==="safe");
+  document.getElementById("c-role").setAttribute("aria-pressed", state.colour==="role");
+  document.getElementById("c-conf").setAttribute("aria-pressed", state.colour==="conf");
+  document.getElementById("t-zones").setAttribute("aria-pressed", state.zones);
+  document.getElementById("t-scope").setAttribute("aria-pressed", state.scope);
+}
+function renderTable(){
+  const rows = Object.entries(DATA.sweep).map(([k,v])=>{
+    const [vr,cd]=k.split("|"); const s=v.summary; const hi = vr===state.variant && cd===state.cond ? ' style="background:color-mix(in srgb,var(--accent) 12%,transparent)"':'';
+    const cls = n=>n===96?"ok":(n===0?"bad":"");
+    return `<tr${hi}><td>${vr==="R08"?"8° ★":DATA.variants[vr].theta+"°"}</td><td>${cd}</td><td class="${cls(s.pick)}">${s.pick}/96</td><td class="${cls(s.safe)}">${s.safe}/96</td><td>${s.gsafe}/35</td><td>${s.gtop}/35</td><td>${s.obst||"—"}</td></tr>`;});
+  document.getElementById("sweep").innerHTML = `<thead><tr><th>Angle</th><th>Condenser</th><th>Pick</th><th>Safe-Z</th><th>Grid safe-Z</th><th>Grid top-Z</th><th>Blocking obstacles</th></tr></thead><tbody>${rows.join("")}</tbody>`;
+}
+
+// hash tokens for fixed renders: #iso #top #front #side #head, optional #render (hides overlays)
+const h = (location.hash||"").replace("#","");
+if (h.includes("render")) document.body.classList.add("render-only");
+bg(); syncButtons(); applyColours(); applyVisibility(); applyPose(); renderTable();
+setView(["top","front","side","head"].find(v=>h.includes(v)) || "iso");
+(function loop(){ requestAnimationFrame(loop); controls.update(); renderer.render(scene, camera); })();
+</script>
