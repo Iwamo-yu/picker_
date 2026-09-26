@@ -45,6 +45,8 @@ The layout follows from three constraints found and quantified in this study:
 | 17 | Items NOT to finalise yet | `docs/07_assumptions_and_open_items.md` |
 | – | Capillary sizing for 100 µm – 1 mm objects | `docs/08_capillary_sizing.md` |
 | – | Plate formats (6–96 well) and exchangeable angle blocks (8° / 20° / 30°) | `docs/10_plate_formats_angle_blocks.md` |
+| – | Pre-assembly actions (measure / decide / order / fabricate, Japanese) | `docs/11_pre_assembly_actions_ja.md` |
+| – | Parts candidates (38 items, from web excerpts; not an order list) | `docs/12_parts_candidates.md`, `docs/parts/candidates.csv`, `docs/parts/research_notes.md` |
 | – | Japanese assembly guide (auto-updated) | `docs/assembly_ja/assembly_guide_ja.html` (`python tools/build_all.py`) |
 | – | Literature review (5 papers) | `docs/01_literature_review.md` |
 | – | Functional diagram (pump → tubing → capillary; PC → XYZ) | `docs/img/functional_diagram.png` |

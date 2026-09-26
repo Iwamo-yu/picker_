@@ -65,7 +65,8 @@ PLATE_FORMATS = {
                                   status="MFR", src="S16"),
 }
 # Exchangeable angle blocks on the kinematic mount (design choice; 0-12 deg fine tilt is replaced by blocks)
-ANGLE_BLOCKS = [8.0, 20.0, 30.0, 45.0]
+ANGLE_BLOCKS = [8.0, 20.0, 30.0]          # 45 deg evaluated but not needed (see docs/10)
+ANGLES_EVALUATED = [0.0, 8.0, 20.0, 30.0, 45.0]
 MIN_MARGIN = P(2.0, "DES", "", "minimum clearance accepted for rim / holder-over-rim / condenser at safe-Z (placeholder condenser -> keep >= 2 mm)")
 RIM_MARGIN = P(0.5, "DES", "", "minimum shaft-to-rim clearance (well geometry is MFR data, +-0.25 mm)")
 EXPOSED_OPTIONS = [30.0, 27.0, 24.0]  # capillary length below the collet nose; set by the depth stop
@@ -79,7 +80,7 @@ IX73_H = P(656.0, "MFR", "S01", "IX73 1-deck standard configuration H (incl. ill
 STAGE_TOP_ABOVE_TABLE = P(200.0, "PH", "", "NOT FOUND in any reachable source -> measure M1")
 STAGE_X = P(232.0, "MFR", "S01", "plain stage 232 (X) x 240 (Y)")
 STAGE_Y = P(240.0, "MFR", "S01", "")
-STAGE_T = P(20.0, "PH", "", "stage plate thickness")
+STAGE_T = P(20.0, "PH", "", "stage plate thickness (M3)")
 STAGE_TRAVEL_X = P(114.0, "MFR", "S02", "IX3-SVR mechanical stage stroke X")
 STAGE_TRAVEL_Y = P(75.0, "MFR", "S02", "IX3-SVR mechanical stage stroke Y")
 # location of the body/stage relative to the optical axis
@@ -92,7 +93,7 @@ PILLAR_Y1 = P(240.0, "PH", "", "rear face of pillar")
 PILLAR_TOP_Z = P(IX73_H.v - STAGE_TOP_ABOVE_TABLE.v, "DER", "S01+PH", "")
 COND_ARM_W = P(90.0, "PH", "", "condenser holder / arm width (M7)")
 COND_D = P(80.0, "PH", "", "condenser outer diameter (M6)")
-COND_BODY_H = P(70.0, "PH", "", "condenser body height")
+COND_BODY_H = P(70.0, "PH", "", "condenser body height (M6)")
 # condenser working distances (manufacturer)
 CONDENSERS = {
     "IX2-LWUCD": dict(NA=0.55, WD=P(27.0, "MFR", "S03", "long-WD universal condenser")),
@@ -104,7 +105,7 @@ OBS_TUBE_BOX = dict(x=(-70, 70), y=(-380, -215), z=(-150, 180),
                     status="PH", note="observation tube + eyepieces envelope (M12)")
 STAGE_HANDLE = dict(x=(105, 135), y=(-110, -80), z=(-140, -20),
                     status="PH", note="IX3-SVR right-hand coaxial handle (M13)")
-OBJECTIVE_ZONE = dict(r=45.0, z=(-110, -2), status="PH", note="nosepiece/objectives under stage")
+OBJECTIVE_ZONE = dict(r=45.0, z=(-110, -2), status="PH", note="nosepiece/objectives under stage (M14)")
 
 # ----------------------------------------------------------------------------
 # Capillary + holder
@@ -119,7 +120,7 @@ CAP_EXPOSED = P(CAP_L.v - CAP_GRIP.v, "DER", "", "")
 CAPILLARY_SET = [
     dict(name="S  (100-300 um)", od=1.0, id=0.58, status="MFR", src="S14", part="WPI 1B100-4 (or tip cut/pulled to ID 0.2-0.35)"),
     dict(name="M  (300-600 um)", od=1.5, id=0.84, status="MFR", src="S14", part="WPI 1B150-4 / Sutter B150-86 (ID 0.86)"),
-    dict(name="L  (600-1000 um)", od=2.0, id=1.12, status="MFR", src="S14", part="WPI 1B200-4 - only 1.12x a 1 mm object"),
+    dict(name="L  (600-800 um)", od=2.0, id=1.12, status="MFR", src="S14", part="WPI 1B200-4 - only 1.12x a 1 mm object"),
     dict(name="L' (800-1000 um)", od=2.0, id=1.56, status="MFR", src="S14", part="WPI thin-wall 2.00/1.56 (no filament)"),
 ]
 HOLDER_D = P(10.0, "APX", "", "collet body diameter envelope")
@@ -164,7 +165,7 @@ WORKFLOWS = {
         note="source and destination wells are brought to the axis by the IX73 stage; "
              "+X travel is the park / capillary-change retreat outside the condenser keep-out"),
 }
-DEFAULT_WORKFLOW = "WA"
+DEFAULT_WORKFLOW = "WB"   # baseline after D1
 
 # Stages that could move the plate (for W-B).  Required: >= 99 x 63 mm (well span).
 STAGES = {

@@ -62,6 +62,8 @@ def keynums():
             k[f"FMT{tag}_RIM"], k[f"FMT{tag}_COND"], k[f"FMT{tag}_BLOCK"] = r["rim"], r["cond"], r["block"] * 100
     k["ANGLE_BLOCKS_TXT"] = " / ".join(f"{a:.0f}°" for a in sorted({r["theta"] for r in fa.values() if r}))
     k["PH_COUNT"] = len(placeholders())
+    k["MIN_MARGIN"] = p.MIN_MARGIN.v
+    k["RIM_MARGIN"] = p.RIM_MARGIN.v
     return k
 
 

@@ -7,7 +7,7 @@
 
 If the requirement is **"pick from any of the 96 wells while watching it through the IX73"**, then **W-B is the baseline**. The IX73 stage brings the source well to the optical axis, the picker picks at the axis, and the stage then brings the destination well to the axis for an observed dispense. W-A (stage fixed, picker reaches every well) can *reach* all 96 wells but can *see* only the well on the optical axis. It observes 1 well per stage setting, and none at all with a centred plate. W-A stays valid only if the non-axis wells are served blind or by a separate overview camera.
 
-This is a provisional choice. **Nothing is frozen until M1, M6, M7 and M8 are measured** (see "Freeze gate" below).
+This is a provisional choice. **Nothing is frozen until M1, M3, M4, M6, M7, M8, M10 and M15 are measured** (see "Freeze gate" below).
 
 ## Why (numbers from the same CAD and analysis)
 

@@ -5,7 +5,7 @@ Figures: `img/approach_angles.png`, `img/view_head.png`, `img/dim_front.png`. Th
 
 ## Conclusion
 
-The capillary's last segment must be **near-vertical (0–12°)**. The binding constraint is the 96-well itself, not the condenser. A near-vertical capillary then has to share the space on the optical axis with the condenser. That works only if (a) the condenser has a long working distance (IX-ULWCD, WD 73 mm) and the picker reaches in with a thin horizontal "dog-leg" arm below it, or (b) the illumination column is tilted back during picking. With the IX2-LWUCD (WD 27 mm) no angle works. **8° with a dog-leg arm** is the recommended fixed geometry, with an alignment range of about 0–12°.
+The capillary's last segment must be **near-vertical (0–12°)**. The binding constraint is the 96-well itself, not the condenser. A near-vertical capillary then has to share the space on the optical axis with the condenser. That works only if (a) the condenser has a long working distance (IX-ULWCD, WD 73 mm) and the picker reaches in with a thin horizontal "dog-leg" arm below it, or (b) the illumination column is tilted back during picking. With the IX2-LWUCD (WD 27 mm) no angle works. **8° with a dog-leg arm** is the recommended geometry for 96-well plates. The angle is set by exchangeable angle blocks (8° / 20° / 30°), one per plate format (`10_plate_formats_angle_blocks.md`), not by a continuous tilt.
 
 ## Method
 
@@ -37,7 +37,7 @@ Every angle uses the same external frame and the same outboard Z position, with 
 - **0° is geometrically best** for the wells, but the holder sits coaxially above the tip. At low condenser NA it blocks the whole light cone, so transmitted-light imaging during the landing is lost.
 - **8°** keeps a 1.38 mm rim margin and moves the holder about 4 mm off the axis. That leaves annular illumination at NA 0.3, so the tip stays visible while landing. The Zhao et al. 45° mount (S23) is correct for open droplets but not for wells.
 
-The illumination figures are an obstruction estimate, not an optical simulation. **Test M18** (a Ø10 rod at 30–45 mm above focus, 4× and 10×) decides whether 8° is enough or whether 10–12° is needed.
+The illumination figures are an obstruction estimate, not an optical simulation. **Test M18** (a Ø10 rod at 30–45 mm above focus, 4× and 10×) decides whether the 8° block is enough for 96-well work or whether a 10–12° block should be added.
 
 ## Condenser constraint
 
@@ -56,8 +56,8 @@ Condenser fronts are placed at well bottom + WD, with WD from manufacturer data 
 2. **Arm length.** The thin section of the arm must extend from the tip by |tip x min| + condenser radius + margin: 120 mm in W-A, 60 mm in W-B (computed in `params.layout`). An earlier 60 mm thin section collided at safe-Z in columns 1–3; the sweep caught this and the model was corrected. The tall Z actuator stays outboard of the condenser in every position.
 3. **Tubing on the arm.** It is the closest item to the condenser (4.83 mm). Route it along the side of the arm, not on top.
 4. **Well walls.** They are the binding constraint on angle (above). The OCC sweep and the analytic check agree: 30° and 45° give 0/96.
-5. **Plate lid.** The model assumes no lid. A lid adds about 3–4 mm (Corning 7007 is 0.650 in = 16.5 mm high with lid). Lid removal belongs in the workflow.
-6. **Stage and plate holder clips.** These are unknown (M11). The arm underside is ≈41 mm above the stage at pick height and ≈57 mm at safe-Z, so it is not critical.
+5. **Plate lid.** The model assumes no lid. A lid adds about 2 mm (Corning 7007 is 0.650 in = 16.5 mm high with lid, against 14.35 mm without). Lid removal belongs in the workflow.
+6. **Stage and plate holder clips.** These are unknown (M3). The arm underside is ≈41 mm above the stage at pick height and ≈57 mm at safe-Z, so it is not critical.
 7. **Objective and turret.** They lie below the stage; the picker cannot reach them because nothing moves below z = 0. The risk is to the plate bottom, not the objective: a tip driven through a thin plate bottom would load the plate. Limit this with a firmware Z floor at well bottom − 0.5 mm per plate type, plus a break-away mount.
 8. **Microscope frame.** The closest fixed IX73 item to the frame is the body side at x = +161.5 mm. The tower axis is at +403 mm in W-A (242 mm gap) and +353 mm in W-B (192 mm gap). The X support beam passes over the stage at z ≥ 180 mm; the condenser carrier arm is at x = ±45 mm (placeholder), and the X actuator's inner end is at x = 55 mm (15 mm beyond the condenser radius). **This gap is a placeholder result and must be re-checked after M7.**
 9. **Eyepieces / observation tube.** The frame does not use the operator side. A front bridge was rejected because it would sit in the (unknown, M12) eyepiece envelope and in the operator's hand space.

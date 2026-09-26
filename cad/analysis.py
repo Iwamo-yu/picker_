@@ -96,7 +96,7 @@ def format_angle_check(fmt, theta, exposed=None, cond="IX-ULWCD"):
 def format_angle_matrix():
     rows = []
     for fmt in p.PLATE_FORMATS:
-        for th in (0.0,) + tuple(p.ANGLE_BLOCKS):
+        for th in p.ANGLES_EVALUATED:
             rows.append(format_angle_check(fmt, th))
     rec = {}
     for fmt in p.PLATE_FORMATS:

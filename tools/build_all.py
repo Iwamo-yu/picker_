@@ -27,6 +27,7 @@ if "--fast" not in sys.argv:
     run("cad/analysis.py")
 run("cad/views.py")
 run("docs/assembly_ja/figures.py")
+run("docs/parts/build_parts.py")
 run("cad/render_docs.py")
 run("viewer/build_viewer.py")
 if os.environ.get("RENDER_JS"):

@@ -20,7 +20,7 @@ It is the cleanest robust layout for three reasons, each backed by the model:
 2. **The frame avoids every side of the IX73 that is used or unknown.** The operator side and eyepieces (front), the illumination pillar and lamp (rear) and the camera port (left, assumed) all stay clear. The tower axis is 192 mm clear of the body side (W-A: 242 mm), and nothing touches the microscope or its stage.
 3. **The stiff, fixed parts are the long ones.** The Y beam is supported at both ends. The cantilevers are the X support beam and the arm (115 mm in W-B, 175 mm in W-A). Both deflect repeatably, and the image calibration absorbs the static sag.
 
-**Nothing here is frozen** until M1, M6, M7 and M8 are measured (`09_workflow_D1.md`, freeze gate).
+**Nothing here is frozen** until M1, M3, M4, M6, M7, M8, M10 and M15 are measured (`09_workflow_D1.md`, freeze gate).
 
 ## 2. What is fixed and what moves
 
@@ -68,7 +68,7 @@ The holder is a **collet** (split collet with a tapered nut, sized per capillary
 - A screw-set **depth stop** above the capillary gives adjustable insertion (default 10 mm grip, 30 mm exposed).
 - A side or top liquid port with an O-ring seal on the capillary end-face. The seal is separate from the clamping, so it does not act as friction-only clamping.
 - The holder sits in a **V-block seat on the arm** with a flat and a clamp screw. This is the mechanically defined reference surface.
-- **0–12° tilt adjustment** is made once, at the kinematic mount block (an arc slot with a lock screw).
+- **Angle** is set by an exchangeable angle block (8° / 20° / 30°) between the kinematic mount and the holder seat: two dowels and one clamp screw. Each plate format has its own block and exposed length (`10_plate_formats_angle_blocks.md`).
 - **Tip reproducibility.** The collet and depth stop give roughly ±0.1–0.2 mm (estimate). The real µm-level registration comes from the image-based 3-point re-calibration after every change (S28). The mechanics therefore need only be *stable after clamping*, not µm-reproducible between capillaries.
 - **Other ODs**: objects of 100 µm – 1 mm need three capillary classes (OD 1.0 / 1.5 / 2.0; see `08_capillary_sizing.md`). They are handled by swapping the collet insert only, and all keep ≥0.87 mm rim clearance at 8°. The arm, seat and fluid port stay the same.
 
@@ -102,10 +102,10 @@ Each loop takes the full stroke with a bend radius of at least 25 mm (PTFE kink 
 
 ## 9. Alignment and locking interfaces (custom parts that add value)
 
-- **Base plate to table.** Slotted holes on the table grid (M6/25 mm or ¼-20/1", M25). Gives ±15 mm X/Y and ±2° yaw, locked with 6 bolts.
+- **Base plate to table.** Slotted holes on the table grid (M6/25 mm or ¼-20/1", M16). Gives ±15 mm X/Y and ±2° yaw, locked with 6 bolts.
 - **Beam height on posts.** Vertical slots plus a jack screw give ±20 mm to match the real stage height (M1). Two clamp bolts per post.
 - **X-axis squareness to the plate rows.** Not adjusted mechanically; absorbed by the image calibration (affine transform).
-- **Capillary angle.** 0–12° arc slot at the kinematic mount, set once.
+- **Capillary angle.** Exchangeable angle blocks (8° / 20° / 30°), doweled; re-calibrate by image after each change.
 - **Removability.** Unbolt the base plate: the IX73 is untouched and its alignment unchanged. Re-installing needs only re-running the image calibration.
 
 ## 10. Answers to the system-level questions

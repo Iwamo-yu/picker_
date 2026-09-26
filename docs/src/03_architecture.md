@@ -19,7 +19,7 @@ It is the cleanest robust layout for three reasons, each backed by the model:
 2. **The frame avoids every side of the IX73 that is used or unknown.** The operator side and eyepieces (front), the illumination pillar and lamp (rear) and the camera port (left, assumed) all stay clear. The tower axis is {{WB_GAP:.0f}} mm clear of the body side (W-A: {{WA_GAP:.0f}} mm), and nothing touches the microscope or its stage.
 3. **The stiff, fixed parts are the long ones.** The Y beam is supported at both ends. The cantilevers are the X support beam and the arm ({{WB_ARM_L}} mm in W-B, {{WA_ARM_L}} mm in W-A). Both deflect repeatably, and the image calibration absorbs the static sag.
 
-**Nothing here is frozen** until M1, M6, M7 and M8 are measured (`09_workflow_D1.md`, freeze gate).
+**Nothing here is frozen** until M1, M3, M4, M6, M7, M8, M10 and M15 are measured (`09_workflow_D1.md`, freeze gate).
 
 ## 2. What is fixed and what moves
 
@@ -43,7 +43,7 @@ Order from the table up: **Y (fixed on beam) → X (cantilever towards the axis)
 |---|---|---|---|
 | X | **{{WB_TRAVEL_X}} mm** (tip {{WB_X_MIN}}…+{{WB_X_MAX}}) | {{WA_TRAVEL_X}} mm | W-B: local calibration ±15 mm plus park / capillary change outside the condenser keep-out. W-A: 99 mm well span + 25.5 mm per side |
 | Y | **{{WB_TRAVEL_Y}} mm** | {{WA_TRAVEL_Y}} mm | W-B: local calibration. W-A: 63 mm span + 18.5 mm per side |
-| Z | **{{WB_TRAVEL_Z}} mm** | {{WA_TRAVEL_Z}} mm | pick height 3.35 → safe-Z {{SAFE_Z:.2f}} → top: capillary change and calibration touch-off |
+| Z | **{{WB_TRAVEL_Z}} mm** | {{WA_TRAVEL_Z}} mm | pick height {{Z_PICK:.2f}} → safe-Z {{SAFE_Z:.2f}} → top: capillary change and calibration touch-off |
 
 Why Y is the fixed axis and X the cantilever: the side tower gives a naturally long, twice-supported beam in Y. X must reach from the tower to the plate anyway. Swapping them would cantilever the *fixed* beam over the microscope.
 
@@ -58,7 +58,7 @@ Why Y is the fixed axis and X the cantilever: the side tower gives a naturally l
 - **Holding without power.** Back-driving torque from the Z load is T = F·l·η/(2π). With F ≈ 3 N (0.3 kg), l = 1 mm and η ≈ 0.8, T ≈ 0.4 mN·m. A NEMA17's unpowered detent torque is typically about 10–20 mN·m (catalogue class, to be confirmed for the chosen motor), a margin of roughly 25–50×. With a TR8×2 bronze nut, the lead angle (≈5.2° at 7 mm pitch diameter) is below the friction angle (≈6–11° for μ = 0.1–0.2), so the screw is nominally self-locking. Vibration can still creep a marginal self-locking screw.
 - **Conclusion.** No brake and no counterbalance are needed at this Z load. Add a brake (for example the Oriental DRS2 brake option, S32) only if the Z group grows above about 0.5 kg or if a lead ≥2 mm ball screw is chosen.
 - **Resolution.** 1 mm lead / 200 full steps = 5 µm per full step, and 16× microstepping gives 0.31 µm commanded increments. Microstep linearity limits real incremental accuracy to a fraction of a full step, which is sufficient for the ≤5 µm command and 10–20 µm repeatability targets.
-- **Approach.** Move fast to safe-Z (19.35), then to a pre-contact height about 0.5 mm above the stored well bottom, then land at about 10 µm/s (S23) to the stand-off height.
+- **Approach.** Move fast to safe-Z ({{SAFE_Z:.2f}}), then to a pre-contact height about 0.5 mm above the stored well bottom, then land at about 10 µm/s (S23) to the stand-off height.
 
 ## 6. Capillary holder concept
 
@@ -67,7 +67,7 @@ The holder is a **collet** (split collet with a tapered nut, sized per capillary
 - A screw-set **depth stop** above the capillary gives adjustable insertion (default 10 mm grip, 30 mm exposed).
 - A side or top liquid port with an O-ring seal on the capillary end-face. The seal is separate from the clamping, so it does not act as friction-only clamping.
 - The holder sits in a **V-block seat on the arm** with a flat and a clamp screw. This is the mechanically defined reference surface.
-- **0–12° tilt adjustment** is made once, at the kinematic mount block (an arc slot with a lock screw).
+- **Angle** is set by an exchangeable angle block ({{ANGLE_BLOCKS_TXT}}) between the kinematic mount and the holder seat: two dowels and one clamp screw. Each plate format has its own block and exposed length (`10_plate_formats_angle_blocks.md`).
 - **Tip reproducibility.** The collet and depth stop give roughly ±0.1–0.2 mm (estimate). The real µm-level registration comes from the image-based 3-point re-calibration after every change (S28). The mechanics therefore need only be *stable after clamping*, not µm-reproducible between capillaries.
 - **Other ODs**: objects of 100 µm – 1 mm need three capillary classes (OD 1.0 / 1.5 / 2.0; see `08_capillary_sizing.md`). They are handled by swapping the collet insert only, and all keep ≥0.87 mm rim clearance at 8°. The arm, seat and fluid port stay the same.
 
@@ -101,10 +101,10 @@ Each loop takes the full stroke with a bend radius of at least 25 mm (PTFE kink 
 
 ## 9. Alignment and locking interfaces (custom parts that add value)
 
-- **Base plate to table.** Slotted holes on the table grid (M6/25 mm or ¼-20/1", M25). Gives ±15 mm X/Y and ±2° yaw, locked with 6 bolts.
+- **Base plate to table.** Slotted holes on the table grid (M6/25 mm or ¼-20/1", M16). Gives ±15 mm X/Y and ±2° yaw, locked with 6 bolts.
 - **Beam height on posts.** Vertical slots plus a jack screw give ±20 mm to match the real stage height (M1). Two clamp bolts per post.
 - **X-axis squareness to the plate rows.** Not adjusted mechanically; absorbed by the image calibration (affine transform).
-- **Capillary angle.** 0–12° arc slot at the kinematic mount, set once.
+- **Capillary angle.** Exchangeable angle blocks ({{ANGLE_BLOCKS_TXT}}), doweled; re-calibrate by image after each change.
 - **Removability.** Unbolt the base plate: the IX73 is untouched and its alignment unchanged. Re-installing needs only re-running the image calibration.
 
 ## 10. Answers to the system-level questions

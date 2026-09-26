@@ -1559,7 +1559,7 @@
    "group": "fixed",
    "workflow": "all",
    "variant": "all",
-   "note": "nosepiece/objectives under stage"
+   "note": "nosepiece/objectives under stage (M14)"
   },
   "ix73_obs_tube_eyepieces": {
    "file": "stl/ix73_obs_tube_eyepieces.stl",
