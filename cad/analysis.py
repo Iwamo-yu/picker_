@@ -48,7 +48,11 @@ def well_access(theta_deg):
                 bottom_reachable_any=best_shift_clear > 0)
 
 
-def max_angle_centre():
+def max_angle_centre(r_cap=None):
+    global R_CAP
+    old = R_CAP
+    if r_cap is not None:
+        R_CAP = r_cap
     lo, hi = 0.0, 45.0
     for _ in range(60):
         mid = (lo + hi) / 2
@@ -56,7 +60,21 @@ def max_angle_centre():
             lo = mid
         else:
             hi = mid
+    R_CAP = old
     return lo
+
+
+def capillary_set_table():
+    rows = []
+    global R_CAP
+    old = R_CAP
+    for c in p.CAPILLARY_SET:
+        R_CAP = c["od"] / 2
+        rim8 = well_access(8.0)["rim_clearance_centre"]
+        R_CAP = old
+        rows.append(dict(c, max_angle=max_angle_centre(c["od"] / 2), rim_clear_8deg=rim8,
+                         id_over_100um=c["id"] / 0.1, id_over_1mm=c["id"] / 1.0))
+    return rows
 
 
 # ----------------------------------------------------------------------------- 2
@@ -175,6 +193,7 @@ if __name__ == "__main__":
             f, rc, nx = illumination_block(th, na)
             out["illumination"].append(dict(theta=th, NA_c=na, cone_r_at_nose=round(rc, 2),
                                             holder_offset=round(nx, 2), blocked_fraction=round(f, 3)))
+    out["capillary_set"] = capillary_set_table()
     for var in VARIANTS:
         for cond in CONDENSER_CHOICES:
             res = sweep(var, cond)
@@ -197,7 +216,12 @@ if __name__ == "__main__":
                  f"{'yes' if w['bottom_reachable_centre'] else 'NO'} | {'yes' if w['bottom_reachable_any'] else 'NO'} |")
     L += ["", f"Maximum angle for reaching the bottom centre: **{out['max_angle_centre_deg']:.1f}°** "
           "(tip 0.3 mm above bottom, no margin).", "",
-          "## 2. Holder obstruction of transmitted light (holder Ø10 at the collet nose)", "",
+          "### 1b. Capillary set vs well access (object size 100 um - 1 mm)", "",
+          "| class | OD | ID | max angle for bottom centre | rim clearance at 8° (mm) | catalogue part | data |",
+          "|---|---|---|---|---|---|---|"]
+    for c in out["capillary_set"]:
+        L.append(f"| {c['name']} | {c['od']} | {c['id']} | {c['max_angle']:.1f}° | {c['rim_clear_8deg']:.2f} | {c['part']} | {c['status']} |")
+    L += ["", "## 2. Holder obstruction of transmitted light (holder Ø10 at the collet nose)", "",
           "| angle | condenser NA used | cone radius at holder nose (mm) | holder offset (mm) | blocked fraction |",
           "|---|---|---|---|---|"]
     for r in out["illumination"]:

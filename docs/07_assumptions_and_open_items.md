@@ -22,6 +22,7 @@
 | D2 | Condenser during picking | IX-ULWCD (buy or borrow if not present) vs tilt column back + LED ring | whether the dog-leg arm is needed |
 | D3 | Final capillary lean | 0–12°, after test M18 | holder seat angle |
 | D4 | Side of tower | right (default) vs left (mirror) | after M12/M13/M15 |
+| D6 | Capillary classes to stock | S/M/L (OD 1.0/1.5/2.0) vs fewer; thin-wall 2.0 for 1 mm objects | collet inserts, syringe size |
 | D5 | Z actuator type | open-loop ball screw vs closed-loop absolute (DRS2) with brake | cost, homing strategy |
 
 ## Items that should NOT be finalised yet

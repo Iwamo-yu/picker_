@@ -64,7 +64,7 @@ The holder is a **collet** (split collet with a tapered nut, sized per capillary
 - The holder sits in a **V-block seat on the arm** with a flat and a clamp screw. This is the mechanically defined reference surface.
 - **0–12° tilt adjustment** is made once, at the kinematic mount block (an arc slot with a lock screw).
 - **Tip reproducibility.** The collet and depth stop give roughly ±0.1–0.2 mm (estimate). The real µm-level registration comes from the image-based 3-point re-calibration after every change (S28). The mechanics therefore need only be *stable after clamping*, not µm-reproducible between capillaries.
-- **Other ODs** (0.5–1.5 mm) are handled by swapping the collet insert only. The arm, seat and fluid port stay the same.
+- **Other ODs**: objects of 100 µm – 1 mm need three capillary classes (OD 1.0 / 1.5 / 2.0; see `08_capillary_sizing.md`). They are handled by swapping the collet insert only, and all keep ≥0.87 mm rim clearance at 8°. The arm, seat and fluid port stay the same.
 
 Commercial alternative: a patch-clamp-style pipette holder with a side port (for example, the Warner holder catalogue in the search results). Many of these clamp with O-rings, which is friction-only and was rejected as the primary fixation. One can be used with a custom depth-stop adapter.
 

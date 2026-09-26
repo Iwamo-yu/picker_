@@ -94,6 +94,14 @@ CAP_ID = P(0.6, "DES", "S20", "")
 CAP_L = P(40.0, "DES", "S20", "")
 CAP_GRIP = P(10.0, "DES", "", "length held in collet (adjustable insertion depth)")
 CAP_EXPOSED = P(CAP_L.v - CAP_GRIP.v, "DER", "", "")
+# Capillary set by object size (target objects 100 um - 1 mm, user requirement 2026-09-26).
+# OD/ID verified for WPI 1B100-4 / 1B150-4 / 1B200-4 (S14); thin-wall 2.0 mm ID is NOT verified.
+CAPILLARY_SET = [
+    dict(name="S  (100-300 um)", od=1.0, id=0.58, status="MFR", src="S14", part="WPI 1B100-4 (or tip cut/pulled to ID 0.2-0.35)"),
+    dict(name="M  (300-600 um)", od=1.5, id=0.84, status="MFR", src="S14", part="WPI 1B150-4 / Sutter B150-86 (ID 0.86)"),
+    dict(name="L  (600-1000 um)", od=2.0, id=1.12, status="MFR", src="S14", part="WPI 1B200-4 - only 1.12x a 1 mm object"),
+    dict(name="L' (800-1000 um)", od=2.0, id=1.5, status="PH", src="", part="thin-wall 2.0 mm OD, ID ~1.5 - verify catalogue"),
+]
 HOLDER_D = P(10.0, "APX", "", "collet body diameter envelope")
 HOLDER_L = P(14.0, "APX", "", "collet body length envelope")
 TIP_CLEAR_BOTTOM = P(0.3, "DES", "", "pick height of tip above well bottom")

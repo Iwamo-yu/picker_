@@ -35,6 +35,7 @@ Two conditions come attached. The condenser outline, the stage height and the ey
 | 15 | Electrical block diagram | `docs/06_electrical.md`, `docs/img/electrical_block_diagram.png` |
 | 16 | Assumptions | `docs/07_assumptions_and_open_items.md` |
 | 17 | Items NOT to finalise yet | `docs/07_assumptions_and_open_items.md` |
+| – | Capillary sizing for 100 µm – 1 mm objects | `docs/08_capillary_sizing.md` |
 | – | Literature review (5 papers) | `docs/01_literature_review.md` |
 | – | Functional diagram (pump → tubing → capillary; PC → XYZ) | `docs/img/functional_diagram.png` |
 
