@@ -1,3 +1,4 @@
+<!-- GENERATED from docs/src/02_approach_angle_study.md by cad/render_docs.py - edit the source, not this file -->
 # Capillary approach: 0° vs 8° vs 30° vs 45°, plus collision and interference notes
 
 Figures: `img/approach_angles.png`, `img/view_head.png`, `img/dim_front.png`. The raw numbers are in `generated_analysis_tables.md`, produced by `cad/analysis.py`.
@@ -8,7 +9,7 @@ The capillary's last segment must be **near-vertical (0–12°)**. The binding c
 
 ## Method
 
-Every angle uses the same external frame and the same outboard Z position, with a 175 mm arm. Only the capillary/holder angle changes, so the comparison isolates the effect of angle. Three checks were run:
+Every angle uses the same external frame and the same outboard Z position, with the W-A frame (175 mm arm, picker covering the plate; the W-B frame gives the same angle results at the optical axis). Only the capillary/holder angle changes, so the comparison isolates the effect of angle. Three checks were run:
 
 1. **Well access (analytic).** Corning 7007 U-bottom: rim Ø6.86 mm, depth 11.30 mm (S13). Capillary OD 1.0 mm, tip 0.3 mm above the well bottom.
 2. **Clearance sweep (OpenCascade minimum distance).** All 96 wells at pick height and at safe-Z (plate top + 5 mm), plus a 35-point grid over the full 150 × 100 travel at safe-Z and at the top of the Z stroke. Moving parts are checked against the IX73 envelope, the condensers, the plate and the pump.
@@ -18,7 +19,7 @@ Every angle uses the same external frame and the same outboard Z position, with 
 
 | Criterion | 0° | **8° (rec.)** | 30° | 45° |
 |---|---|---|---|---|
-| Rim clearance, tip at well-bottom centre | +2.93 mm | **+1.38 mm** | −3.50 mm (hits rim) | −8.28 mm (hits rim) |
+| Rim clearance, tip at well-bottom centre | +2.93 mm | **+1.38 mm** | -3.50 mm (hits rim) | -8.28 mm (hits rim) |
 | Deepest centred reach below the rim | full (11.3 mm) | **full** | 4.9 mm | 2.7 mm |
 | Wells reachable at pick height, IX-ULWCD | 96/96 | **96/96** | 0/96 | 0/96 |
 | Wells reachable at pick height, IX2-LWUCD | 10/96 | 16/96 | 0/96 | 0/96 |
@@ -46,18 +47,18 @@ Condenser fronts are placed at well bottom + WD, with WD from manufacturer data 
 |---|---|---|---|
 | IX2-LWUCD | 27 mm | ≈15.7 mm | arm collides at pick height near the axis: **unusable** |
 | IX2-MLWCD | 45 mm | ≈33.7 mm | arm collides at pick height near the axis: **unusable** |
-| **IX-ULWCD** | 73 mm | ≈61.7 mm | 96/96 at pick height and at safe-Z; minimum clearance 4.8 mm at safe-Z (tubing on the arm vs condenser front) |
+| **IX-ULWCD** | 73 mm | ≈61.7 mm | W-A 96/96, W-B 96/96 at pick height; minimum clearance 4.83 mm at safe-Z (tubing on the arm vs condenser front) |
 | none (column tilted back) | – | – | no constraint; needs alternative illumination during picking |
 
 ## Collision and interference notes
 
-1. **Condenser.** This is the dominant hazard. With the IX-ULWCD, the Z stroke **above safe-Z is blocked under the condenser** (15 of 35 grid points at top-Z collide). The controller therefore needs a software keep-out zone: a cylinder of radius R_cond + 10 mm around the optical axis in which the tip is not allowed above z = safe-Z. Capillary changes happen at the park position (X +75, Y +50, Z top), which lies outside the keep-out.
-2. **Arm length.** The thin section of the arm must extend ≥120 mm from the tip (75 mm X half-travel + 40 mm condenser radius + margin). An earlier 60 mm thin section collided at safe-Z in columns 1–3; the sweep caught this and the model was corrected. The tall Z actuator stays outboard of the condenser in every position.
-3. **Tubing on the arm.** It is the closest item to the condenser (4.8 mm). Route it along the side of the arm, not on top.
+1. **Condenser.** This is the dominant hazard. With the IX-ULWCD, the Z stroke **above safe-Z is blocked under the condenser** (W-A: 20 of 35 grid points at top-Z are clear; W-B: 15 of 35). The controller therefore needs a software keep-out zone: a cylinder of radius R_cond + 10 mm around the optical axis in which the tip is not allowed above z = safe-Z. Capillary changes happen at the park position (W-A: X +75, Y +50; W-B: X +85; Z top), which lies outside the keep-out.
+2. **Arm length.** The thin section of the arm must extend from the tip by |tip x min| + condenser radius + margin: 120 mm in W-A, 60 mm in W-B (computed in `params.layout`). An earlier 60 mm thin section collided at safe-Z in columns 1–3; the sweep caught this and the model was corrected. The tall Z actuator stays outboard of the condenser in every position.
+3. **Tubing on the arm.** It is the closest item to the condenser (4.83 mm). Route it along the side of the arm, not on top.
 4. **Well walls.** They are the binding constraint on angle (above). The OCC sweep and the analytic check agree: 30° and 45° give 0/96.
 5. **Plate lid.** The model assumes no lid. A lid adds about 3–4 mm (Corning 7007 is 0.650 in = 16.5 mm high with lid). Lid removal belongs in the workflow.
 6. **Stage and plate holder clips.** These are unknown (M11). The arm underside is ≈41 mm above the stage at pick height and ≈57 mm at safe-Z, so it is not critical.
 7. **Objective and turret.** They lie below the stage; the picker cannot reach them because nothing moves below z = 0. The risk is to the plate bottom, not the objective: a tip driven through a thin plate bottom would load the plate. Limit this with a firmware Z floor at well bottom − 0.5 mm per plate type, plus a break-away mount.
-8. **Microscope frame.** The closest fixed IX73 item to the frame is the body side at x = +161.5 mm. The tower axis is at +400 mm, a 238 mm gap. The X support beam passes over the stage at z ≥ 180 mm; the condenser carrier arm is at x = ±45 mm (placeholder), and the X beam's inner end is at x ≈ 50 mm. **This 5 mm gap is a placeholder result and must be re-checked after M7.**
+8. **Microscope frame.** The closest fixed IX73 item to the frame is the body side at x = +161.5 mm. The tower axis is at +403 mm in W-A (242 mm gap) and +353 mm in W-B (192 mm gap). The X support beam passes over the stage at z ≥ 180 mm; the condenser carrier arm is at x = ±45 mm (placeholder), and the X actuator's inner end is at x = 55 mm (15 mm beyond the condenser radius). **This gap is a placeholder result and must be re-checked after M7.**
 9. **Eyepieces / observation tube.** The frame does not use the operator side. A front bridge was rejected because it would sit in the (unknown, M12) eyepiece envelope and in the operator's hand space.
 10. **Collision fuse.** The holder arm hangs on a magnet-preloaded 3-ball kinematic mount. A crash detaches the arm instead of bending the capillary or loading the plate, and re-seating is repeatable to a few µm (typical of kinematic mounts; to be verified). Tip re-calibration by image after any detach is still required.

@@ -79,6 +79,14 @@ td.ok{color:var(--ok);font-weight:600} td.bad{color:var(--bad);font-weight:600}
     </div>
     <aside>
       <div>
+        <div class="lab">Workflow (D1)</div>
+        <div class="seg" role="group" aria-label="Workflow">
+          <button class="btn" id="wf-WB" aria-pressed="true">W-B STAGE MOVES ★</button>
+          <button class="btn" id="wf-WA" aria-pressed="false">W-A STAGE FIXED</button>
+        </div>
+        <p class="sub" id="wf-note" style="margin:6px 0 0"></p>
+      </div>
+      <div>
         <div class="lab">Capillary approach</div>
         <div class="seg" role="group" aria-label="Head variant" id="variants"></div>
       </div>
@@ -113,13 +121,14 @@ td.ok{color:var(--ok);font-weight:600} td.bad{color:var(--bad);font-weight:600}
   </div>
 
   <div class="notes">
+    <div class="note"><h2>Why the stage moves (D1)</h2><p>The IX73 only sees the well on the optical axis. In W-B the stage brings every source and destination well there, so all 96 picks are observed, and the picker needs only 100 × 30 × 50 mm of travel. That takes a motorised stage with at least 99 × 63 mm travel; Evident's IX3-SSU (76 × 52) reaches 48 wells. In W-A the picker reaches every well but sees one.</p></div>
     <div class="note"><h2>Why near-vertical</h2><p>A Corning 7007 U-bottom well is Ø6.86 mm at the rim and 11.30 mm deep. A 1.0 mm capillary reaches the bottom centre only below about 14.8° from vertical. At 30° it stops 4.9 mm below the rim, at 45° after 2.7 mm. The 8° head keeps 1.4 mm rim clearance and moves the holder 4 mm off the optical axis.</p></div>
-    <div class="note"><h2>Why the dog-leg arm</h2><p>The condenser sits on the optical axis. The tall Z actuator therefore stays 175 mm outboard of the tip, and only a thin 12 mm arm runs under the condenser. That fits under the IX-ULWCD (WD 73 mm). It does not fit under the IX2-LWUCD (WD 27 mm) or the IX2-MLWCD (WD 45 mm). The alternative is tilting the illumination column back.</p></div>
+    <div class="note"><h2>Why the dog-leg arm</h2><p>The condenser sits on the optical axis. The tall Z actuator therefore stays outboard of the tip (arm 115 mm in W-B, 175 mm in W-A), and only a thin 12 mm arm runs under the condenser. That fits under the IX-ULWCD (WD 73 mm). It does not fit under the IX2-LWUCD (WD 27 mm) or the IX2-MLWCD (WD 45 mm). The alternative is tilting the illumination column back.</p></div>
     <div class="note"><h2>What is still a guess</h2><p>Stage height above the table, condenser outer diameter, pillar and arm position, and the eyepiece tube envelope are placeholders (red in confidence mode). Every clearance near the condenser depends on them. Measure these first; the model re-runs in about 4 minutes.</p></div>
   </div>
 
   <div class="note">
-    <h2>Clearance sweep · 96 wells at pick height and at safe-Z</h2>
+    <h2>Clearance sweep · 96 wells at pick height and at safe-Z, both workflows</h2>
     <div class="tbl"><table id="sweep"></table></div>
   </div>
 </div>
@@ -141,7 +150,7 @@ const ROLE_LABEL = [["IX73 envelope","#b8c1c5"],["condenser (on optical axis)","
   ["actuators","#2f6f8a"],["moving head (Z group)","#2f9d74"],["glass capillary","#38c4d8"],["liquid-filled tubing","#f0c040"],
   ["zones: tip travel, safe-Z, condenser keep-out, light cone","#3fb6c6"]];
 
-const state = {variant:"R08", cond:"IX-ULWCD", well:"D6", z:"pick", colour:"role", zones:true, scope:true, view:"iso"};
+const state = {wf:"WB", variant:"R08", cond:"IX-ULWCD", well:"D6", z:"pick", colour:"role", zones:true, scope:true, view:"iso"};
 
 const stage = document.getElementById("stage");
 const canvas = document.getElementById("c");
@@ -157,7 +166,7 @@ scene.add(new THREE.HemisphereLight(0xffffff, 0x445055, 0.85));
 const dl = new THREE.DirectionalLight(0xffffff, 0.75); dl.position.set(300,-500,900); scene.add(dl);
 const dl2 = new THREE.DirectionalLight(0xffffff, 0.3); dl2.position.set(-600,400,300); scene.add(dl2);
 
-const groups = {fixed:new THREE.Group(), Y:new THREE.Group(), X:new THREE.Group(), Z:new THREE.Group()};
+const groups = {fixed:new THREE.Group(), S:new THREE.Group(), Y:new THREE.Group(), X:new THREE.Group(), Z:new THREE.Group()};
 Object.values(groups).forEach(g=>scene.add(g));
 const meshes = [];
 const loader = new THREE.STLLoader();
@@ -178,7 +187,7 @@ for (const [key, meta] of Object.entries(DATA.parts)) {
 const wm = new THREE.InstancedMesh(new THREE.CylinderGeometry(0.9,0.9,0.4,12).rotateX(Math.PI/2),
   new THREE.MeshBasicMaterial({color:0x0f7483}), 96);
 DATA.wells.forEach((w,i)=>{const o=new THREE.Object3D();o.position.set(w.x,w.y,DATA.Z_PICK-0.2);o.updateMatrix();wm.setMatrixAt(i,o.matrix);});
-groups.fixed.add(wm);
+groups.S.add(wm);
 
 function applyColours(){
   for (const m of meshes){
@@ -192,9 +201,9 @@ function applyColours(){
 function applyVisibility(){
   for (const m of meshes){
     const d = m.userData;
-    let v = true;
-    if (d.group==="Z") v = d.variant===state.variant;
-    if (d.condenser){
+    let v = d.workflow==="all" || d.workflow===state.wf;
+    if (v && d.group==="Z") v = d.variant===state.variant;
+    if (v && d.condenser){
       const cz = d.category==="zone" ? (state.cond.startsWith("IX2-LWUCD")?"IX2-LWUCD":"IX-ULWCD") : state.cond;
       v = d.condenser===cz;
       if (d.category==="zone" && state.cond.startsWith("NONE") && !/tip_travel|safe_z/.test(d.note)) v=false;
@@ -208,17 +217,24 @@ function wellXY(name){return DATA.wells.find(w=>w.name===name);}
 function applyPose(){
   const w = wellXY(state.well);
   const dz = state.z==="pick" ? 0 : DATA.safe_z - DATA.Z_PICK;
-  groups.Y.position.set(0, w.y, 0);
-  groups.X.position.set(w.x, w.y, 0);
-  groups.Z.position.set(w.x, w.y, dz);
-  const key = state.variant+"|"+state.cond;
+  if (state.wf==="WB"){   // stage brings the well to the optical axis; picker stays at the axis
+    groups.S.position.set(-w.x, -w.y, 0);
+    groups.Y.position.set(0,0,0); groups.X.position.set(0,0,0); groups.Z.position.set(0,0,dz);
+  } else {
+    groups.S.position.set(0,0,0);
+    groups.Y.position.set(0, w.y, 0); groups.X.position.set(w.x, w.y, 0); groups.Z.position.set(w.x, w.y, dz);
+  }
+  const key = state.wf+"|"+state.variant+"|"+state.cond;
   const r = DATA.sweep[key].wells[state.well];
   const hits = state.z==="pick" ? r.pick_hits : r.safe_hits;
   const clr = state.z==="pick" ? r.pick_clear : r.safe_clear;
   const acc = DATA.access[state.variant];
   const st = document.getElementById("status");
   const bits = [];
-  bits.push(`<span class="pill">${state.well} · tip x ${w.x.toFixed(1)} y ${w.y.toFixed(1)} z ${(DATA.Z_PICK+dz).toFixed(1)} mm</span>`);
+  const seen = state.wf==="WB" || Math.hypot(w.x,w.y) < 2.75;
+  bits.push(state.wf==="WB" ? `<span class="pill">${state.well} · stage offset x ${(-w.x).toFixed(1)} y ${(-w.y).toFixed(1)} · tip on axis, z ${(DATA.Z_PICK+dz).toFixed(1)} mm</span>`
+                            : `<span class="pill">${state.well} · tip x ${w.x.toFixed(1)} y ${w.y.toFixed(1)} z ${(DATA.Z_PICK+dz).toFixed(1)} mm</span>`);
+  bits.push(seen ? `<span class="pill ok">observed through IX73</span>` : `<span class="pill bad">not observed (blind)</span>`);
   bits.push(hits.length ? `<span class="pill bad">collision: ${hits.join(", ")}</span>` : `<span class="pill ok">clear · min ${clr.toFixed(1)} mm to envelopes</span>`);
   bits.push(acc.ok ? `<span class="pill ok">well bottom reachable · rim clearance ${acc.rim.toFixed(2)} mm</span>` : `<span class="pill bad">well bottom NOT reachable · stops ${acc.depth.toFixed(1)} mm below rim</span>`);
   st.innerHTML = bits.join("");
@@ -268,7 +284,7 @@ const vwrap = document.getElementById("variants");
 for (const [k,v] of Object.entries(DATA.variants)){
   const b = document.createElement("button"); b.className="btn"; b.id="var-"+k;
   b.textContent = k==="R08" ? "8° ★" : v.theta+"°"; b.title = v.label;
-  b.onclick = ()=>{state.variant=k; syncButtons(); applyVisibility(); applyPose();};
+  b.onclick = ()=>{state.variant=k; syncButtons(); applyVisibility(); applyPose(); renderTable();};
   vwrap.appendChild(b);
 }
 const sel = document.getElementById("cond");
@@ -284,6 +300,8 @@ plate.innerHTML = "<span></span>" + Array.from({length:12},(_,i)=>`<span class="
     b.onclick=()=>{state.well=r+c; applyPose();}; plate.appendChild(b); }
 });
 function tog(id, fn){ document.getElementById(id).onclick = fn; }
+tog("wf-WB", ()=>{state.wf="WB"; state.variant="R08"; syncButtons(); applyVisibility(); applyPose(); renderTable();});
+tog("wf-WA", ()=>{state.wf="WA"; syncButtons(); applyVisibility(); applyPose(); renderTable();});
 tog("z-pick", ()=>{state.z="pick"; syncButtons(); applyPose();});
 tog("z-safe", ()=>{state.z="safe"; syncButtons(); applyPose();});
 tog("c-role", ()=>{state.colour="role"; syncButtons(); applyColours();});
@@ -292,7 +310,11 @@ tog("t-zones", ()=>{state.zones=!state.zones; syncButtons(); applyVisibility();}
 tog("t-scope", ()=>{state.scope=!state.scope; syncButtons(); applyVisibility();});
 ["iso","top","front","side","head"].forEach(v=>tog("v-"+v, ()=>setView(v)));
 function syncButtons(){
-  Object.keys(DATA.variants).forEach(k=>document.getElementById("var-"+k).setAttribute("aria-pressed", k===state.variant));
+  Object.keys(DATA.variants).forEach(k=>{const b=document.getElementById("var-"+k); b.setAttribute("aria-pressed", k===state.variant);
+    b.disabled = !DATA.export_set[state.wf].includes(k); b.style.opacity = b.disabled?0.4:1;});
+  ["WA","WB"].forEach(k=>document.getElementById("wf-"+k).setAttribute("aria-pressed", k===state.wf));
+  const L = DATA.workflows[state.wf].layout;
+  document.getElementById("wf-note").textContent = `${DATA.workflows[state.wf].label}. Picker travel ${L.travel_x} × ${L.travel_y} × ${L.travel_z} mm, arm ${L.arm_l} mm. Wells observed while picking: ${DATA.d1[state.wf].observed}/96.`;
   document.getElementById("z-pick").setAttribute("aria-pressed", state.z==="pick");
   document.getElementById("z-safe").setAttribute("aria-pressed", state.z==="safe");
   document.getElementById("c-role").setAttribute("aria-pressed", state.colour==="role");
@@ -302,10 +324,10 @@ function syncButtons(){
 }
 function renderTable(){
   const rows = Object.entries(DATA.sweep).map(([k,v])=>{
-    const [vr,cd]=k.split("|"); const s=v.summary; const hi = vr===state.variant && cd===state.cond ? ' style="background:color-mix(in srgb,var(--accent) 12%,transparent)"':'';
+    const [wf,vr,cd]=k.split("|"); const s=v.summary; const hi = wf===state.wf && vr===state.variant && cd===state.cond ? ' style="background:color-mix(in srgb,var(--accent) 12%,transparent)"':'';
     const cls = n=>n===96?"ok":(n===0?"bad":"");
-    return `<tr${hi}><td>${vr==="R08"?"8° ★":DATA.variants[vr].theta+"°"}</td><td>${cd}</td><td class="${cls(s.pick)}">${s.pick}/96</td><td class="${cls(s.safe)}">${s.safe}/96</td><td>${s.gsafe}/35</td><td>${s.gtop}/35</td><td>${s.obst||"—"}</td></tr>`;});
-  document.getElementById("sweep").innerHTML = `<thead><tr><th>Angle</th><th>Condenser</th><th>Pick</th><th>Safe-Z</th><th>Grid safe-Z</th><th>Grid top-Z</th><th>Blocking obstacles</th></tr></thead><tbody>${rows.join("")}</tbody>`;
+    return `<tr${hi}><td>${wf==="WB"?"W-B ★":"W-A"}</td><td>${vr==="R08"?"8° ★":DATA.variants[vr].theta+"°"}</td><td>${cd}</td><td class="${cls(s.pick)}">${s.pick}/96</td><td class="${cls(s.safe)}">${s.safe}/96</td><td>${s.gsafe}/35</td><td>${s.gtop}/35</td><td>${s.corner}</td><td>${s.obst||"—"}</td></tr>`;});
+  document.getElementById("sweep").innerHTML = `<thead><tr><th>Workflow</th><th>Angle</th><th>Condenser</th><th>Pick</th><th>Safe-Z</th><th>Grid safe-Z</th><th>Grid top-Z</th><th>Stage corners</th><th>Blocking obstacles</th></tr></thead><tbody>${rows.join("")}</tbody>`;
 }
 
 // hash tokens for fixed renders: #iso #top #front #side #head, optional #render (hides overlays)
@@ -313,5 +335,24 @@ const h = (location.hash||"").replace("#","");
 if (h.includes("render")) document.body.classList.add("render-only");
 bg(); syncButtons(); applyColours(); applyVisibility(); applyPose(); renderTable();
 setView(["top","front","side","head"].find(v=>h.includes(v)) || "iso");
+// assembly-step mode (#stepN): parts of steps <= N, current step highlighted
+const sm = h.match(/step(\d+)/);
+if (sm){
+  const N = +sm[1];
+  document.body.classList.add("render-only");
+  const rx = s => new RegExp(s);
+  const stepOf = key => { if (!key.startsWith("WB__")) return 0;
+    const k = key.slice(4); for (const st of DATA.steps) if (st.parts.some(r=>rx(r).test(k))) return st.n; return 99; };
+  for (const m of meshes){
+    const d = m.userData, st = stepOf(d.key);
+    if (d.workflow==="all"){ m.visible = m.visible && d.category!=="zone"; if (m.visible && d.category!=="plate" && d.category!=="condenser") m.material.color.setHex(0xd5dadc); continue; }
+    if (d.category==="zone"){ m.visible=false; continue; }
+    if (d.workflow!=="WB"){ m.visible=false; continue; }
+    if (d.group==="Z" && d.variant!=="R08"){ m.visible=false; continue; }
+    m.visible = st <= N;
+    if (st === N) m.material.color.setHex(0xe8792b);
+  }
+  persp.position.set(640,-620,430); controls.target.set(170,0,50); controls.update();
+}
 (function loop(){ requestAnimationFrame(loop); controls.update(); renderer.render(scene, camera); })();
 </script>

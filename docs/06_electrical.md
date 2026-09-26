@@ -1,3 +1,4 @@
+<!-- GENERATED from docs/src/06_electrical.md by cad/render_docs.py - edit the source, not this file -->
 # Preliminary electrical architecture (not frozen; no software in this stage)
 
 ![electrical block diagram](img/electrical_block_diagram.png)

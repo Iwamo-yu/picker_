@@ -95,12 +95,12 @@ CAP_L = P(40.0, "DES", "S20", "")
 CAP_GRIP = P(10.0, "DES", "", "length held in collet (adjustable insertion depth)")
 CAP_EXPOSED = P(CAP_L.v - CAP_GRIP.v, "DER", "", "")
 # Capillary set by object size (target objects 100 um - 1 mm, user requirement 2026-09-26).
-# OD/ID verified for WPI 1B100-4 / 1B150-4 / 1B200-4 (S14); thin-wall 2.0 mm ID is NOT verified.
+# OD/ID from WPI catalogue excerpts (S14), incl. thin-wall 2.00/1.56.
 CAPILLARY_SET = [
     dict(name="S  (100-300 um)", od=1.0, id=0.58, status="MFR", src="S14", part="WPI 1B100-4 (or tip cut/pulled to ID 0.2-0.35)"),
     dict(name="M  (300-600 um)", od=1.5, id=0.84, status="MFR", src="S14", part="WPI 1B150-4 / Sutter B150-86 (ID 0.86)"),
     dict(name="L  (600-1000 um)", od=2.0, id=1.12, status="MFR", src="S14", part="WPI 1B200-4 - only 1.12x a 1 mm object"),
-    dict(name="L' (800-1000 um)", od=2.0, id=1.5, status="PH", src="", part="thin-wall 2.0 mm OD, ID ~1.5 - verify catalogue"),
+    dict(name="L' (800-1000 um)", od=2.0, id=1.56, status="MFR", src="S14", part="WPI thin-wall 2.00/1.56 (no filament)"),
 ]
 HOLDER_D = P(10.0, "APX", "", "collet body diameter envelope")
 HOLDER_L = P(14.0, "APX", "", "collet body length envelope")
@@ -109,8 +109,6 @@ TIP_CLEAR_BOTTOM = P(0.3, "DES", "", "pick height of tip above well bottom")
 # ----------------------------------------------------------------------------
 # Motion (target travels; user spec, confirmed by coverage analysis)
 # ----------------------------------------------------------------------------
-TRAVEL_X = P(150.0, "DES", "", "user spec 120-150; 99 mm span + 25.5 margin each side")
-TRAVEL_Y = P(100.0, "DES", "", "user spec 80-100; 63 mm span + 18.5 margin each side")
 TRAVEL_Z = P(50.0, "DES", "", "user spec 30-50")
 SAFE_Z_TIP = P(PLATE_H.v + 5.0, "DER", "", "tip safe plane = plate top + 5 mm (no lid)")
 
@@ -123,11 +121,60 @@ NEMA17 = P(42.3, "APX", "S34", "NEMA17 flange")
 NEMA17_L = P(48.0, "APX", "S34", "")
 
 # ----------------------------------------------------------------------------
-# Recommended frame (side tower, right-hand side) - design choices
+# Workflows (decision D1) and the frame layout derived from them.
+# SINGLE SOURCE OF TRUTH: model.py, analysis.py, views.py and the rendered docs
+# (docs/src -> docs, README) read every layout number from here.
 # ----------------------------------------------------------------------------
-ARM_L = P(130.0, "DES", "", "dog-leg arm length, tip axis -> Z carriage face")
-ARM_T = P(12.0, "DES", "", "arm section (y and z)")
-POST_X = P(350.0, "DES", "", "post centre-line X")
-POST_Y = (P(-230.0, "DES"), P(230.0, "DES"))
-POST_SEC = P(80.0, "APX", "", "80x80 aluminium extrusion / machined column")
-BEAM_SEC = P(80.0, "APX", "", "80x80 beam")
+ARM_T = P(12.0, "DES", "", "arm section under the condenser (y and z)")
+ARM_DEEP_EXTRA = P(55.0, "DES", "", "deep arm section + kinematic mount beyond the thin section")
+COND_MARGIN = P(5.0, "DES", "", "margin beyond condenser radius for the thin-arm end")
+BODY_CLEAR = P(10.0, "DES", "", "X actuator inner end: condenser radius + this")
+FOV_4X = P(5.5, "APX", "", "field of view at 4x: field number 22 / 4 (eyepiece); camera FOV is smaller")
+
+WORKFLOWS = {
+    "WA": dict(
+        label="W-A stage fixed: picker covers the plate",
+        tip_x=(-75.0, 75.0), tip_y=(-50.0, 50.0), travel_z=50.0,
+        stage_moves=False,
+        note="picker reaches all 96 wells; only the well on the optical axis is observed"),
+    "WB": dict(
+        label="W-B stage moves wells to the optical axis: picker works locally",
+        tip_x=(-15.0, 85.0), tip_y=(-15.0, 15.0), travel_z=50.0,
+        stage_moves=True,
+        note="source and destination wells are brought to the axis by the IX73 stage; "
+             "+X travel is the park / capillary-change retreat outside the condenser keep-out"),
+}
+DEFAULT_WORKFLOW = "WA"
+
+# Stages that could move the plate (for W-B).  Required: >= 99 x 63 mm (well span).
+STAGES = {
+    "IX3-SVR (manual)": dict(travel=(114.0, 75.0), status="MFR", src="S02", motorised=False),
+    "IX3-SSU (ultrasonic, motorised)": dict(travel=(76.0, 52.0), status="MFR", src="S01", motorised=True),
+    "Maerzhaeuser SCAN IM for IX73": dict(travel=(120.0, 80.0), status="MFR", src="S15", motorised=True),
+}
+
+
+def layout(wf=DEFAULT_WORKFLOW):
+    """Derived frame layout for a workflow.  All positions relative to the optical axis (mm)."""
+    w = WORKFLOWS[wf]
+    rc = COND_D.v / 2
+    x_min, x_max = w["tip_x"]
+    y_min, y_max = w["tip_y"]
+    thin_l = abs(x_min) + rc + COND_MARGIN.v                 # thin section must cover the keep-out
+    arm_l = thin_l + ARM_DEEP_EXTRA.v                         # tip axis -> Z carriage face
+    zb_d = 30.0                                               # Z actuator depth (APX)
+    xcc = arm_l + zb_d / 2                                    # X carriage centre rel. tip
+    travel_x, travel_y = x_max - x_min, y_max - y_min
+    x_lo = xcc + x_min - ACT_TABLE_L.v / 2 - ACT_END.v        # X body inner end (Y-group, fixed x)
+    x_body = travel_x + ACT_TABLE_L.v + 2 * ACT_END.v
+    x_hi = x_lo + x_body
+    tower_x = round(x_hi + NEMA17_L.v + 30.0)
+    x_band = (24.0, 50.0)
+    yc0 = sum(x_band) / 2                                     # Y carriage centre rel. tip y
+    y_body = travel_y + ACT_TABLE_L.v + 2 * ACT_END.v
+    y_lo = yc0 + y_min - ACT_TABLE_L.v / 2 - ACT_END.v
+    post_y = (round(y_lo - 77.0), round(y_lo + y_body + 83.0))
+    return dict(wf=wf, x_min=x_min, x_max=x_max, y_min=y_min, y_max=y_max, travel_x=travel_x,
+                travel_y=travel_y, travel_z=w["travel_z"], thin_l=thin_l, arm_l=arm_l, zb_d=zb_d,
+                xcc=xcc, x_lo=x_lo, x_hi=x_hi, x_body=x_body, tower_x=tower_x, x_band=x_band, yc0=yc0,
+                y_lo=y_lo, y_body=y_body, post_y=post_y, x_inner_clear=x_lo - rc)

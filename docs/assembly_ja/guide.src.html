@@ -1,0 +1,295 @@
+<title>IX73 ピッカー組立手順書</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Noto+Sans+JP:wght@400;500;700&display=swap">
+<style>
+:root{
+  --bg:#EEF1F2; --paper:#FBFCFC; --ink:#1B2328; --muted:#56646B; --line:#CFD7DA;
+  --accent:#0F7483; --step:#D9661F; --stepbg:#FBE9DC; --warn:#B7791F; --warnbg:#FBF1DD;
+  --meas:#B8342A; --measbg:#FBE4E1; --ok:#2F7D4F;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#12171A; --paper:#182024; --ink:#E3EAEC; --muted:#98A6AC; --line:#2D383D;
+  --accent:#43B7C6; --step:#F08A45; --stepbg:#3A2718; --warn:#E0A84A; --warnbg:#3A2F17;
+  --meas:#F07468; --measbg:#3D1F1C; --ok:#5BBF83; color-scheme:dark;}}
+:root[data-theme="dark"]{
+  --bg:#12171A; --paper:#182024; --ink:#E3EAEC; --muted:#98A6AC; --line:#2D383D;
+  --accent:#43B7C6; --step:#F08A45; --stepbg:#3A2718; --warn:#E0A84A; --warnbg:#3A2F17;
+  --meas:#F07468; --measbg:#3D1F1C; --ok:#5BBF83; color-scheme:dark;}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:15px/1.8 "Noto Sans JP","Hiragino Sans","Yu Gothic",system-ui,sans-serif;padding-inline:16px;padding-block:20px}
+main{max-width:920px;margin:0 auto;display:grid;gap:28px}
+h1{font-size:26px;line-height:1.35;margin:0;text-wrap:balance}
+h2{font-size:20px;margin:0 0 10px;text-wrap:balance;padding-top:6px;border-top:2px solid var(--ink)}
+h3{font-size:16.5px;margin:0;text-wrap:balance}
+p{margin:0 0 10px;max-width:68ch}
+.mono,code{font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:.92em}
+.lede{color:var(--muted)}
+.meta{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:13px;color:var(--muted)}
+.chip{display:inline-block;font:500 12px/1.6 "IBM Plex Mono",monospace;padding:1px 8px;border-radius:4px;border:1px solid currentColor;white-space:nowrap}
+.chip.meas{color:var(--meas);background:var(--measbg)}
+.chip.step{color:var(--step);background:var(--stepbg)}
+.chip.open{color:var(--warn);background:var(--warnbg)}
+.box{border-left:4px solid var(--warn);background:var(--warnbg);padding:10px 14px;border-radius:0 6px 6px 0}
+.box.meas{border-color:var(--meas);background:var(--measbg)}
+figure{margin:0;display:grid;gap:6px}
+figure img{width:100%;border:1px solid var(--line);border-radius:6px;background:#fff}
+figcaption{font-size:13px;color:var(--muted)}
+.step{background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:16px;display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:16px;align-items:start}
+@media (max-width:760px){.step{grid-template-columns:1fr}}
+.step-h{grid-column:1/-1;display:flex;gap:12px;align-items:baseline}
+.num{font:600 28px/1 "IBM Plex Mono",monospace;color:var(--step);min-width:2ch}
+.step ol{margin:0;padding-left:1.3em;display:grid;gap:4px}
+.step ul{margin:6px 0 0;padding-left:1.2em}
+.tbl{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:13.5px}
+th,td{border-bottom:1px solid var(--line);padding:6px 8px;text-align:left;vertical-align:top}
+th{font-weight:500;color:var(--muted);font-size:12.5px}
+td.id{font-family:"IBM Plex Mono",monospace;color:var(--meas);white-space:nowrap}
+.legend{display:flex;flex-wrap:wrap;gap:8px 16px;font-size:13px;align-items:center}
+.sw{display:inline-block;width:14px;height:14px;border-radius:3px;vertical-align:-2px;margin-right:6px}
+nav ol{margin:0;padding-left:1.3em;columns:2;column-gap:28px;font-size:14px}
+@media (max-width:560px){nav ol{columns:1}}
+a{color:var(--accent)}
+</style>
+
+<main>
+<header style="display:grid;gap:10px">
+  <div class="meta"><span>picker_ / 第1段階(配置検討)</span><span>前提ワークフロー: W-B(ステージが各ウェルを光軸へ運ぶ)</span><span>数値は cad/params.py から自動生成</span></div>
+  <h1>IX73 キャピラリピッカー 組立手順書</h1>
+  <p class="lede">IX73 の右側に独立した架台を置き、XYZ ピッカーを組み立てて調整するまでの流れを、図と文章で示します。現時点の部品は外形だけの概念モデルで、型番は決まっていません。<b>赤い【要実測】の値を測って入力するまで、ブラケット設計や部品発注に進まないでください。</b></p>
+  <div class="legend">
+    <span><span class="sw" style="background:#e8792b"></span>その工程で取り付ける部品(図中のオレンジ)</span>
+    <span><span class="chip meas">要実測</span> 実機で測る値</span>
+    <span><span class="chip open">未確定</span> 部品・寸法がまだ決まっていない</span>
+  </div>
+</header>
+
+<nav aria-label="目次">
+  <ol>
+    <li><a href="#s0">全体像</a></li>
+    <li><a href="#s1">組立前の実測</a></li>
+    <li><a href="#s2">用意するもの</a></li>
+    <li><a href="#s3">組立工程 1–10</a></li>
+    <li><a href="#s4">立ち上げと校正</a></li>
+    <li><a href="#s5">安全の決まりごと</a></li>
+    <li><a href="#s6">まだ決まっていないこと</a></li>
+  </ol>
+</nav>
+
+<section id="s0">
+  <h2>全体像</h2>
+  <p>ピッカーは顕微鏡に一切触れません。光学定盤にボルト留めした架台(ベース板、支柱 2 本、Y 梁)に、Y → X → Z の順で直動ステージを積みます。Z ステージの先端から薄い「ドッグレッグアーム」をコンデンサの下へ差し込み、垂直から 8° 傾けたガラスキャピラリを保持します。</p>
+  <p>ウェルを選ぶのは顕微鏡ステージの役目です。ステージが対象ウェルを光軸へ運び、ピッカーは光軸付近だけを動きます。そのためピッカーの移動量は X {{WB_TRAVEL_X}} × Y {{WB_TRAVEL_Y}} × Z {{WB_TRAVEL_Z}} mm で足ります。X のうち +側は、キャピラリ交換のための待避位置として使います。</p>
+  <figure><img src="{{IMG:view_iso.png}}" alt="IX73 と右側のピッカー架台の全体図"><figcaption>全体図(W-B)。灰色は IX73 の仮外形、紫はコンデンサ(IX-ULWCD)、濃い青は架台と直動ステージ、緑はヘッド、黄はチューブ。</figcaption></figure>
+  <figure><img src="{{IMG:functional_diagram.png}}" alt="流体経路と動作系の機能図"><figcaption>流体経路(既存のシリンジポンプ → チューブ → キャピラリ)と動作系(PC → コントローラ → XYZ)は機械的に独立しており、ホルダーだけで結合します。</figcaption></figure>
+</section>
+
+<section id="s1">
+  <h2>組立前の実測</h2>
+  <div class="box meas"><p style="margin:0"><b>凍結条件。</b>次の 8 項目(M1, M3, M4, M6, M7, M8, M10, M15)を測り、<code>cad/params.py</code> に入れて再計算するまで、寸法を確定しません。現在のモデルでコンデンサ付近の余裕は約 {{SW_WB_R08_ULWCD_SAFE_CLEAR}} mm ですが、これは仮の外形から出た数字です。</p></div>
+  <figure><img src="{{IMG:measure_points.png}}" alt="実測箇所を赤で示した正面図と側面図"><figcaption>赤が実測箇所。灰色の IX73 は仮の外形で、実寸ではありません。</figcaption></figure>
+  <div class="tbl"><table>
+    <thead><tr><th>ID</th><th>測るもの</th><th>測り方</th><th>何が決まるか</th><th>現在のモデル値</th></tr></thead>
+    <tbody>
+      <tr><td class="id">M1</td><td>定盤面 → ステージ上面(プレートを置く面)</td><td>ハイトゲージか直尺で、ステージ中央付近の 3 点を測る</td><td>支柱と梁の高さ</td><td>{{STAGE_TOP}} mm(仮)</td></tr>
+      <tr><td class="id">M3</td><td>ステージ外形、プレートホルダー、クリップ類のプレート上面からの突出</td><td>上から撮影し、ノギスで突出高さを測る</td><td>アームとプレート周辺の余裕</td><td>232 × 240 mm(平ステージの仕様値)</td></tr>
+      <tr><td class="id">M4</td><td>ステージ中心と光軸のずれ、ステージ固定の可否</td><td>低倍で視野中心に印を合わせ、ステージ目盛りを記録する</td><td>ステージの移動範囲の使い方</td><td>中心一致を仮定</td></tr>
+      <tr><td class="id">M6</td><td>実際に使うコンデンサの型式と外径</td><td>型式ラベルを確認し、ノギスで外径を測る</td><td>アームの薄い部分の長さ(現在 {{WB_THIN_L}} mm)</td><td>Ø{{COND_D}} mm(仮)</td></tr>
+      <tr><td class="id">M7</td><td>コンデンサ保持アームの幅と最下点</td><td>正面から幅を、定盤から最下点の高さを測る</td><td>X 支持梁との干渉</td><td>幅 90 mm(仮)</td></tr>
+      <tr><td class="id">M8</td><td>ピントを合わせた状態での、プレート上面 → コンデンサ下端の距離</td><td>4× と 10× で、実際の観察状態のまま測る</td><td>コンデンサ下の余裕(最も効く値)</td><td>WD 73 mm からの推定</td></tr>
+      <tr><td class="id">M10</td><td>照明支柱を後ろへ倒したときの外形</td><td>倒した状態で側面から撮影し、後方への張り出しを測る</td><td>コンデンサなしで運用する場合の代替案</td><td>仮</td></tr>
+      <tr><td class="id">M15</td><td>IX73 本体の右側面から定盤端までの空き</td><td>巻尺で奥行き方向にも測る。他の機器の位置も記録する</td><td>架台を置けるか(必要: 光軸から +{{WB_FOOT_X}} mm 程度)</td><td>十分と仮定</td></tr>
+    </tbody>
+  </table></div>
+  <p style="margin-top:10px">あわせて測ると後工程が楽になる項目があります。M9 照明支柱の位置と断面、M11 コンデンサを最上位置にしたときの空き、M12 接眼部の外形、M13 ステージハンドルと焦点ノブの位置、M16 定盤の穴ピッチ(M6/25 mm か ¼-20/1")、M17 手元のポンプの型式と外形です。一覧は <code>docs/05_measurement_checklist.md</code> にあります。</p>
+  <p><b>M18 照明試験も組立前に済ませます。</b>Ø10 mm 程度の棒をピントの 30–45 mm 上に、光軸から 0、4、8 mm ずらして置き、4× と 10× で像を撮ります。ホルダーが透過光をどれだけ遮るかを確かめ、8° のままでよいか、10–12° に傾けるべきかを決めます。</p>
+</section>
+
+<section id="s2">
+  <h2>用意するもの</h2>
+  <p>現段階では部品の種類と大きさの目安だけを示します。<span class="chip open">未確定</span> 型番は実測のあとに決めます。</p>
+  <div class="tbl"><table>
+    <thead><tr><th>区分</th><th>内容(目安)</th><th>備考</th></tr></thead>
+    <tbody>
+      <tr><td>架台</td><td>ベース板(Al 15 mm 厚)、支柱 80 × 80 × 2 本、Y 梁 80 × 80(長さ約 {{WB_Y_BEAM_LEN}} mm)、斜めブレース 2 本</td><td>ベース板は長穴にして、X/Y ±15 mm、ヨー ±2° を調整できるようにする</td></tr>
+      <tr><td>直動ステージ</td><td>Y: ストローク {{WB_TRAVEL_Y}} mm 以上、X: {{WB_TRAVEL_X}} mm 以上、Z: {{WB_TRAVEL_Z}} mm(リード 1 mm のボールねじ)</td><td>X/Z は幅 20–26 mm 級の工業用ステージ(THK KR、MISUMI LX 級)を想定</td></tr>
+      <tr><td>モーター</td><td>NEMA17 × 3、原点スイッチ(NC)× 3</td><td>Z の原点は上端に置き、原点復帰を「上へ逃げる」動作にする</td></tr>
+      <tr><td>ヘッド</td><td>キネマティックマウント(3 球 + 磁石)、ドッグレッグアーム(細い部分 {{ARM_T_TXT}}、全長 {{WB_ARM_L}} mm)、コレットホルダー(Ø10、深さストップ付き)</td><td>衝突するとアームが外れる構造にする</td></tr>
+      <tr><td>キャピラリ</td><td>OD 1.0/1.5/2.0 mm の 3 クラス。1 mm 級の対象には薄肉 2.00/1.56 mm を使う</td><td>詳しくは <code>docs/08_capillary_sizing.md</code></td></tr>
+      <tr><td>流体</td><td>PTFE/FEP 1/16" チューブ(約 1.2 m)、固定クランプ、既存のシリンジポンプ</td><td>ポンプは架台に載せない</td></tr>
+      <tr><td>電気</td><td>24 V 電源、モーションコントローラ、TMC5160 級ドライバ × 3、非常停止(モーター電源を遮断)</td><td><code>docs/06_electrical.md</code></td></tr>
+      <tr><td>顕微鏡側</td><td>IX-ULWCD コンデンサ、電動 XY ステージ(移動量 99 × 63 mm 以上。IX3-SSU は不足)</td><td>手元の機材を先に確認する</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section id="s3" style="display:grid;gap:16px">
+  <h2>組立工程 1–10</h2>
+
+  <article class="step">
+    <div class="step-h"><span class="num">1</span><h3>ベース板を定盤に置き、位置を出す</h3></div>
+    <figure><img src="{{IMG:step01.png}}" alt="工程1 ベース板"><figcaption>オレンジ: ベース板</figcaption></figure>
+    <div>
+      <ol>
+        <li>IX73 の右側に、Y 梁の中心線が光軸から X = +{{WB_TOWER_X}} mm になる位置でベース板を置きます。</li>
+        <li>Y 方向は、支柱が Y = {{WB_POST_Y0}} mm と +{{WB_POST_Y1}} mm に来るようにします(Y は奥が +)。</li>
+        <li>長穴の中央でボルトを仮締めします。本締めは工程 11 の校正のあとです。</li>
+      </ol>
+      <ul><li><span class="chip meas">要実測</span> M15 右側の空き、M16 定盤の穴ピッチ</li><li>本体側面との隙間は約 {{WB_GAP:.0f}} mm です。ステージハンドル(M13)に手が届くことを確認します。</li></ul>
+    </div>
+  </article>
+
+  <article class="step">
+    <div class="step-h"><span class="num">2</span><h3>支柱と斜めブレースを立てる</h3></div>
+    <figure><img src="{{IMG:step02.png}}" alt="工程2 支柱"><figcaption>オレンジ: 支柱 2 本と斜めブレース</figcaption></figure>
+    <div>
+      <ol>
+        <li>支柱 2 本をベース板にボルト留めし、スコヤで直角を確認します。</li>
+        <li>外側(+X 側)に斜めブレースを入れ、X 方向の倒れを抑えます。</li>
+      </ol>
+      <ul><li>支柱の長さは M1 で決まります。いまは定盤面から梁下面まで約 {{BEAM_ABOVE_TABLE:.0f}} mm です(M1 = {{STAGE_TOP}} mm を仮定)。<span class="chip meas">要実測</span></li></ul>
+    </div>
+  </article>
+
+  <article class="step">
+    <div class="step-h"><span class="num">3</span><h3>Y 梁を載せ、高さを合わせる</h3></div>
+    <figure><img src="{{IMG:step03.png}}" alt="工程3 Y梁"><figcaption>オレンジ: Y 梁</figcaption></figure>
+    <div>
+      <ol>
+        <li>Y 梁を支柱に載せ、縦長穴とジャッキボルトで高さを合わせます(調整幅 ±20 mm)。</li>
+        <li>梁の上面が定盤と平行になるよう、水準器で確認します。</li>
+        <li>高さの目安は、梁の下面がステージ上面から +{{BEAM_Z0:.0f}} mm です。</li>
+      </ol>
+      <ul><li>顕微鏡には触れません。梁と本体の間に手が入ることを確認します。</li></ul>
+    </div>
+  </article>
+
+  <article class="step">
+    <div class="step-h"><span class="num">4</span><h3>Y ステージを取り付ける</h3></div>
+    <figure><img src="{{IMG:step04.png}}" alt="工程4 Yステージ"><figcaption>オレンジ: Y ステージ本体、モーター、原点スイッチ</figcaption></figure>
+    <div>
+      <ol>
+        <li>Y ステージを梁の上面に置き、梁の縁に当てて平行を出してから固定します。</li>
+        <li>モーターは奥側(+Y)、原点スイッチは手前側に付けます。</li>
+      </ol>
+      <ul><li>ストロークは {{WB_TRAVEL_Y}} mm 以上です。<span class="chip open">未確定</span> 型番</li></ul>
+    </div>
+  </article>
+
+  <article class="step">
+    <div class="step-h"><span class="num">5</span><h3>X 支持梁と X ステージを取り付ける</h3></div>
+    <figure><img src="{{IMG:step05.png}}" alt="工程5 Xステージ"><figcaption>オレンジ: Y キャリッジ、X 支持梁、X ステージ、モーター、原点スイッチ</figcaption></figure>
+    <div>
+      <ol>
+        <li>Y キャリッジの上に X 支持梁(40 × 80 以上の箱断面)を固定します。支持梁は光軸側へ片持ちで伸びます。</li>
+        <li>X ステージを支持梁の下面に吊り、テーブル面を手前(−Y)に向けます。</li>
+        <li>X ステージの光軸側の端は X = +{{WB_X_LO:.0f}} mm で、コンデンサ半径より {{WB_X_INNER_CLEAR:.0f}} mm 外側にあります。</li>
+      </ol>
+      <ul><li><span class="chip meas">要実測</span> M7 コンデンサ保持アームとの隙間は、仮の形状で数 mm しかありません。取り付け前に実物で確認します。</li></ul>
+    </div>
+  </article>
+
+  <article class="step">
+    <div class="step-h"><span class="num">6</span><h3>Z ステージを取り付ける</h3></div>
+    <figure><img src="{{IMG:step06.png}}" alt="工程6 Zステージ"><figcaption>オレンジ: X キャリッジブラケット、Z ステージ、Z モーター、上端原点スイッチ、Z キャリッジ</figcaption></figure>
+    <div>
+      <ol>
+        <li>X キャリッジにブラケットを付け、Z ステージを鉛直に固定します。スコヤと水準器で鉛直を確認します。</li>
+        <li>Z の原点スイッチは上端に付けます。原点復帰が必ずプレートから離れる向きになります。</li>
+        <li>電源を切った状態で Z キャリッジを手で押し、下がらないことを確かめます(リード 1 mm とモーターのディテントトルクで保持)。</li>
+      </ol>
+      <ul><li>Z はコンデンサの外側にあり、光軸から常に {{WB_ARM_L}} mm 以上離れています。</li></ul>
+    </div>
+  </article>
+
+  <article class="step">
+    <div class="step-h"><span class="num">7</span><h3>ヘッドを取り付ける(キャピラリはまだ付けない)</h3></div>
+    <figure><img src="{{IMG:step07.png}}" alt="工程7 ヘッド"><figcaption>オレンジ: キネマティックマウント、ドッグレッグアーム、コレットホルダー</figcaption></figure>
+    <div>
+      <ol>
+        <li>Z キャリッジにキネマティックマウント(3 球 + 磁石)を付け、アームを載せます。</li>
+        <li>アームの薄い部分({{ARM_T_TXT}}、長さ {{WB_THIN_L}} mm)がコンデンサの下に入り、先端のホルダーが光軸の真上に来ます。</li>
+        <li>ホルダーの傾きを 8° にしてロックします(調整範囲 0–12°)。</li>
+        <li>Z を上端にしたままステージを動かさず、アームがコンデンサに当たらない高さか目視で確認します。</li>
+      </ol>
+      <ul><li><span class="chip meas">要実測</span> M8 ピント状態でのコンデンサ下端の高さ。余裕が 5 mm を切るならアームを薄くするか、照明支柱を倒す案に切り替えます。</li></ul>
+    </div>
+  </article>
+
+  <article class="step">
+    <div class="step-h"><span class="num">8</span><h3>ケーブルを配線する</h3></div>
+    <figure><img src="{{IMG:step08.png}}" alt="工程8 配線"><figcaption>オレンジ: X/Y ケーブルチェーン、コントローラ</figcaption></figure>
+    <div>
+      <ol>
+        <li>モーターとスイッチのケーブルは、可動部の<b>奥側(+Y)</b>に通します。</li>
+        <li>X は Y 群に、Y は架台に、それぞれ小さなケーブルチェーンで逃がします。</li>
+        <li>非常停止はモーター電源だけを切ります。ロジック電源は残し、停止した状態をコントローラが記録できるようにします。</li>
+      </ol>
+      <ul><li>ケーブルがヘッドを引っ張らないよう、全ストロークを手で動かして確認します。</li></ul>
+    </div>
+  </article>
+
+  <article class="step">
+    <div class="step-h"><span class="num">9</span><h3>チューブを通して液を満たす</h3></div>
+    <figure><img src="{{IMG:step09.png}}" alt="工程9 チューブ"><figcaption>オレンジ: チューブ、各クランプ、既存のシリンジポンプ</figcaption></figure>
+    <div>
+      <ol>
+        <li>チューブはホルダー上部から出し、アームの<b>側面</b>の溝に沿わせます。アームの上面はコンデンサに最も近いので通しません。</li>
+        <li>Z キャリッジ → Z 本体 → 架台の固定クランプ → ポンプの順に留め、Z と X/Y のそれぞれにサービスループ(曲げ半径 25 mm 以上)を作ります。</li>
+        <li>ポンプ側からゆっくり液を送り、気泡を追い出します。チューブは可動部の<b>手前側(−Y)</b>を通し、ケーブルと分けます。</li>
+      </ol>
+      <ul><li>ポンプ、ピンチバルブ、圧力分岐は固定側に置きます。ヘッドには載せません。</li></ul>
+    </div>
+  </article>
+
+  <article class="step">
+    <div class="step-h"><span class="num">10</span><h3>キャピラリを装着する</h3></div>
+    <figure><img src="{{IMG:step10.png}}" alt="工程10 キャピラリ"><figcaption>オレンジ: ガラスキャピラリ(OD 1.0 / ID 0.6 / L 40 の場合)</figcaption></figure>
+    <div>
+      <ol>
+        <li>Z を上端、X を +{{WB_X_MAX}} mm の待避位置へ動かします。コンデンサの外で作業します。</li>
+        <li>対象サイズに合うコレットインサートを入れ、キャピラリを深さストップまで差し込みます(掴み代 10 mm、露出 30 mm)。</li>
+        <li>コレットを締め、端面の O リングで液が漏れないか確認します。</li>
+      </ol>
+      <ul><li>キャピラリを交換したら、必ず工程 11 の 3 点校正をやり直します(先端位置は最大 ±0.5 mm ずれます)。</li></ul>
+    </div>
+  </article>
+</section>
+
+<section id="s4">
+  <h2>立ち上げと校正</h2>
+  <p>組み立て後は、乾いた状態で動作を確かめてから液を使います。</p>
+  <ol>
+    <li><b>原点復帰。</b>Z → X → Y の順に行います。Z が最初に上へ逃げるので、プレートに当たりません。</li>
+    <li><b>ソフトリミットと進入禁止領域。</b>光軸を中心とする半径(コンデンサ半径 + 10 mm)の円筒内では、先端を安全高さ({{SAFE_Z:.2f}} mm、プレート上面 + 5 mm)より上に上げない設定にします。モデルでは、この円筒内で Z を最上端まで上げるとアームがコンデンサに当たります。</li>
+    <li><b>ステージは安全高さでだけ動かす。</b>先端を吸引高さのまま電動ステージを動かすと、キャピラリがプレートを引きずります。制御側で禁止します。</li>
+    <li><b>3 点校正。</b>光軸付近の 3 点で先端を画像中心に合わせ、画像座標とピッカー座標を対応づけます(SpheroidPicker と同じ方法)。</li>
+    <li><b>着地試験。</b>空のウェルで、事前高さ(記録した底 + 0.5 mm)から 10 µm/s で降ろし、底からの離れ(目安 0.1–0.3 mm)を決めます。</li>
+    <li><b>M18 照明試験の確認。</b>組み立てた実機で、ホルダーが像をどれだけ暗くするかを 4×/10× で確認します。</li>
+    <li><b>ここで本締め。</b>ベース板と梁のボルトを本締めし、3 点校正をもう一度行います。</li>
+  </ol>
+</section>
+
+<section id="s5">
+  <h2>安全の決まりごと</h2>
+  <ul>
+    <li>Z の原点は上端に置きます。停電や非常停止でも Z が落ちないことを、工程 6 で確認しておきます。</li>
+    <li>ヘッドはキネマティックマウントで付いているので、衝突すると外れます。外れたら付け直し、3 点校正をやり直します。</li>
+    <li>キャピラリの交換は待避位置(X +{{WB_X_MAX}} mm、Z 上端)で行います。</li>
+    <li>プレートの蓋は作業前に外します。蓋があると高さが約 2 mm 増えます(Corning 7007 は蓋込み 16.5 mm)。</li>
+  </ul>
+</section>
+
+<section id="s6">
+  <h2>まだ決まっていないこと</h2>
+  <ul>
+    <li><span class="chip open">未確定</span> 電動 XY ステージの機種(移動量 99 × 63 mm 以上。IX3-SSU は 76 × 52 mm で不足。Märzhäuser SCAN IM の 120 × 80 mm 級が候補)</li>
+    <li><span class="chip open">未確定</span> 各直動ステージとモーターの型番、ブラケット形状</li>
+    <li><span class="chip open">未確定</span> アームの長さと厚み(M6–M8 次第)、キャピラリの最終角度(M18 次第)</li>
+    <li><span class="chip open">未確定</span> 支柱の長さ(M1 次第)、ベース板の穴配置(M16 次第)</li>
+    <li>寸法を変えるときは <code>cad/params.py</code> だけを書き換え、<code>cad/model.py → analysis.py → views.py → render_docs.py</code> の順に再計算すると、この手順書の数値も含めて更新されます。</li>
+  </ul>
+  <p class="lede" style="margin-top:10px">出典と各数値の確度は <code>docs/source_manifest.md</code> にあります。IX73 の本体寸法(W 323 × D 475 × H 656 mm)とコンデンサの作動距離はメーカー値ですが、配置と形状の多くは仮の値です。</p>
+</section>
+</main>

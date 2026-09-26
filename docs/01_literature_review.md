@@ -1,3 +1,4 @@
+<!-- GENERATED from docs/src/01_literature_review.md by cad/render_docs.py - edit the source, not this file -->
 # Literature review: engineering principles for the IX73 picker
 
 **Scope and limitation.** Full texts were not reachable from this session (nature.com, biorxiv, PMC and ScienceDirect were all denied; see `source_manifest.md`). Each summary below rests on the abstracts and search-result excerpts of the publisher pages. For SpheroidPicker it also rests on the public control software, which was downloaded and read (S28). Statements that need the full text are marked **[verify in full text]**. The review is limited to what changes a mechanical decision.

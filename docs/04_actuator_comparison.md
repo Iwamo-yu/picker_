@@ -1,3 +1,4 @@
+<!-- GENERATED from docs/src/04_actuator_comparison.md by cad/render_docs.py - edit the source, not this file -->
 # Preliminary actuator architecture comparison
 
 Values marked (S..) come from the source manifest. Values marked ~ are typical catalogue-class figures that were **not verified in this session** and must be checked against the chosen part's datasheet before ordering.
