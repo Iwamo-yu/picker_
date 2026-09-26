@@ -18,6 +18,15 @@
 
 Maximum angle for reaching the bottom centre: **14.8°** (tip 0.3 mm above bottom, no margin).
 
+### 1b. Capillary set vs well access (object size 100 um - 1 mm)
+
+| class | OD | ID | max angle for bottom centre | rim clearance at 8° (mm) | catalogue part | data |
+|---|---|---|---|---|---|---|
+| S  (100-300 um) | 1.0 | 0.58 | 14.8° | 1.38 | WPI 1B100-4 (or tip cut/pulled to ID 0.2-0.35) | MFR |
+| M  (300-600 um) | 1.5 | 0.84 | 13.6° | 1.13 | WPI 1B150-4 / Sutter B150-86 (ID 0.86) | MFR |
+| L  (600-1000 um) | 2.0 | 1.12 | 12.3° | 0.87 | WPI 1B200-4 - only 1.12x a 1 mm object | MFR |
+| L' (800-1000 um) | 2.0 | 1.5 | 12.3° | 0.87 | thin-wall 2.0 mm OD, ID ~1.5 - verify catalogue | PH |
+
 ## 2. Holder obstruction of transmitted light (holder Ø10 at the collet nose)
 
 | angle | condenser NA used | cone radius at holder nose (mm) | holder offset (mm) | blocked fraction |

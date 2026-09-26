@@ -77744,5 +77744,55 @@
     }
    ]
   }
- }
+ },
+ "capillary_set": [
+  {
+   "name": "S  (100-300 um)",
+   "od": 1.0,
+   "id": 0.58,
+   "status": "MFR",
+   "src": "S14",
+   "part": "WPI 1B100-4 (or tip cut/pulled to ID 0.2-0.35)",
+   "max_angle": 14.831361516572485,
+   "rim_clear_8deg": 1.379137032014385,
+   "id_over_100um": 5.799999999999999,
+   "id_over_1mm": 0.58
+  },
+  {
+   "name": "M  (300-600 um)",
+   "od": 1.5,
+   "id": 0.84,
+   "status": "MFR",
+   "src": "S14",
+   "part": "WPI 1B150-4 / Sutter B150-86 (ID 0.86)",
+   "max_angle": 13.58636119501992,
+   "rim_clear_8deg": 1.1266801388847307,
+   "id_over_100um": 8.399999999999999,
+   "id_over_1mm": 0.84
+  },
+  {
+   "name": "L  (600-1000 um)",
+   "od": 2.0,
+   "id": 1.12,
+   "status": "MFR",
+   "src": "S14",
+   "part": "WPI 1B200-4 - only 1.12x a 1 mm object",
+   "max_angle": 12.339593371043584,
+   "rim_clear_8deg": 0.874223245755076,
+   "id_over_100um": 11.200000000000001,
+   "id_over_1mm": 1.12
+  },
+  {
+   "name": "L' (800-1000 um)",
+   "od": 2.0,
+   "id": 1.5,
+   "status": "PH",
+   "src": "",
+   "part": "thin-wall 2.0 mm OD, ID ~1.5 - verify catalogue",
+   "max_angle": 12.339593371043584,
+   "rim_clear_8deg": 0.874223245755076,
+   "id_over_100um": 15.0,
+   "id_over_1mm": 1.5
+  }
+ ]
 }
