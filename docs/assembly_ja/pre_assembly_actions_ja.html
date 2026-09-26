@@ -1,0 +1,1069 @@
+<title>IX73 ピッカー 組立前の作業</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Noto+Sans+JP:wght@400;500;700&display=swap">
+<style>
+:root{
+  --bg:#EEF1F2; --paper:#FBFCFC; --ink:#1B2328; --muted:#56646B; --line:#CFD7DA;
+  --accent:#0F7483; --step:#D9661F; --stepbg:#FBE9DC; --warn:#B7791F; --warnbg:#FBF1DD;
+  --meas:#B8342A; --measbg:#FBE4E1; --ok:#2F7D4F;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#12171A; --paper:#182024; --ink:#E3EAEC; --muted:#98A6AC; --line:#2D383D;
+  --accent:#43B7C6; --step:#F08A45; --stepbg:#3A2718; --warn:#E0A84A; --warnbg:#3A2F17;
+  --meas:#F07468; --measbg:#3D1F1C; --ok:#5BBF83; color-scheme:dark;}}
+:root[data-theme="dark"]{
+  --bg:#12171A; --paper:#182024; --ink:#E3EAEC; --muted:#98A6AC; --line:#2D383D;
+  --accent:#43B7C6; --step:#F08A45; --stepbg:#3A2718; --warn:#E0A84A; --warnbg:#3A2F17;
+  --meas:#F07468; --measbg:#3D1F1C; --ok:#5BBF83; color-scheme:dark;}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:15px/1.8 "Noto Sans JP","Hiragino Sans","Yu Gothic",system-ui,sans-serif;padding-inline:16px;padding-block:20px}
+main{max-width:920px;margin:0 auto;display:grid;gap:28px}
+h1{font-size:26px;line-height:1.35;margin:0;text-wrap:balance}
+h2{font-size:20px;margin:0 0 10px;text-wrap:balance;padding-top:6px;border-top:2px solid var(--ink)}
+h3{font-size:16.5px;margin:0;text-wrap:balance}
+p{margin:0 0 10px;max-width:68ch}
+.mono,code{font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:.92em}
+.lede{color:var(--muted)}
+.meta{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:13px;color:var(--muted)}
+.chip{display:inline-block;font:500 12px/1.6 "IBM Plex Mono",monospace;padding:1px 8px;border-radius:4px;border:1px solid currentColor;white-space:nowrap}
+.chip.meas{color:var(--meas);background:var(--measbg)}
+.chip.step{color:var(--step);background:var(--stepbg)}
+.chip.open{color:var(--warn);background:var(--warnbg)}
+.box{border-left:4px solid var(--warn);background:var(--warnbg);padding:10px 14px;border-radius:0 6px 6px 0}
+.box.meas{border-color:var(--meas);background:var(--measbg)}
+figure{margin:0;display:grid;gap:6px}
+figure img{width:100%;border:1px solid var(--line);border-radius:6px;background:#fff}
+figcaption{font-size:13px;color:var(--muted)}
+.step{background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:16px;display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:16px;align-items:start}
+@media (max-width:760px){.step{grid-template-columns:1fr}}
+.step-h{grid-column:1/-1;display:flex;gap:12px;align-items:baseline}
+.num{font:600 28px/1 "IBM Plex Mono",monospace;color:var(--step);min-width:2ch}
+.step ol{margin:0;padding-left:1.3em;display:grid;gap:4px}
+.step ul{margin:6px 0 0;padding-left:1.2em}
+.tbl{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:13.5px}
+th,td{border-bottom:1px solid var(--line);padding:6px 8px;text-align:left;vertical-align:top}
+th{font-weight:500;color:var(--muted);font-size:12.5px}
+td.id{font-family:"IBM Plex Mono",monospace;color:var(--meas);white-space:nowrap}
+.legend{display:flex;flex-wrap:wrap;gap:8px 16px;font-size:13px;align-items:center}
+.sw{display:inline-block;width:14px;height:14px;border-radius:3px;vertical-align:-2px;margin-right:6px}
+nav ol{margin:0;padding-left:1.3em;columns:2;column-gap:28px;font-size:14px}
+@media (max-width:560px){nav ol{columns:1}}
+a{color:var(--accent)}
+</style>
+<style>
+main h1{margin-bottom:8px} main h2{margin-top:18px} blockquote{margin:0;border-left:4px solid var(--meas);
+background:var(--measbg);padding:8px 14px;border-radius:0 6px 6px 0} pre.mermaid{background:var(--paper);
+border:1px solid var(--line);border-radius:6px;padding:10px;overflow-x:auto} td,th{font-size:13px}
+</style>
+<main>
+<h1>組立前にやること(IX73 外付けキャピラリピッカー)</h1>
+<p>この文書は、組立手順書(<code>docs/assembly_ja/assembly_guide_ja.html</code>)の<strong>前段</strong>にあたる作業リストです。手元の機材の確認、実測、試験、決定、発注、製作を、依存関係の順に並べています。組立工程そのもの(工程 1–10、立ち上げと校正)は手順書にあり、ここでは繰り返しません。</p>
+<ul>
+<li>前提ワークフローは <strong>W-B(暫定)</strong> です。ステージが各ウェルを光軸へ運び、ピッカーは光軸付近だけを動きます(<code>docs/09_workflow_D1.md</code>)。</li>
+<li>文中の数値は、現時点の <code>cad/params.py</code> から描画された文書(<code>docs/03</code>, <code>05</code>, <code>07</code>–<code>10</code>)からの引用です。この文書の数値は自動更新されません。<code>params.py</code> を更新したら、元の文書の数値と照合してください。</li>
+<li>納期、価格、在庫はリポジトリに情報がありません。見積時に確認します。</li>
+<li>部品の候補は <code>docs/12_parts_candidates.md</code>(元データ <code>docs/parts/candidates.csv</code>)の P-番号で参照します。候補は検索結果の抜粋に基づくもので、型番・価格・納期は見積時に確認します。</li>
+<li>各項目の「担当: ___ / 時期: ___」は空欄のまま配っています。記入して使ってください。</li>
+</ul>
+<p>記号: ☐ = 未完了(完了したら ☑ に書き換える)。項目 ID は M-/D- がリポジトリの ID です。I-(在庫確認)、T-(試験)、O-(発注)、F-(製作)、C-(最終チェック)はこの文書だけの番号です。</p>
+<hr />
+<h2>まずこれだけ(最初の 8 件)</h2>
+<div class="tbl"><table>
+<thead>
+<tr>
+<th>順</th>
+<th>☐</th>
+<th>やること</th>
+<th>これで決まる / 解除されること</th>
+<th>参照</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>☐</td>
+<td>手元のコンデンサの型式を確認する(IX-ULWCD / IX2-LWUCD / IX2-MLWCD / その他)(I-1, M6)</td>
+<td>IX-ULWCD を手配するかどうか(D2)。M8 と M18 を実施できるか</td>
+<td><code>05</code> M6, <code>02</code></td>
+</tr>
+<tr>
+<td>2</td>
+<td>☐</td>
+<td>手元のステージの型式を確認する(IX3-SVR / IX3-SSU / 他社電動)(I-2)</td>
+<td>電動 XY ステージを新規に手配するか(D7)。IX3-SSU(76 × 52 mm)では 48/96 しか光軸に運べない</td>
+<td><code>09</code></td>
+</tr>
+<tr>
+<td>3</td>
+<td>☐</td>
+<td>手元のポンプの型式、ポート、通信方式を確認する(I-3, M17)</td>
+<td>シリンジ容量、チューブ、D6</td>
+<td><code>05</code> M17, <code>08</code></td>
+</tr>
+<tr>
+<td>4</td>
+<td>☐</td>
+<td>凍結ゲートの実測のうち、今の機材で測れるものを測る: M1, M3, M4, M7, M10, M15</td>
+<td>支柱高さ、架台位置、X 支持梁の余裕</td>
+<td><code>05</code></td>
+</tr>
+<tr>
+<td>5</td>
+<td>☐</td>
+<td>電動 XY ステージ(IX73 用、移動量 ≥ 99 × 63 mm)と IX-ULWCD(持っていない場合)の<strong>見積と納期を問い合わせる</strong>(O-1)</td>
+<td>長納期品の見通し。発注の時期</td>
+<td><code>09</code>, <code>07</code> D2/D7</td>
+</tr>
+<tr>
+<td>6</td>
+<td>☐</td>
+<td>IX-ULWCD を手元に用意する(所有品、借用、または購入)。そのうえで M6(外径・外形)と M8(ピント状態の前玉高さ)を測る。ホルダーの試作品か購入品で M23(積み上げ高さ)も測る</td>
+<td>凍結ゲートの残り 3 項目。アームの細い部分の長さ、コンデンサとの余裕</td>
+<td><code>05</code> M6/M8</td>
+</tr>
+<tr>
+<td>7</td>
+<td>☐</td>
+<td>M18 照明試験を行う(T-1)</td>
+<td>96-well 用の傾き 8° のままでよいか、10–12° にするか(D3)</td>
+<td><code>05</code> M18, <code>02</code></td>
+</tr>
+<tr>
+<td>8</td>
+<td>☐</td>
+<td>実測値を <code>cad/params.py</code> に入れ(状態を <code>PH</code> → <code>MEAS</code>)、全体を再計算して干渉結果を確認する(C-1 の先取り)</td>
+<td>凍結ゲートの通過判定。これ以前は製作・発注確定に進まない</td>
+<td><code>05</code> 冒頭, README</td>
+</tr>
+</tbody>
+</table></div>
+<hr />
+<h2>凍結ゲート</h2>
+<blockquote>
+<p><strong>凍結ゲート: M1, M3, M4, M6, M7, M8, M10, M15, M23</strong></p>
+<p>この 8 項目を実測して <code>cad/params.py</code> に入れ、再計算するまで、ブラケット形状、部品型番、加工図を確定しません(<code>05_measurement_checklist.md</code>、<code>07_assumptions_and_open_items.md</code>)。W-B では、選んだ電動 XY ステージの外形と移動量もあわせて記録します(<code>05</code> 冒頭、<code>09</code> 凍結ゲート表)。</p>
+<p>現在のモデルのコンデンサ付近の余裕(安全高さで 4.83 mm)は、仮のコンデンサ外形(Ø80 mm)から出た値です。<strong>設計根拠ではありません。</strong></p>
+</blockquote>
+<p>注意:</p>
+<ul>
+<li>M8 は「実際に使うコンデンサ」を付けて測ります。IX-ULWCD を持っていない場合、M8 は IX-ULWCD が届く(または借りられる)まで測れません。つまり <strong>IX-ULWCD の手配が凍結ゲートの前提</strong>になります。D2 で照明支柱を倒す案を選ぶ場合は、代わりに M10 が主になります。</li>
+<li>M3 は <code>05</code> では「IX3-SVR を付けた状態」と書かれています。W-B で別の電動ステージを使う場合、そのステージの外形(メーカー外形図か実物)で M3 を取り直す必要があります。外形図で代用できるかは未確認です。</li>
+</ul>
+<hr />
+<h2>依存関係の図</h2>
+<pre class="mermaid">
+flowchart TD
+  I1["I-1 コンデンサ型式の確認"] --> D2["D2 コンデンサ方針"]
+  I2["I-2 ステージ型式の確認"] --> D7["D7 電動XYステージ選定"]
+  D1["D1 ワークフロー（暫定 W-B）"] --> D7
+  I3["I-3 ポンプ型式の確認 / M17"] --> T2["T-2 ポンプ・チューブ乾式試験"]
+  M10["M10 支柱を倒した外形"] --> D2
+  D2 --> O3["O-3 IX-ULWCD 手配（未所有なら）"]
+  O3 --> M68["M6 / M8 コンデンサ実測"]
+  M68 --> T1["T-1 M18 照明試験"]
+  T1 --> D3["D3 96-well 用の傾き"]
+  D7 --> O2["O-2 電動XYステージ発注"]
+  O2 --> M34["M3 / M4 ステージ外形・中心"]
+  M1["M1 / M7 / M15 実測"] --> G[["凍結ゲート 通過判定"]]
+  M34 --> G
+  M68 --> G
+  M10 --> G
+  M121315["M12 / M13 / M15"] --> D4["D4 架台の左右"]
+  D4 --> G
+  G --> O4["O-4 直動ステージ・モーター発注確定"]
+  D5["D5 Z軸の方式"] --> O4
+  G --> F["F- 製作・加工"]
+  D3 --> F6["F-6 角度ブロック"]
+  I5["I-5 対象物サイズ / M19 プレート"] --> D6["D6 キャピラリ種類"]
+  T2 --> D6
+  D6 --> O5["O-5 キャピラリ発注"]
+  D6 --> F7["F-7 コレットインサート"]
+  M16["M16 定盤の穴ピッチ"] --> F1["F-1 ベース板"]
+  G --> F1
+  O4 --> O7["O-7 電装品発注"]
+  F --> C["C- 組立前の最終チェック"]
+  F6 --> C
+  F7 --> C
+  O5 --> C
+  O7 --> C
+</pre>
+
+<p>図の読み方: 矢印の元が終わるまで、先の項目は確定できません。見積や問い合わせ(O-1)は、この図とは関係なく今すぐ始めて構いません。</p>
+<hr />
+<h2>1. 手元の確認・計測</h2>
+<h3>1a. 手元にある機材の確認(在庫確認)</h3>
+<div class="tbl"><table>
+<thead>
+<tr>
+<th>☐</th>
+<th>ID</th>
+<th>内容</th>
+<th>理由(何が決まるか)</th>
+<th>前提</th>
+<th>担当 / 時期</th>
+<th>参照</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>☐</td>
+<td>I-1</td>
+<td>コンデンサの型式をすべて確認する(ラベル写真)。IX-ULWCD、IX2-LWUCD、IX2-MLWCD のどれがあるか</td>
+<td>D2。IX2-LWUCD(WD 27 mm)と IX2-MLWCD(WD 45 mm)ではアームが吸引高さで当たる(モデル上)。IX-ULWCD(WD 73 mm)なら 96/96</td>
+<td>なし</td>
+<td>担当: ___ / 時期: ___</td>
+<td><code>05</code> M6, <code>02</code> §Condenser</td>
+</tr>
+<tr>
+<td>☐</td>
+<td>I-2</td>
+<td>ステージの型式を確認する(IX3-SVR 手動 114 × 75 mm か、IX3-SSU 電動 76 × 52 mm か、他社電動か)。ステージインサートとプレートホルダーの種類も記録</td>
+<td>D7。W-B の自動化には移動量 ≥ 99 × 63 mm の電動ステージが必要</td>
+<td>なし</td>
+<td>担当: ___ / 時期: ___</td>
+<td><code>09</code> §Stage requirement</td>
+</tr>
+<tr>
+<td>☐</td>
+<td>I-3</td>
+<td>ポンプの型式(<code>source_manifest</code> では Harvard Pump 11 Elite / PHD ULTRA / Tecan Cavro Centris/XLP を候補として挙げているが、実機は未確認)、外形、チューブポート、通信(RS-232/USB)、使えるシリンジ容量</td>
+<td>M17。シリンジ容量(例 25–100 µL)、チューブ、D6</td>
+<td>なし</td>
+<td>担当: ___ / 時期: ___</td>
+<td><code>05</code> M17, <code>08</code>, <code>source_manifest</code> 項目 5</td>
+</tr>
+<tr>
+<td>☐</td>
+<td>I-4</td>
+<td>使うプレートの種類と型番をすべて挙げる(U 底 ULA、平底、マイクロキャビティ等)。蓋を置く場所(M21)</td>
+<td>M19, M21。角度ブロックの組合せ、安全高さ</td>
+<td>なし</td>
+<td>担当: ___ / 時期: ___</td>
+<td><code>05</code> M19/M21, <code>10</code></td>
+</tr>
+<tr>
+<td>☐</td>
+<td>I-5</td>
+<td>扱う対象物のサイズ分布(スフェロイド、粒子、ビーズ等)と、柔らかさ</td>
+<td>D6。100 µm–1 mm のどのクラスを揃えるか</td>
+<td>なし</td>
+<td>担当: ___ / 時期: ___</td>
+<td><code>08</code> §Still to confirm</td>
+</tr>
+<tr>
+<td>☐</td>
+<td>I-6</td>
+<td>カメラ、サイドポート、接眼部の構成(左右どちらに何が付くか)</td>
+<td>M12, D4</td>
+<td>なし</td>
+<td>担当: ___ / 時期: ___</td>
+<td><code>05</code> M12</td>
+</tr>
+<tr>
+<td>☐</td>
+<td>I-7</td>
+<td>除振台の有無と使い方(浮上させて使うか)、PC とコントローラの置き場所</td>
+<td>M20, M22。静定時間、ケーブル長</td>
+<td>なし</td>
+<td>担当: ___ / 時期: ___</td>
+<td><code>05</code> M20/M22</td>
+</tr>
+</tbody>
+</table></div>
+<h3>1b. 実測(M 項目)</h3>
+<p>共通のやり方(<code>05</code> 冒頭より): 原点は光軸とステージインサート上面の交点、+X は操作者の右、+Y は奥、+Z は上。<strong>各測定は定規を写し込んで写真を撮る</strong>。値は <code>cad/params.py</code> に入れ、状態を <code>PH</code> から <code>MEAS</code> に変える。</p>
+<p>用意する道具(目安): 巻尺、直尺(300 mm 以上)、デプスバー付きノギス、ハイトゲージ(あれば)、スコヤ、水準器、カメラ、マスキングテープ、Ø10 mm 程度の棒(M18 用)。</p>
+<p>優先度は <code>05</code> のとおり: A = 実現性を決める、B = ブラケット設計の前に必要、C = あるとよい。<strong>太字の ID が凍結ゲート項目</strong>です。</p>
+<div class="tbl"><table>
+<thead>
+<tr>
+<th>☐</th>
+<th>ID</th>
+<th>優先</th>
+<th>測るもの</th>
+<th>測り方・道具</th>
+<th>決まること(解除される項目)</th>
+<th>前提</th>
+<th>担当 / 時期</th>
+<th>参照</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>☐</td>
+<td><strong>M1</strong></td>
+<td>A</td>
+<td>定盤面 → ステージインサート上面(プレートを置く面)</td>
+<td>ハイトゲージか直尺で、ステージ中央付近を 3 点。現在のモデル値 200 mm は仮値</td>
+<td>支柱と梁の高さ(F-2)。架台全体</td>
+<td>なし</td>
+<td>担当: ___ / 時期: ___</td>
+<td><code>05</code>, 手順書「組立前の実測」</td>
+</tr>
+<tr>
+<td>☐</td>
+<td>M2</td>
+<td>A</td>
+<td>定盤 → 実際に使うプレートの上面。プレートを置いたときの A1 の角の位置</td>
+<td>M1 と同じ道具。プレートを置いて上面を測り、A1 の向きを写真で記録</td>
+<td>ウェル座標、安全高さ(C-1 の再計算)</td>
+<td>I-4</td>
+<td>担当: ___ / 時期: ___</td>
+<td><code>05</code></td>
+</tr>
+<tr>
+<td>☐</td>
+<td><strong>M3</strong></td>
+<td>A</td>
+<td>ステージ外形、インサートの開口、プレート上面より上に出るクリップ・ホルダー</td>
+<td>真上から写真、突出高さはノギス。W-B で電動ステージに替える場合は、そのステージで取り直す</td>
+<td>吸引高さでのアームとの余裕、動くプレートとの余裕</td>
+<td>I-2(W-B では O-2 か外形図)</td>
+<td>担当: ___ / 時期: ___</td>
+<td><code>05</code>, <code>09</code> 凍結ゲート</td>
+</tr>
+<tr>
+<td>☐</td>
+<td><strong>M4</strong></td>
+<td>A</td>
+<td>「基準位置」でのステージ中心と光軸のずれ。ステージを固定できるか</td>
+<td>低倍で視野中心に印を合わせ、ステージ目盛りを記録</td>
+<td>D1(W-B でのステージ移動範囲の使い方)</td>
+<td>I-2</td>
+<td>担当: ___ / 時期: ___</td>
+<td><code>05</code>, 手順書</td>
+</tr>
+<tr>
+<td>☐</td>
+<td>M5</td>
+<td>B</td>
+<td>光軸から本体の前・後・左・右面までの距離</td>
+<td>巻尺・直尺。光軸位置は M4 で付けた印を基準にする</td>
+<td>架台の位置</td>
+<td>M4</td>
+<td>担当: ___ / 時期: ___</td>
+<td><code>05</code></td>
+</tr>
+<tr>
+<td>☐</td>
+<td><strong>M6</strong></td>
+<td>A</td>
+<td>実際に使うコンデンサの型式と外径(外形)</td>
+<td>型式ラベル写真、ノギスで外径。現在のモデル値 Ø80 mm は仮値</td>
+<td>アームの細い部分の長さ(W-B 現在 60 mm)、コンデンサ付近の全余裕、D2</td>
+<td>I-1(IX-ULWCD が手元にあること)</td>
+<td>担当: ___ / 時期: ___</td>
+<td><code>05</code>, <code>02</code></td>
+</tr>
+<tr>
+<td>☐</td>
+<td><strong>M7</strong></td>
+<td>A</td>
+<td>コンデンサ保持アーム: 幅、最下点、光軸から左右面までの距離</td>
+<td>正面から幅、定盤から最下点の高さ。現在のモデル値 ±45 mm は仮値</td>
+<td>X 支持梁との余裕(モデルでは 5 mm)</td>
+<td>なし</td>
+<td>担当: ___ / 時期: ___</td>
+<td><code>05</code></td>
+</tr>
+<tr>
+<td>☐</td>
+<td><strong>M8</strong></td>
+<td>A</td>
+<td>4× と 10× でピントを合わせた状態の、プレート上面 → コンデンサ前玉(下端)の高さ</td>
+<td>実際の観察状態のまま直尺・ノギスで。WD 73 mm(IX-ULWCD)はメーカー値だが、実際の高さは数 mm 違いうる</td>
+<td>コンデンサ下の余裕(最も効く値)</td>
+<td>M6、IX-ULWCD が手元にあること(O-3)</td>
+<td>担当: ___ / 時期: ___</td>
+<td><code>05</code>, <code>07</code> 前提 4</td>
+</tr>
+<tr>
+<td>☐</td>
+<td>M9</td>
+<td>B</td>
+<td>照明支柱の位置・断面・高さ、ランプハウスの外形</td>
+<td>巻尺・直尺、側面写真</td>
+<td>後方の余裕</td>
+<td>なし</td>
+<td>担当: ___ / 時期: ___</td>
+<td><code>05</code></td>
+</tr>
+<tr>
+<td>☐</td>
+<td><strong>M10</strong></td>
+<td>A</td>
+<td>照明支柱を後ろへ倒したときの角度と外形</td>
+<td>倒した状態で側面から写真、後方への張り出しを測る。倒す操作は取扱説明書と装置管理者の了解のもとで行う</td>
+<td>D2 の代替案(コンデンサなしで運用)の成否</td>
+<td>なし</td>
+<td>担当: ___ / 時期: ___</td>
+<td><code>05</code>, <code>03</code> §8</td>
+</tr>
+<tr>
+<td>☐</td>
+<td>M11</td>
+<td>B</td>
+<td>コンデンサを最上位置にしたときのプレート上の空き高さ</td>
+<td>直尺</td>
+<td>キャピラリ交換位置</td>
+<td>I-1</td>
+<td>担当: ___ / 時期: ___</td>
+<td><code>05</code></td>
+</tr>
+<tr>
+<td>☐</td>
+<td>M12</td>
+<td>B</td>
+<td>観察鏡筒・接眼部の外形(前)、左右のサイドポートとカメラ</td>
+<td>巻尺、写真</td>
+<td>前・横に干渉がないことの確認、D4</td>
+<td>I-6</td>
+<td>担当: ___ / 時期: ___</td>
+<td><code>05</code></td>
+</tr>
+<tr>
+<td>☐</td>
+<td>M13</td>
+<td>B</td>
+<td>IX3-SVR ハンドルの位置と振り回し範囲(右側)、左右の焦点ノブの位置</td>
+<td>巻尺、写真。ハンドルを端まで回して範囲を確認</td>
+<td>架台位置、手が届くか、D4</td>
+<td>I-2</td>
+<td>担当: ___ / 時期: ___</td>
+<td><code>05</code></td>
+</tr>
+<tr>
+<td>☐</td>
+<td>M14</td>
+<td>B</td>
+<td>ステージ下の対物レンズ・レボルバの最高点(最も長い対物で)</td>
+<td>デプスバー付きノギスか直尺で、ステージ上面から下向きに</td>
+<td>Z 下限の安全確認</td>
+<td>なし</td>
+<td>担当: ___ / 時期: ___</td>
+<td><code>05</code></td>
+</tr>
+<tr>
+<td>☐</td>
+<td><strong>M15</strong></td>
+<td>A</td>
+<td>本体右側面から定盤端までの空き(X)、奥行き(Y)、他の機器(インキュベータ、コントローラ、PC)</td>
+<td>巻尺。他の機器の位置も図にする。W-B の架台は光軸から +443 mm 程度まで使う(モデル値)</td>
+<td>架台を置けるか。D4</td>
+<td>なし</td>
+<td>担当: ___ / 時期: ___</td>
+<td><code>05</code>, <code>07</code> 前提 8</td>
+</tr>
+<tr>
+<td>☐</td>
+<td>M16</td>
+<td>B</td>
+<td>定盤の穴ピッチ(M6/25 mm か ¼-20/1")、IX73 の脚に対する穴の位置</td>
+<td>ボルトを 1 本ねじ込んで規格を確認、穴位置を巻尺で</td>
+<td>ベース板の長穴配置(F-1)</td>
+<td>なし</td>
+<td>担当: ___ / 時期: ___</td>
+<td><code>05</code>, <code>03</code> §9</td>
+</tr>
+<tr>
+<td>☐</td>
+<td>M17</td>
+<td>B</td>
+<td>ポンプの外形、チューブポート、制御方式</td>
+<td>I-3 と同時に。データシートも入手</td>
+<td>ポンプ位置、流路長、チューブ(O-6)</td>
+<td>I-3</td>
+<td>担当: ___ / 時期: ___</td>
+<td><code>05</code></td>
+</tr>
+<tr>
+<td>☐</td>
+<td>M19</td>
+<td>C</td>
+<td>使うプレートの深さとウェル縁径</td>
+<td>メーカー図面を優先。なければノギスで</td>
+<td>角度の余裕、角度ブロックの組合せ</td>
+<td>I-4</td>
+<td>担当: ___ / 時期: ___</td>
+<td><code>05</code>, <code>10</code></td>
+</tr>
+<tr>
+<td>☐</td>
+<td>M20</td>
+<td>C</td>
+<td>振動: 除振台オン/オフ、定盤か実験台か</td>
+<td>状態を記録するだけでよい</td>
+<td>吸引前の静定時間</td>
+<td>I-7</td>
+<td>担当: ___ / 時期: ___</td>
+<td><code>05</code></td>
+</tr>
+<tr>
+<td>☐</td>
+<td>M21</td>
+<td>B</td>
+<td>作業中にプレートの蓋を置く場所</td>
+<td>運用を決めて記録。モデルは蓋なしを前提(Corning 7007 は蓋込み 16.5 mm)</td>
+<td>ワークフロー</td>
+<td>I-4</td>
+<td>担当: ___ / 時期: ___</td>
+<td><code>05</code>, 手順書「安全の決まりごと」</td>
+</tr>
+<tr>
+<td>☐</td>
+<td>M22</td>
+<td>C</td>
+<td>PC・コントローラまでのケーブル経路</td>
+<td>巻尺で経路長</td>
+<td>ケーブル長(O-7)</td>
+<td>I-7</td>
+<td>担当: ___ / 時期: ___</td>
+<td><code>05</code></td>
+</tr>
+</tbody>
+</table></div>
+<p>M18 は試験なので次の節にあります。</p>
+<hr />
+<h2>2. 試験</h2>
+<div class="tbl"><table>
+<thead>
+<tr>
+<th>☐</th>
+<th>ID</th>
+<th>内容</th>
+<th>理由(何が決まるか)</th>
+<th>前提</th>
+<th>担当 / 時期</th>
+<th>参照</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>☐</td>
+<td>T-1(M18)</td>
+<td><strong>照明試験</strong>。Ø10 mm 程度の棒をピントの 30–45 mm 上に置き、光軸から 0 / 4 / 8 mm ずらす。4× と 10×、開口絞りを開いた状態と絞った状態で像を撮る</td>
+<td>D3(96-well 用の傾きを 8° のままにするか、10–12° にするか)。モデルの遮光率(8° で NA 0.3 のとき 28 %)は解析的な推定で、光学シミュレーションではない</td>
+<td>使う予定のコンデンサ(IX-ULWCD)が付いていること。未所有なら O-3 のあと。所有コンデンサで先に行う場合は結果を参考扱いにする</td>
+<td>担当: ___ / 時期: ___</td>
+<td><code>05</code> M18, <code>02</code></td>
+</tr>
+<tr>
+<td>☐</td>
+<td>T-2</td>
+<td><strong>ポンプ・チューブ乾式試験</strong>(卓上、ピッカーなし)。既存ポンプ + PTFE/FEP 1/16" チューブ(約 1.2 m)+ キャピラリで、液を満たし、気泡抜け、漏れ、1 回あたりの吸引量(S: 約 0.5 µL、M: 約 1.1 µL、L: 約 2.0 µL)の再現性を確認する。曲げ半径 25 mm のループを作って影響を見る</td>
+<td>チューブの種類・内径・長さ(O-6)、シリンジ容量、D6。試験の方法と合否基準はリポジトリにないので、担当者が決めて記録する</td>
+<td>I-3 / M17。チューブとキャピラリの手持ち品(なければ少量を先に購入)</td>
+<td>担当: ___ / 時期: ___</td>
+<td><code>08</code> §Proposed set, <code>03</code> §7, <code>07</code> 前提 11</td>
+</tr>
+<tr>
+<td>☐</td>
+<td>T-3</td>
+<td><strong>ステージ到達確認</strong>。今のステージで A1、A12、H1、H12 を光軸に運べるか、端で何 mm 余るかを記録する</td>
+<td>M2/M4 の確認、D1 と D7 の判断材料。IX3-SSU なら 48/96 しか運べない(モデル)</td>
+<td>I-2, M4</td>
+<td>担当: ___ / 時期: ___</td>
+<td><code>09</code></td>
+</tr>
+<tr>
+<td>☐</td>
+<td>T-4</td>
+<td>(任意・提案)<strong>手持ちの吸引試験</strong>。架台なしで、キャピラリを手で保持してポンプで吸引し、クラスごとに吸引できるか、対象が壊れないかを見る</td>
+<td>D6(内径 ≈ 物体径の 1.3–3 倍という比率は提案で、出典はない。実物で確認が必要)</td>
+<td>T-2, I-5, 各クラスのキャピラリ</td>
+<td>担当: ___ / 時期: ___</td>
+<td><code>08</code> §Still to confirm</td>
+</tr>
+</tbody>
+</table></div>
+<hr />
+<h2>3. 決定</h2>
+<p>決定者はユーザー(<code>07</code> の「Open decisions (owner: user)」)。決めたら、この表と <code>07</code> の両方に結果と日付を残します。</p>
+<div class="tbl"><table>
+<thead>
+<tr>
+<th>☐</th>
+<th>ID</th>
+<th>問い</th>
+<th>選択肢</th>
+<th>必要な情報(前提)</th>
+<th>影響</th>
+<th>担当 / 期限</th>
+<th>参照</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>☐</td>
+<td><strong>D1</strong>(暫定: <strong>W-B</strong>)</td>
+<td>「全 96 ウェルで、IX73 で見ながら吸引・吐出する」必要があるか。対象が光軸近くの数ウェルだけで、吐出は見えなくてよいなら W-A も成り立つ。吐出先は同じプレートか、別プレートか(別プレートなら W-C、未モデル化)</td>
+<td>W-B(ステージがウェルを光軸へ運ぶ、96/96 観察)/ W-A(ステージ固定、観察は 1 ウェル)</td>
+<td>I-2, M4, T-3, D7 の見積(予算)</td>
+<td>ピッカーの移動量(W-B: 100 × 30 × 50 mm、W-A: 150 × 100 × 50 mm)、アーム長(115 / 175 mm)、電動ステージの要否</td>
+<td>担当: ___ / 期限: ___</td>
+<td><code>09</code></td>
+</tr>
+<tr>
+<td>☐</td>
+<td>D2</td>
+<td>ピッキング中のコンデンサをどうするか</td>
+<td>IX-ULWCD(所有 / 借用 / 購入)/ 照明支柱を後ろへ倒し、架台側に LED リング照明</td>
+<td>I-1, M6, M8, M10, T-1。吸引中にケーラー明視野が要るか</td>
+<td>ドッグレッグアームの要否、O-3</td>
+<td>担当: ___ / 期限: ___</td>
+<td><code>07</code>, <code>03</code> §8</td>
+</tr>
+<tr>
+<td>☐</td>
+<td>D3</td>
+<td>96-well での最終的な傾き</td>
+<td>8°(現行)/ 10–12°(T-1 の結果次第)。OD 1.0 mm でウェル底中心に届くのは 14.8° まで、OD 2.0 mm では 12.3° まで</td>
+<td>T-1, D2, D6</td>
+<td>角度ブロック(F-6)の角度、ホルダー座面</td>
+<td>担当: ___ / 期限: ___</td>
+<td><code>07</code> D3, <code>08</code>, <code>10</code></td>
+</tr>
+<tr>
+<td>☐</td>
+<td>D4</td>
+<td>架台を置く側</td>
+<td>右(既定)/ 左(鏡像)</td>
+<td>M12, M13, M15(あわせて M5, M9)</td>
+<td>架台位置、ベース板(F-1)</td>
+<td>担当: ___ / 期限: ___</td>
+<td><code>07</code> D4</td>
+</tr>
+<tr>
+<td>☐</td>
+<td>D5</td>
+<td>Z 軸の方式</td>
+<td>オープンループのボールねじ(リード 1 mm)/ クローズドループ・アブソリュート(DRS2 級)+ ブレーキ</td>
+<td>予算、原点復帰の方針。Z 可動部が約 0.5 kg を超えるか、リード 2 mm 以上を選ぶ場合はブレーキ付きを検討(<code>03</code> §5)</td>
+<td>O-4、コントローラ構成(O-7)</td>
+<td>担当: ___ / 期限: ___</td>
+<td><code>07</code> D5, <code>03</code> §5, <code>04</code></td>
+</tr>
+<tr>
+<td>☐</td>
+<td>D6</td>
+<td>揃えるキャピラリのクラス</td>
+<td>S / M / L(OD 1.0 / 1.5 / 2.0)と、1 mm 級用の薄肉 L′(2.00 / 1.56)/ クラスを減らす</td>
+<td>I-5, T-2, T-4、薄肉 2.00/1.56 の国内入手性、M17(シリンジ)</td>
+<td>コレットインサート(F-7)、キャピラリ発注(O-5)、シリンジ容量</td>
+<td>担当: ___ / 期限: ___</td>
+<td><code>07</code> D6, <code>08</code></td>
+</tr>
+<tr>
+<td>☐</td>
+<td>D7</td>
+<td>W-B 用の電動 XY ステージ</td>
+<td>120 × 80 mm 級の IX73 用電動ステージ(<code>source_manifest</code> S15 に記載の製品群)/ 当面は IX3-SVR で半自動運用。IX3-SSU(76 × 52 mm)は不足</td>
+<td>D1、移動量 ≥ 99 × 63 mm、IX73 への取付可否、プレートホルダー、コントローラと PC の接続、外形(凍結ゲート用)、耐荷重、速度、価格、納期</td>
+<td>費用、制御統合、M3 の取り直し</td>
+<td>担当: ___ / 期限: ___</td>
+<td><code>07</code> D7, <code>09</code></td>
+</tr>
+</tbody>
+</table></div>
+<p>決める順番の目安: D1 → D7 → D2 → D3 → D4 → D5 → D6。D5 と D6 は他と並行して進められます。</p>
+<hr />
+<h2>4. 発注</h2>
+<p>長納期になりそうな品から並べています。<strong>実際の納期はリポジトリに情報がなく、未確認です。</strong> 見積時に必ず確認してください。部品候補は <code>docs/12_parts_candidates.md</code> の P-番号です。</p>
+<div class="tbl"><table>
+<thead>
+<tr>
+<th>☐</th>
+<th>ID</th>
+<th>品目(カテゴリ)</th>
+<th>条件(リポジトリの値)</th>
+<th>前提</th>
+<th>納期リスク</th>
+<th>担当 / 時期</th>
+<th>参照</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>☐</td>
+<td>O-1</td>
+<td><strong>見積・納期の問い合わせ</strong>(発注ではない): 電動 XY ステージ、IX-ULWCD、直動ステージ 3 軸、薄肉キャピラリ</td>
+<td>下記 O-2〜O-5 の条件で</td>
+<td>なし。今すぐ始めてよい</td>
+<td>–</td>
+<td>担当: ___ / 時期: ___</td>
+<td>この表</td>
+</tr>
+<tr>
+<td>☐</td>
+<td>O-2</td>
+<td><strong>電動 XY ステージ(IX73 用)</strong> P07, P08</td>
+<td>移動量 ≥ 99 × 63 mm(120 × 80 mm 級)。<strong>IX3-SSU は不可</strong>(76 × 52 mm、48/96)。プレートだけを載せる</td>
+<td>D1, D7。IX73 への取付とインサートの互換を販売元に確認</td>
+<td>高(他社製・取付アダプタ・コントローラ込みの可能性。未確認)</td>
+<td>担当: ___ / 時期: ___</td>
+<td><code>09</code>, <code>07</code> D7</td>
+</tr>
+<tr>
+<td>☐</td>
+<td>O-3</td>
+<td><strong>IX-ULWCD コンデンサ</strong>(未所有の場合のみ)P09</td>
+<td>NA 0.3、WD 73 mm(販売店情報。メーカーに確認、<code>source_manifest</code> S04)</td>
+<td>I-1, D2。購入前に借用で M6/M8/T-1 を済ませられるか相談</td>
+<td>高(未確認)</td>
+<td>担当: ___ / 時期: ___</td>
+<td><code>02</code>, <code>source_manifest</code> S04</td>
+</tr>
+<tr>
+<td>☐</td>
+<td>O-4</td>
+<td><strong>直動ステージ X / Y / Z + モーター(NEMA17)× 3</strong> P01–P06</td>
+<td>W-B: X ≥ 100 mm、Y ≥ 30 mm、Z 50 mm(Z はリード 1 mm ボールねじ)。幅 20–26 mm 級。X と Z は工業用コンパクト型(A 案)、Y は A か B。概算は 1 軸 5–12 万円程度(<code>04</code>、未検証)</td>
+<td><strong>見積は今、発注確定は凍結ゲート後</strong>(<code>07</code>: 型番は凍結前に確定しない)。D1, D5</td>
+<td>中〜高(未確認)。<code>04</code> では A/B が長納期なら C 案(自作)を代替に挙げている</td>
+<td>担当: ___ / 時期: ___</td>
+<td><code>03</code> §3, <code>04</code>, <code>07</code></td>
+</tr>
+<tr>
+<td>☐</td>
+<td>O-5</td>
+<td><strong>ガラスキャピラリ</strong> P21–P24</td>
+<td>D6 で決めたクラス: OD/ID 1.0/0.58、1.5/0.84(または 0.86)、2.0/1.12、薄肉 2.00/1.56(フィラメントなし)</td>
+<td>D6。T-4 用に少量を先に買うのは可</td>
+<td>薄肉 2.00/1.56 は国内の入手性・価格が未確認</td>
+<td>担当: ___ / 時期: ___</td>
+<td><code>08</code></td>
+</tr>
+<tr>
+<td>☐</td>
+<td>O-6</td>
+<td>チューブ・継手・クランプ類 P25–P27</td>
+<td>PTFE/FEP 1/16" OD、約 1.2 m、曲げ半径 ≥ 25 mm(選んだチューブで要確認)。内径と長さはポンプと死容積で決める</td>
+<td>M17, T-2</td>
+<td>低(未確認)</td>
+<td>担当: ___ / 時期: ___</td>
+<td><code>03</code> §7, <code>07</code></td>
+</tr>
+<tr>
+<td>☐</td>
+<td>O-7</td>
+<td>電装品 P28–P36</td>
+<td>24 V DC 電源(約 150 W、ヒューズ付き)、モーションコントローラ(PC 接続、G-code、SPI、NC 入力 ≥ 6)、TMC5160 級ドライバ × 3、NC 原点スイッチ × 3、非常停止 + 接触器(モーター電源のみ遮断)、シールド付きモーターケーブル、ケーブルチェーン</td>
+<td>O-4(モーター電流)、D5、M22(ケーブル長)。<code>07</code> では電源容量・コネクタ・基板は未確定</td>
+<td>低〜中(未確認)</td>
+<td>担当: ___ / 時期: ___</td>
+<td><code>06</code>, <code>07</code></td>
+</tr>
+<tr>
+<td>☐</td>
+<td>O-8</td>
+<td>シリンジ(ポンプ用)</td>
+<td>分解能で選ぶ。例 25–100 µL(<code>08</code>)</td>
+<td>M17, D6, T-2</td>
+<td>低(未確認)</td>
+<td>担当: ___ / 時期: ___</td>
+<td><code>08</code></td>
+</tr>
+<tr>
+<td>☐</td>
+<td>O-9</td>
+<td>架台の材料(アルミ 15 mm 板、80 × 80 角材 2 本 + Y 梁、40 × 80 以上の X 支持梁、ブレース、ボルト)</td>
+<td>断面は外形レベルの値。高さ(M1)と剛性の確認後に確定</td>
+<td>凍結ゲート, M16, D4</td>
+<td>低(未確認)</td>
+<td>担当: ___ / 時期: ___</td>
+<td><code>03</code> §2, <code>07</code></td>
+</tr>
+</tbody>
+</table></div>
+<hr />
+<h2>5. 製作・加工</h2>
+<blockquote>
+<p><strong>凍結ゲートを通過するまで、ここの加工は始めない。</strong> 図面は描き始めてよいが、寸法は仮のまま扱う。</p>
+</blockquote>
+<div class="tbl"><table>
+<thead>
+<tr>
+<th>☐</th>
+<th>ID</th>
+<th>内容</th>
+<th>理由(何が決まるか)</th>
+<th>前提</th>
+<th>担当 / 時期</th>
+<th>参照</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>☐</td>
+<td>F-0</td>
+<td>凍結ゲートの実測値で <code>cad/params.py</code> を更新し、再計算した寸法から加工図を起こす</td>
+<td>すべての製作物の寸法の根拠</td>
+<td>凍結ゲート, C-1</td>
+<td>担当: ___ / 時期: ___</td>
+<td><code>05</code>, README §Rebuild</td>
+</tr>
+<tr>
+<td>☐</td>
+<td>F-1</td>
+<td><strong>ベース板</strong>(Al 15 mm)。定盤の穴に合わせた長穴で X/Y ±15 mm、ヨー ±2°、ボルト 6 本</td>
+<td>架台位置の調整幅</td>
+<td>凍結ゲート, M16, D4</td>
+<td>担当: ___ / 時期: ___</td>
+<td><code>03</code> §9</td>
+</tr>
+<tr>
+<td>☐</td>
+<td>F-2</td>
+<td>支柱の切断と、梁の高さ調整部(縦長穴 + ジャッキボルト、±20 mm)</td>
+<td>梁の高さを実際のステージ高さに合わせる</td>
+<td>M1, O-9</td>
+<td>担当: ___ / 時期: ___</td>
+<td><code>03</code> §9</td>
+</tr>
+<tr>
+<td>☐</td>
+<td>F-3</td>
+<td><strong>ブラケット類</strong>: X 支持梁の取付、X キャリッジ → Z、原点スイッチ、チューブクランプ #1/#2、ケーブルチェーン</td>
+<td>軸の積み上げ</td>
+<td>凍結ゲート、O-4 の実部品寸法(型番確定後)</td>
+<td>担当: ___ / 時期: ___</td>
+<td><code>03</code> §2/§7</td>
+</tr>
+<tr>
+<td>☐</td>
+<td>F-4</td>
+<td><strong>ドッグレッグアーム</strong>。細い部分 12 × 12 mm、W-B の現行値は全長 115 mm・細い部分 60 mm。チューブを沿わせる側面の溝</td>
+<td>コンデンサ下の余裕。長さと厚みは M6–M8 で変わる</td>
+<td>M6, M7, M8, D2</td>
+<td>担当: ___ / 時期: ___</td>
+<td><code>07</code> 未確定項目, <code>03</code> §7</td>
+</tr>
+<tr>
+<td>☐</td>
+<td>F-5</td>
+<td>キネマティックマウント(3 球 + 磁石予圧、衝突で外れる)</td>
+<td>衝突時の保護、付け直しの再現性(数 µm は典型値で未検証)</td>
+<td>F-4</td>
+<td>担当: ___ / 時期: ___</td>
+<td><code>02</code> 項目 10</td>
+</tr>
+<tr>
+<td>☐</td>
+<td>F-6</td>
+<td><strong>角度ブロック 8° / 20° / 30°</strong>(45° は作らない)。ピン 2 本 + ねじ 1 本、角度を刻印。どのブロックでも先端がZキャリッジに対して同じ公称点(±1 mm)に来る形状</td>
+<td>プレート形式ごとの角度。現行の推奨: 96-well 8°、48-well 8°、24-well 20°、12-well 30°(20° を予備)、6-well 30°</td>
+<td>D3, M19, F-5。コンデンサとの余裕は M6/M8 後に再計算</td>
+<td>担当: ___ / 時期: ___</td>
+<td><code>10</code></td>
+</tr>
+<tr>
+<td>☐</td>
+<td>F-7</td>
+<td><strong>コレットホルダーとインサート</strong>(OD 1.0 / 1.5 / 2.0、Ø10 × 14 mm 外形)。深さストップ、端面の O リングシール、液ポート</td>
+<td>クラスごとの保持。2.0 mm 用に Ø12 が必要なら <code>HOLDER_D = 12</code> で解析をやり直す</td>
+<td>D6, O-5(実物の外径で合わせる), O-6(ポート)</td>
+<td>担当: ___ / 時期: ___</td>
+<td><code>03</code> §6, <code>08</code></td>
+</tr>
+<tr>
+<td>☐</td>
+<td>F-8</td>
+<td>図面の相互確認(作図者以外の 1 名)</td>
+<td>仮値のまま寸法が残っていないか</td>
+<td>F-1〜F-7 の図面</td>
+<td>担当: ___ / 時期: ___</td>
+<td><code>07</code></td>
+</tr>
+</tbody>
+</table></div>
+<hr />
+<h2>6. 組立前の最終チェック</h2>
+<div class="tbl"><table>
+<thead>
+<tr>
+<th>☐</th>
+<th>ID</th>
+<th>内容</th>
+<th>理由</th>
+<th>前提</th>
+<th>担当 / 時期</th>
+<th>参照</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>☐</td>
+<td>C-1</td>
+<td>凍結ゲートの 8 項目がすべて <code>MEAS</code> になっていることを確認し、<code>python tools/build_all.py</code> を <strong><code>--fast</code> なしで</strong>実行する(干渉スイープを含む)</td>
+<td>実測値での干渉結果を得る</td>
+<td>凍結ゲートの実測</td>
+<td>担当: ___ / 時期: ___</td>
+<td>README §Rebuild</td>
+</tr>
+<tr>
+<td>☐</td>
+<td>C-2</td>
+<td>再計算結果を確認する: 吸引高さ・安全高さで 96/96 が干渉なし、ステージ移動の角 9/9 が干渉なし、コンデンサとの最小余裕。判定基準は下の「確認中の食い違い」1 を参照</td>
+<td>実機で当たらないことの確認</td>
+<td>C-1</td>
+<td>担当: ___ / 時期: ___</td>
+<td><code>09</code>, <code>10</code>, <code>generated_analysis_tables.md</code></td>
+</tr>
+<tr>
+<td>☐</td>
+<td>C-3</td>
+<td>残っている仮値(<code>PH</code>)の一覧を見て、残してよいものか確認する。現在は 13 件(手順書の「まだ仮の値」一覧)</td>
+<td>見落としの防止</td>
+<td>C-1</td>
+<td>担当: ___ / 時期: ___</td>
+<td>下の付録, 手順書</td>
+</tr>
+<tr>
+<td>☐</td>
+<td>C-4</td>
+<td>購入品の受入確認: ストローク、リード、モーター、スイッチが NC か、ケーブル長</td>
+<td>発注どおりか</td>
+<td>O-2〜O-9</td>
+<td>担当: ___ / 時期: ___</td>
+<td>この文書 §4</td>
+</tr>
+<tr>
+<td>☐</td>
+<td>C-5</td>
+<td>製作品の寸法確認(特にアームの厚み、角度ブロックの角度、コレット径)</td>
+<td>図面どおりか</td>
+<td>F-1〜F-7</td>
+<td>担当: ___ / 時期: ___</td>
+<td>この文書 §5</td>
+</tr>
+<tr>
+<td>☐</td>
+<td>C-6</td>
+<td>顕微鏡側の準備: 電動ステージ取付済みで A1〜H12 を光軸に運べる、使うコンデンサが付いている</td>
+<td>W-B の前提</td>
+<td>O-2, O-3</td>
+<td>担当: ___ / 時期: ___</td>
+<td><code>09</code></td>
+</tr>
+<tr>
+<td>☐</td>
+<td>C-7</td>
+<td>右側(または左側、D4)の定盤上を片付け、M15 の範囲と定盤の穴が使えることを確認。ポンプ・コントローラ・PC の置き場所を決める</td>
+<td>架台を置く場所</td>
+<td>D4, M15, M22</td>
+<td>担当: ___ / 時期: ___</td>
+<td><code>05</code></td>
+</tr>
+<tr>
+<td>☐</td>
+<td>C-8</td>
+<td>安全の準備: 非常停止の配線計画、Z 原点が上端であること、Z が電源断で落ちないことを組立時に確認する段取り</td>
+<td>手順書「安全の決まりごと」の前提</td>
+<td>O-7</td>
+<td>担当: ___ / 時期: ___</td>
+<td><code>06</code>, 手順書</td>
+</tr>
+<tr>
+<td>☐</td>
+<td>C-9</td>
+<td>T-2 の結果をもとにチューブ・シリンジ・液を準備。キャピラリは各クラスを予備込みで用意</td>
+<td>組立工程 9–10 ですぐ使う</td>
+<td>T-2, O-5, O-6, O-8</td>
+<td>担当: ___ / 時期: ___</td>
+<td><code>08</code></td>
+</tr>
+<tr>
+<td>☐</td>
+<td>C-10</td>
+<td>最新の組立手順書を生成して関係者で読み合わせる。顕微鏡の管理者に作業日と装置を止める時間を伝える</td>
+<td>作業当日の段取り</td>
+<td>C-1</td>
+<td>担当: ___ / 時期: ___</td>
+<td>手順書</td>
+</tr>
+</tbody>
+</table></div>
+<hr />
+<h2>付録: <code>cad/params.py</code> の仮値(PH)と対応する実測</h2>
+<div class="tbl"><table>
+<thead>
+<tr>
+<th>パラメータ</th>
+<th>いまの値</th>
+<th>対応する実測</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>STAGE_TOP_ABOVE_TABLE</code></td>
+<td>200 mm</td>
+<td><strong>M1</strong></td>
+</tr>
+<tr>
+<td><code>COND_FRONT_Z_MEAS</code>(コンデンサ前玉の高さ、未入力なら WD から推定)</td>
+<td>76.05 mm(推定)</td>
+<td><strong>M8</strong></td>
+</tr>
+<tr>
+<td><code>HOLDER_L</code>(ホルダーの積み上げ高さ)</td>
+<td>14 mm(APX)</td>
+<td><strong>M23</strong></td>
+</tr>
+<tr>
+<td><code>STAGE_T</code>(ステージ板厚)</td>
+<td>20 mm</td>
+<td>M3</td>
+</tr>
+<tr>
+<td><code>BODY_Y_FRONT</code></td>
+<td>−235 mm</td>
+<td>M5</td>
+</tr>
+<tr>
+<td><code>STAGE_CENTER_Y</code></td>
+<td>0 mm</td>
+<td><strong>M4</strong></td>
+</tr>
+<tr>
+<td><code>PILLAR_W</code>, <code>PILLAR_Y0</code>, <code>PILLAR_Y1</code></td>
+<td>90 / 150 / 240 mm</td>
+<td>M9</td>
+</tr>
+<tr>
+<td><code>COND_ARM_W</code></td>
+<td>90 mm</td>
+<td><strong>M7</strong></td>
+</tr>
+<tr>
+<td><code>COND_D</code></td>
+<td>80 mm</td>
+<td><strong>M6</strong></td>
+</tr>
+<tr>
+<td><code>COND_BODY_H</code>(コンデンサ本体高さ)</td>
+<td>70 mm</td>
+<td>M6</td>
+</tr>
+<tr>
+<td><code>OBS_TUBE_BOX</code></td>
+<td>箱形状</td>
+<td>M12</td>
+</tr>
+<tr>
+<td><code>STAGE_HANDLE</code></td>
+<td>箱形状</td>
+<td>M13</td>
+</tr>
+<tr>
+<td><code>OBJECTIVE_ZONE</code></td>
+<td>r 45 mm</td>
+<td>M14</td>
+</tr>
+</tbody>
+</table></div>
+<p>M8(コンデンサ前玉の実高さ)は、<code>params.py</code> ではメーカーの WD から計算しているため PH としては数えられていません。M10(支柱を倒した外形)と M17(ポンプ)に対応するパラメータは <code>params.py</code> にありません。どちらも凍結ゲートや発注に効くので、測った値はこの文書か <code>05</code> に記録してください。</p>
+<hr />
+<p>自動集計した最新の仮値一覧は、組立手順書の「まだ決まっていないこと」にあります(<code>cad/keynums.py</code> の <code>placeholders()</code>)。</p>
+</main>

@@ -10,7 +10,7 @@
 5. The plate is Corning 7007 geometry (U-bottom ULA, rim Ø6.86, depth 11.30), with no lid during picking.
 6. Capillary: OD 1.0 / ID 0.6 / L 40, gripped 10 mm, 30 mm exposed. Tip stand-off 0.3 mm above the well bottom (model value; the process value is set experimentally).
 7. The IX73 stage is modelled as the manual IX3-SVR (114 × 75 mm). In W-B it is replaced by, or treated as, a motorised stage with ≥ 99 × 63 mm travel that carries only the plate. The picker never loads the stage.
-8. The table has free space to the right of the microscope to about +493 mm (W-A) / +443 mm (W-B) from the optical axis, plus the pump and controller beyond.
+8. The table has free space to the right of the microscope to about +498 mm (W-A) / +458 mm (W-B) from the optical axis, plus the pump and controller beyond.
 9. Actuator envelopes are width-26 class ball-screw stages; masses are ±30 % estimates.
 10. Deflections are hand estimates (aluminium, simple beams); no FEA.
 11. The pump, tubing and fluid volumes do not constrain the mechanics beyond a 1/16" tubing path with ≥25 mm bend radius.
@@ -25,17 +25,18 @@
 | D4 | Side of tower | right (default) vs left (mirror) | after M12/M13/M15 |
 | D5 | Z actuator type | open-loop ball screw vs closed-loop absolute (DRS2) with brake | cost, homing strategy |
 | D6 | Capillary classes to stock | S/M/L (OD 1.0/1.5/2.0) vs fewer; thin-wall 2.0 for 1 mm objects | collet inserts, syringe size |
+| D8 | 48-well with OD 1.5/2.0 capillaries | 8° block (reaches under 50 % of the bottom) vs a 0° block (reaches more, blocks most transmitted light) vs no 48-well use for large objects | angle-block set |
 | D7 | Motorised stage for W-B | Märzhäuser SCAN IM 120 × 80 class or equivalent (IX3-SSU 76 × 52 is too small) | cost, controller integration |
 
 ## Items that should NOT be finalised yet
 
-Freeze gate: nothing below is frozen before M1, M3, M4, M6, M7, M8, M10 and M15 are measured and entered in `cad/params.py`.
+Freeze gate: nothing below is frozen before M1, M3, M4, M6, M7, M8, M10, M15, M23 are measured and entered in `cad/params.py`.
 
 
 - Actuator part numbers, strokes rounded to catalogue steps, motor frame lengths.
 - Bracket geometry, fasteners, dowel positions, machining tolerances and drawings.
 - Frame section sizes (80 × 80 posts/beam, 40 × 80 X support) beyond the envelope level. They need the real height (M1) and a stiffness check.
-- Dog-leg arm length (115 mm in W-B, 175 mm in W-A) and thickness (12 × 12 mm). Both depend on the condenser diameter and height (M6–M8).
+- Dog-leg arm length (120 mm in W-B, 180 mm in W-A) and thickness (12 × 12 mm). Both depend on the condenser diameter and height (M6–M8).
 - Holder design (collet size, port type, kinematic mount). No commercial holder was found that positively grips OD 1.0/1.5/2.0 with a side port; the lead candidate is a custom body with ER8 collets (P10). Its nut may exceed the Ø10 mm holder envelope used in the analysis (unverified). If so, re-run `analysis.py` with the larger `HOLDER_D`.
 - Budget: industrial stages on all three axes are estimated at roughly JPY 250–350k for the picker (parts research, unverified); a cheaper integrated Y stage keeps it near JPY 200k.
 - IX-ULWCD availability (P09): one excerpt reports it as not available in some regions. Confirm with Evident Japan first.

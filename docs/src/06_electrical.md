@@ -25,7 +25,13 @@ The main decisions are below.
 
 **Controller.** Any PC-accessible, G-code-speaking 32-bit motion board that exposes SPI to TMC5160 drivers and ≥6 NC inputs. An industrial alternative is to use the actuator vendor's own drivers, such as the Oriental AZ driver for a DRS2 Z axis. This follows the SpheroidPicker precedent of a G-code serial controller (S28).
 
-**Home switches.** Normally-closed (fail-safe) optical or mechanical micro-switches, at the X outboard end, the Y front end and the Z top. Z homes **upward**, so homing is always a retreat, and Z-top is the safe position.
+**Home and reference switches.** All are normally-closed (fail-safe), so a broken wire reads as "triggered".
+- X: outboard end. Y: front end.
+- Z: **two switches**.
+  - The **reference switch** sits at the carriage height where the head top (arm plus tubing) is {{Z_REF_MARGIN:.0f}} mm below the condenser front. It is set from M8 at installation. At that height the arm clears the condenser at every XY, and the tip is above safe-Z for every plate setting in `10_…`: tip at {{ZREF_TIP_R08:.1f}} / {{ZREF_TIP_V20:.1f}} / {{ZREF_TIP_V30:.1f}} mm above the stage top for the 8° / 20° / 30° blocks.
+  - The **top limit switch** is an over-travel stop only. It is *not* a safe position: near the optical axis, Z at the top drives the arm into the condenser.
+
+**Homing order.** Z rises slowly to the reference switch. X then moves to park (+{{WB_X_MAX}} mm, outside the condenser). Only then may Z go higher, and Y homes. After a power loss the tip may still be in a well; this order lifts it vertically out of the well without dragging it sideways and without reaching the condenser. A closed-loop absolute Z (D5, e.g. DRS2) makes this recovery independent of switches.
 
 **Far limits.** Optional NC switches plus firmware soft limits. The actuators' own mechanical end stops are the hard limit.
 

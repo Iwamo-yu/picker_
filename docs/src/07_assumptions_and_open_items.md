@@ -24,11 +24,12 @@
 | D4 | Side of tower | right (default) vs left (mirror) | after M12/M13/M15 |
 | D5 | Z actuator type | open-loop ball screw vs closed-loop absolute (DRS2) with brake | cost, homing strategy |
 | D6 | Capillary classes to stock | S/M/L (OD 1.0/1.5/2.0) vs fewer; thin-wall 2.0 for 1 mm objects | collet inserts, syringe size |
+| D8 | 48-well with OD 1.5/2.0 capillaries | 8° block (reaches under 50 % of the bottom) vs a 0° block (reaches more, blocks most transmitted light) vs no 48-well use for large objects | angle-block set |
 | D7 | Motorised stage for W-B | Märzhäuser SCAN IM 120 × 80 class or equivalent (IX3-SSU 76 × 52 is too small) | cost, controller integration |
 
 ## Items that should NOT be finalised yet
 
-Freeze gate: nothing below is frozen before M1, M3, M4, M6, M7, M8, M10 and M15 are measured and entered in `cad/params.py`.
+Freeze gate: nothing below is frozen before {{FREEZE_GATE}} are measured and entered in `cad/params.py`.
 
 
 - Actuator part numbers, strokes rounded to catalogue steps, motor frame lengths.

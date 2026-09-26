@@ -18,7 +18,7 @@
 
 **Limitation for IX73.** C-beam/V-wheel carriages and threaded rod have backlash and preload drift. The 2-axis manipulator relies on a motorised microscope stage. The stereo-microscope geometry does not transfer to an inverted microscope with a condenser.
 
-**Decision.** *Copy*: image-space 3-point calibration, pick sequence with dwell and Z-home retreat, G-code-type controller with pump as a separate channel. *Modify*: replace C-beam/V-wheel/M8 rod with ball-screw stages; add a third axis because the IX73 stage is not assumed motorised. *Ignore*: the custom syringe pump (the lab pumps are used).
+**Decision.** *Copy*: image-space 3-point calibration, pick sequence with dwell and a Z retreat after every pick (to our Z *reference* switch, not the top: under the IX-ULWCD the top of the stroke hits the condenser), G-code-type controller with pump as a separate channel. *Modify*: replace C-beam/V-wheel/M8 rod with ball-screw stages; add a third axis because the IX73 stage is not assumed motorised. *Ignore*: the custom syringe pump (the lab pumps are used).
 
 ## 2. Diosdi et al. 2025, HCS-3DX (*Nat. Commun.*) [S21, S26]
 
@@ -71,7 +71,7 @@ Note: the first author is Kovacs B.; Horvath R. is the senior author.
 | Principle | Source | Where it appears |
 |---|---|---|
 | Calibrate the tip in image coordinates (≥3 points); do not rely on absolute mechanical accuracy | S20/S28 | holder does not need µm-reproducible tip position; re-calibrate after capillary change |
-| Z retreat by homing to a switch after every pick | S28 | Z home switch at the top; safe-Z = plate top + 5 mm |
+| Z retreat to a switch-defined height after every pick | S28 | Z reference switch below the condenser (`06_electrical.md`); safe-Z = plate top + 5 mm |
 | Fixed tip stand-off above the bottom, found by slow touch-down | S22, S23 | `TIP_CLEAR_BOTTOM` = 0.3 mm in the model; landing speed ≈10 µm/s |
 | Inclined pipettes are normal in open dishes but not in deep wells | S23 vs. 96-well geometry | near-vertical 8° head |
 | Minimal axes when a motorised stage exists | S24, S22 | alternative architecture in §8 of `03_architecture.md` |

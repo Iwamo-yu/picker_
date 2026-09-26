@@ -43,6 +43,10 @@ Candidates for each line item of the W-B baseline, researched from web-search ex
 | P36 | Electronics | Enclosure, DIN rail, fuses, terminal blocks, USB cable | 1 set | - | Takachi / IDEC control box (series) | Phoenix / Wago DIN terminals (series) | - | not found | n/a |
 | P37 | Frame | Table mounting hardware | 1 set | M6 (25 mm grid) or 1/4-20 (1") cap screws + washers | MISUMI cap screws/washers (series) | Thorlabs HW-KIT (series, unverified) | - | not found | n/a |
 | P38 | Fluidics | Syringe pump (existing Harvard or Tecan) - no purchase | 0 | existing; serial control later | Harvard Apparatus (model TBD, M17) | Tecan Cavro (Centris/XLP, TBD) | syringe 25-100 uL for resolution (doc 08) | - | n/a |
+| P39 | Microscope | SBS plate insert / holder for the motorised XY stage | 1 | holds SBS-footprint plates (6-96 well) flat on the chosen stage (P07); defines the plate datum (M3) | Stage vendor's multiwell-plate insert for the chosen stage (Märzhäuser / Evident / Prior) — configure with the stage quote |  | SBS 127.76 x 85.48 footprint; flatness; clips below plate top | not found | n/a (depends on P07) |
+| P40 | Fluidics | Syringe for the existing pump (gas-tight) | 2 | volume resolution for 0.5-2 uL pick volumes; Luer or 1/4-28 outlet | Hamilton 1700-series gas-tight syringe, 25-100 uL (series; confirm pump clamp size) | Tecan/Cavro syringe matching the pump model (if Tecan) | 25-100 uL; PTFE Luer lock | not found | unverified (series only) |
+| P41 | Fluidics | Optional pinch/NC valve and pressure tee on the fixed side | 1 | fast suction pulse decoupled from the pump (CellSorter principle); pressure reading for later pick confirmation | Normally-closed solenoid pinch valve for 1/16 in tubing (series; e.g. from fluidics vendors) | 1/4-28 PEEK tee + pressure sensor | NC, low dead volume | not found | unverified |
+| P42 | Electronics | Z reference switch (below the condenser) | 1 | NC, repeatable to <10 um; mounted on the Z body at the height set from M8 | Omron EE-SX672 slot photomicrosensor (same as P30) |  | repeatability; small size | see P30 | see P30 |
 
 ## Sources per item
 

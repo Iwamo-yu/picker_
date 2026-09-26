@@ -121,10 +121,10 @@ td.ok{color:var(--ok);font-weight:600} td.bad{color:var(--bad);font-weight:600}
   </div>
 
   <div class="notes">
-    <div class="note"><h2>Why the stage moves (D1)</h2><p>The IX73 only sees the well on the optical axis. In W-B the stage brings every source and destination well there, so all 96 picks are observed, and the picker needs only 100 × 30 × 50 mm of travel. That takes a motorised stage with at least 99 × 63 mm travel; Evident's IX3-SSU (76 × 52) reaches 48 wells. In W-A the picker reaches every well but sees one.</p></div>
-    <div class="note"><h2>Why near-vertical</h2><p>A Corning 7007 U-bottom well is Ø6.86 mm at the rim and 11.30 mm deep. A 1.0 mm capillary reaches the bottom centre only below about 14.8° from vertical. At 30° it stops 4.9 mm below the rim, at 45° after 2.7 mm. The 8° head keeps 1.4 mm rim clearance and moves the holder 4 mm off the optical axis.</p></div>
-    <div class="note"><h2>Why the dog-leg arm</h2><p>The condenser sits on the optical axis. The tall Z actuator therefore stays outboard of the tip (arm 115 mm in W-B, 175 mm in W-A), and only a thin 12 mm arm runs under the condenser. That fits under the IX-ULWCD (WD 73 mm). It does not fit under the IX2-LWUCD (WD 27 mm) or the IX2-MLWCD (WD 45 mm). The alternative is tilting the illumination column back.</p></div>
-    <div class="note"><h2>What is still a guess</h2><p>Stage height above the table, condenser outer diameter, pillar and arm position, and the eyepiece tube envelope are placeholders (red in confidence mode). Every clearance near the condenser depends on them. Measure these first; the model re-runs in about 4 minutes.</p></div>
+    <div class="note"><h2>Why the stage moves (D1)</h2><p>The IX73 only sees the well on the optical axis. In W-B the stage brings every source and destination well there, so all {{D1_WB_OBSERVED}} picks are observed, and the picker needs only {{WB_TRAVEL_X}} × {{WB_TRAVEL_Y}} × {{WB_TRAVEL_Z}} mm of travel. That takes a motorised stage with at least 99 × 63 mm travel; Evident's IX3-SSU (76 × 52) reaches {{D1_WB_SSU_WELLS}} wells. In W-A the picker reaches every well but sees one.</p></div>
+    <div class="note"><h2>Why near-vertical</h2><p>A Corning 7007 U-bottom well is Ø6.86 mm at the rim and 11.30 mm deep. A 1.0 mm capillary reaches the bottom centre only below about {{MAX_ANGLE:.1f}}° from vertical. At 30° it stops {{REACH_30:.1f}} mm below the rim, at 45° after {{REACH_45:.1f}} mm. The 8° block keeps {{RIM_8:.2f}} mm rim clearance; larger wells use the {{ANGLE_BLOCKS_TXT}} blocks (docs/10).</p></div>
+    <div class="note"><h2>Why the dog-leg arm</h2><p>The condenser sits on the optical axis. The tall Z actuator therefore stays outboard of the tip (arm {{WB_ARM_L:.0f}} mm in W-B, {{WA_ARM_L:.0f}} mm in W-A), and only a thin 12 mm arm runs under the condenser. That fits under the IX-ULWCD (WD 73 mm). It does not fit under the IX2-LWUCD (WD 27 mm) or the IX2-MLWCD (WD 45 mm). The alternative is tilting the illumination column back.</p></div>
+    <div class="note"><h2>What is still a guess</h2><p>Stage height above the table, condenser outer diameter, pillar and arm position, and the eyepiece tube envelope are placeholders (red in confidence mode). Every clearance near the condenser depends on them. Measure these first; the model re-runs in about 10 minutes (python tools/build_all.py).</p></div>
   </div>
 
   <div class="note">
@@ -143,7 +143,7 @@ const STL = /*__STL__*/null;
 const ROLE = {table:0x9aa5a8, ix73:0xb8c1c5, plate:0xdfe7ea, condenser:0x7d6aa8, frame:0x48657a,
   actuator:0x2f6f8a, motor:0x39444a, switch:0xe0a84a, cable:0x6b7780, moving:0x2f9d74, holder:0x1f6f55,
   capillary:0x38c4d8, tubing:0xf0c040, pump:0x8a8f93, electronics:0x5a6a73, zone:0x3fb6c6};
-const CONF = {STD:0x2f7d4f, MFR:0x2f7d4f, DER:0x3a64b0, DES:0x3a64b0, APX:0xd49a2a, PH:0xc0392f};
+const CONF = {STD:0x2f7d4f, MFR:0x2f7d4f, MEAS:0x2f7d4f, DER:0x3a64b0, DES:0x3a64b0, APX:0xd49a2a, PH:0xc0392f};
 const CONF_LABEL = [["STD / MFR · standard or manufacturer data","#2f7d4f"],["DER / DES · derived or design choice","#3a64b0"],
   ["APX · approximate catalogue envelope","#d49a2a"],["PH · placeholder, must be measured","#c0392f"]];
 const ROLE_LABEL = [["IX73 envelope","#b8c1c5"],["condenser (on optical axis)","#7d6aa8"],["fixed frame","#48657a"],

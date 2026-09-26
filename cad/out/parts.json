@@ -227,7 +227,16 @@
    "group": "X",
    "workflow": "WA",
    "variant": "all",
-   "note": ""
+   "note": "top limit (not the homing reference)"
+  },
+  "WA__Z_reference_switch": {
+   "file": "stl/WA__Z_reference_switch.stl",
+   "category": "switch",
+   "status": "DES",
+   "group": "X",
+   "workflow": "WA",
+   "variant": "all",
+   "note": "homing reference: head clears the condenser at any XY"
   },
   "WA__tubing_clamp_Zbody": {
    "file": "stl/WA__tubing_clamp_Zbody.stl",
@@ -1073,7 +1082,16 @@
    "group": "X",
    "workflow": "WB",
    "variant": "all",
-   "note": ""
+   "note": "top limit (not the homing reference)"
+  },
+  "WB__Z_reference_switch": {
+   "file": "stl/WB__Z_reference_switch.stl",
+   "category": "switch",
+   "status": "DES",
+   "group": "X",
+   "workflow": "WB",
+   "variant": "all",
+   "note": "homing reference: head clears the condenser at any XY"
   },
   "WB__tubing_clamp_Zbody": {
    "file": "stl/WB__tubing_clamp_Zbody.stl",
@@ -1898,6 +1916,11 @@
     50.0
    ],
    "travel_z": 50.0,
+   "stroke": [
+    150.0,
+    100.0,
+    80.0
+   ],
    "stage_moves": false,
    "note": "picker reaches all 96 wells; only the well on the optical axis is observed",
    "layout": {
@@ -1909,14 +1932,18 @@
     "travel_x": 150.0,
     "travel_y": 100.0,
     "travel_z": 50.0,
+    "stroke_x": 150.0,
+    "stroke_y": 100.0,
+    "stroke_z": 80.0,
+    "z_body": 200.0,
     "thin_l": 120.0,
-    "arm_l": 175.0,
+    "arm_l": 180.0,
     "zb_d": 30.0,
-    "xcc": 190.0,
-    "x_lo": 55.0,
-    "x_hi": 325.0,
+    "xcc": 195.0,
+    "x_lo": 60.0,
+    "x_hi": 330.0,
     "x_body": 270.0,
-    "tower_x": 403,
+    "tower_x": 408,
     "x_band": [
      24.0,
      50.0
@@ -1928,7 +1955,7 @@
      -150,
      230
     ],
-    "x_inner_clear": 15.0
+    "x_inner_clear": 20.0
    }
   },
   "WB": {
@@ -1942,6 +1969,11 @@
     15.0
    ],
    "travel_z": 50.0,
+   "stroke": [
+    110.0,
+    50.0,
+    80.0
+   ],
    "stage_moves": true,
    "note": "source and destination wells are brought to the axis by the IX73 stage; +X travel is the park / capillary-change retreat outside the condenser keep-out",
    "layout": {
@@ -1953,26 +1985,30 @@
     "travel_x": 100.0,
     "travel_y": 30.0,
     "travel_z": 50.0,
+    "stroke_x": 110.0,
+    "stroke_y": 50.0,
+    "stroke_z": 80.0,
+    "z_body": 200.0,
     "thin_l": 60.0,
-    "arm_l": 115.0,
+    "arm_l": 120.0,
     "zb_d": 30.0,
-    "xcc": 130.0,
-    "x_lo": 55.0,
-    "x_hi": 275.0,
-    "x_body": 220.0,
-    "tower_x": 353,
+    "xcc": 135.0,
+    "x_lo": 60.0,
+    "x_hi": 290.0,
+    "x_body": 230.0,
+    "tower_x": 368,
     "x_band": [
      24.0,
      50.0
     ],
     "yc0": 37.0,
     "y_lo": -38.0,
-    "y_body": 150.0,
+    "y_body": 170.0,
     "post_y": [
      -115,
-     195
+     215
     ],
-    "x_inner_clear": 15.0
+    "x_inner_clear": 20.0
    }
   }
  },

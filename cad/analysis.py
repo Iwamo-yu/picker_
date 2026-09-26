@@ -64,47 +64,85 @@ def max_angle_centre(r_cap=None):
     return lo
 
 
-def format_angle_check(fmt, theta, exposed=None, cond="IX-ULWCD"):
-    """Per plate format and capillary angle.  Tip 0.3 mm above well-bottom centre.
-    rim: shaft clearance at the rim; nose: holder nose (lowest edge) above the rim plane, only counted when the
-    nose sits over plate material (outside the well radius); cond: arm/holder top vs condenser front when the
-    tip is at safe-Z (= rim + 5 mm; plate lid removed); block: holder shadow fraction at NA 0.3."""
+EDGE_MIN = 0.1        # lowest point of the (square-cut, tilted) tip above the well bottom [mm]
+CAP_CLASSES = {"S (OD 1.0)": 0.5, "M (OD 1.5)": 0.75, "L (OD 2.0)": 1.0}
+
+
+def reachable_fraction(f, theta, r_cap, tz, n=161):
+    """Fraction of a flat well bottom where the tip can be placed with the shaft (leaning +X) still
+    clearing the rim by RIM_MARGIN.  Object positions are uniform over the bottom disc."""
+    import numpy as np
+    t = math.radians(theta)
+    R_top, R_bot = f["d_top"] / 2, f["d_bot"] / 2
+    h = f["depth"] - tz
+    g = np.linspace(-R_bot, R_bot, n)
+    X, Y = np.meshgrid(g, g)
+    inside = X ** 2 + Y ** 2 <= R_bot ** 2
+    tip_ok = np.hypot(X, Y) <= R_bot - r_cap
+    rim_ok = np.hypot(X + h * math.tan(t), Y) + r_cap / math.cos(t) <= R_top - p.RIM_MARGIN.v
+    return float((inside & tip_ok & rim_ok).sum() / inside.sum())
+
+
+def format_angle_check(fmt, theta, exposed=None, r_cap=None, cond="IX-ULWCD", light=True):
+    """Per plate format, angle block, exposed length and capillary radius.
+    tz: tip-axis height above the well bottom so that the lowest tip edge is >= EDGE_MIN (and >= TIP_CLEAR);
+    rim: shaft clearance at the rim with the tip at the well-bottom centre;
+    nose: lowest holder edge above the rim plane when the nose sits over plate material;
+    cond: head top (arm + tubing allowance) below the condenser front with the tip at safe-Z (rim + 5 mm);
+    reach: reachable fraction of a flat well bottom; block: light blocked by holder + arm at NA 0.3."""
     f = p.PLATE_FORMATS[fmt]
     t = math.radians(theta)
     L = p.CAP_EXPOSED.v if exposed is None else exposed
+    rc_ = R_CAP if r_cap is None else r_cap
+    tz = max(p.TIP_CLEAR_BOTTOM.v, EDGE_MIN + rc_ * math.sin(t))
     r_top, depth = f["d_top"] / 2, f["depth"]
-    h = depth - p.TIP_CLEAR_BOTTOM.v                         # tip -> rim height
-    rim = r_top - (h * math.tan(t) + R_CAP / math.cos(t))
+    h = depth - tz                                           # tip -> rim height
+    rim = r_top - (h * math.tan(t) + rc_ / math.cos(t))
     nose_x, nose_z = L * math.sin(t), L * math.cos(t)
     hr = p.HOLDER_D.v / 2
-    nose_low = nose_z - hr * math.sin(t) - h                 # lowest holder edge above rim plane
-    over_material = nose_x + hr * math.cos(t) > r_top
-    nose = nose_low if over_material else float("inf")
-    hold_top = (L + p.HOLDER_L.v) * math.cos(t)              # above tip
-    arm_top_pick = hold_top + p.ARM_T.v / 2
+    nose_low = nose_z - hr * math.sin(t) - h
+    nose = nose_low if nose_x + hr * math.cos(t) > r_top else float("inf")
+    head_top = (L + p.HOLDER_L.v) * math.cos(t) + p.ARM_T.v / 2 + p.HEAD_TOP_ALLOW.v   # above the tip
     lift = h + 5.0                                           # pick -> safe-Z
-    wd = p.CONDENSERS[cond]["WD"].v
-    cond_clear = (wd - p.TIP_CLEAR_BOTTOM.v) - (arm_top_pick + lift)
-    rc = h_c = None
-    # illumination obstruction at NA 0.3 (holder disc at nose height)
-    rc = (nose_z + p.TIP_CLEAR_BOTTOM.v) * math.tan(math.asin(0.3))
-    blk = circle_overlap(rc, hr, abs(nose_x)) / (math.pi * rc * rc)
-    ok = rim >= p.RIM_MARGIN.v and nose >= p.MIN_MARGIN.v and cond_clear >= p.MIN_MARGIN.v
-    return dict(fmt=fmt, theta=theta, exposed=L, rim=rim, nose=nose, cond=cond_clear, block=blk, ok=ok)
+    cond_front = p.cond_front_z(cond) - p.WELL_BOTTOM_Z.v    # above the focal plane (well bottom)
+    cond_clear = cond_front - (tz + lift + head_top)
+    flat = "U-bottom" not in fmt
+    reach = reachable_fraction(f, theta, rc_, tz) if flat else None
+    blk = head_obstruction(theta, 0.3, L, tz, n=1500) if light else None
+    ok = (rim >= p.RIM_MARGIN.v and nose >= p.MIN_MARGIN.v and cond_clear >= p.MIN_MARGIN.v
+          and (reach is None or reach >= p.MIN_REACH.v))
+    # longest holder stack (HOLDER_L) that still keeps MIN_MARGIN under the condenser
+    hl_max = p.HOLDER_L.v + (cond_clear - p.MIN_MARGIN.v) / max(math.cos(t), 1e-6)
+    return dict(fmt=fmt, theta=theta, exposed=L, r_cap=rc_, tz=tz, rim=rim, nose=nose, cond=cond_clear,
+                reach=reach, block=blk, ok=ok, holder_l_max=hl_max)
 
 
 def format_angle_matrix():
-    rows = []
-    for fmt in p.PLATE_FORMATS:
-        for th in p.ANGLES_EVALUATED:
-            rows.append(format_angle_check(fmt, th))
+    """rows: every plate x evaluated angle for OD 1.0 at 30 mm exposed (overview);
+    rec[(plate, class)]: best (block, exposed length) per plate and capillary class."""
+    rows = [format_angle_check(fmt, th) for fmt in p.PLATE_FORMATS for th in p.ANGLES_EVALUATED]
     rec = {}
     for fmt in p.PLATE_FORMATS:
-        cands = [format_angle_check(fmt, th, exposed=L) for th in p.ANGLE_BLOCKS for L in p.EXPOSED_OPTIONS]
-        oks = [r for r in cands if r["ok"]]
-        # least light obstruction first, then the longest exposed length, then the largest worst-case margin
-        rec[fmt] = min(oks, key=lambda r: (round(r["block"], 2), -r["exposed"],
-                                            -min(r["rim"], r["nose"], r["cond"]))) if oks else None
+        for cls, rcap in CAP_CLASSES.items():
+            cands = [format_angle_check(fmt, th, exposed=L, r_cap=rcap, light=False)
+                     for th in p.ANGLE_BLOCKS for L in p.EXPOSED_OPTIONS]
+            oks = [r for r in cands if r["ok"]]
+            best = None
+            if oks:
+                for r in oks:
+                    r["block"] = head_obstruction(r["theta"], 0.3, r["exposed"], r["tz"], n=1500)
+                # least light blocked (10 % bins), then the larger reachable area, then the longer exposed length
+                best = min(oks, key=lambda r: (round(r["block"], 1), -(r["reach"] or 1.0), -r["exposed"]))
+            if best is None:   # nothing meets every criterion: report the best-reaching setting, flagged
+                near = [r for r in cands if r["rim"] >= p.RIM_MARGIN.v and r["nose"] >= p.MIN_MARGIN.v
+                        and r["cond"] >= p.MIN_MARGIN.v]
+                if near:
+                    best = max(near, key=lambda r: ((r["reach"] or 0), r["exposed"]))
+                    best["block"] = head_obstruction(best["theta"], 0.3, best["exposed"], best["tz"], n=1500)
+                    alt = format_angle_check(fmt, 0.0, exposed=best["exposed"], r_cap=rcap)
+                    best["note"] = (f"reach {best['reach']:.0%} < {p.MIN_REACH.v:.0%}; a 0° block would reach "
+                                    f"{alt['reach']:.0%} but blocks {alt['block']:.0%} of the light (D8)")
+            rec[f"{fmt}|{cls}"] = best
     return rows, rec
 
 
@@ -133,17 +171,44 @@ def circle_overlap(r1, r2, d):
     return a + b - c
 
 
+def head_obstruction(theta_deg, na_c, exposed=None, tz=None, n=3000, seed=1):
+    """Fraction of the transmitted-light cone (focal point at the well bottom, NA na_c, uniform over the
+    condenser aperture) blocked by the holder cylinder AND the dog-leg arm (ray test).  The glass
+    capillary itself is ignored (transparent, thin)."""
+    import numpy as np
+    rng = np.random.default_rng(seed)
+    t = math.radians(theta_deg)
+    L = p.CAP_EXPOSED.v if exposed is None else exposed
+    tz = p.TIP_CLEAR_BOTTOM.v if tz is None else tz
+    u = np.array([math.sin(t), 0.0, math.cos(t)])
+    nose = np.array([0.0, 0.0, tz]) + L * u
+    top = nose + p.HOLDER_L.v * u
+    hr = p.HOLDER_D.v / 2
+    H = p.cond_front_z() - p.WELL_BOTTOM_Z.v                 # condenser front above the focal plane
+    R = H * math.tan(math.asin(na_c))
+    rr = R * np.sqrt(rng.random(n)); ph = 2 * math.pi * rng.random(n)
+    ends = np.stack([rr * np.cos(ph), rr * np.sin(ph), np.full(n, H)], axis=1)
+    s_ = np.linspace(0.0, 1.0, 400)[:, None, None]
+    pts = s_ * ends[None, :, :]                              # (steps, rays, 3)
+    # holder: distance to the axis segment nose->top
+    v = pts - nose
+    proj = np.clip((v @ u), 0.0, p.HOLDER_L.v)
+    d = np.linalg.norm(v - proj[..., None] * u, axis=-1)
+    hit_h = (d <= hr).any(axis=0)
+    # arm: box from the holder top outboard (+X), 12 x 12 section around the holder top
+    a0 = top[2] - p.ARM_T.v / 2
+    in_arm = ((pts[..., 0] >= top[0] - 6) & (np.abs(pts[..., 1]) <= p.ARM_T.v / 2) &
+              (pts[..., 2] >= a0) & (pts[..., 2] <= a0 + p.ARM_T.v))
+    hit_a = in_arm.any(axis=0)
+    return float((hit_h | hit_a).mean())
+
+
 def illumination_block(theta_deg, na_c):
-    """Fraction of the illumination cone blocked by the holder nose (disc of holder
-    diameter, at the nose height, offset by the capillary lean).  Arm is ignored
-    because it sits directly above the holder and is narrower (12 mm)."""
+    """Kept for the generated tables: returns (blocked fraction incl. arm, cone radius at nose, holder offset)."""
     hg = head_geometry(theta_deg)
     nx, _, nz = hg["nose"]
-    h = nz - p.WELL_BOTTOM_Z.v
-    rc = h * math.tan(math.asin(na_c))
-    # holder projected footprint ~ disc of radius HOLDER_D/2 centred at nose x (conservative)
-    rh = p.HOLDER_D.v / 2
-    return circle_overlap(rc, rh, abs(nx)) / (math.pi * rc * rc), rc, nx
+    rc = (nz - p.WELL_BOTTOM_Z.v) * math.tan(math.asin(na_c))
+    return head_obstruction(theta_deg, na_c), rc, nx
 
 
 # ----------------------------------------------------------------------------- 3
@@ -178,7 +243,8 @@ def sweep(variant, condenser, workflow="WA"):
             poses.append(("grid_safe", f"g{i}{j}", x, y, dz_safe, 0.0, 0.0))
             poses.append(("grid_top", f"g{i}{j}", x, y, dz_top, 0.0, 0.0))
     if p.WORKFLOWS[workflow]["stage_moves"]:
-        hx, hy = p.STAGE_TRAVEL_X.v / 2, p.STAGE_TRAVEL_Y.v / 2
+        tx, ty = max((st["travel"] for st in p.STAGES.values()), key=lambda t: t[0] * t[1])
+        hx, hy = tx / 2, ty / 2        # largest stage travel considered (SCAN IM 120 x 80)
         for sx in (-hx, 0, hx):
             for sy in (-hy, 0, hy):
                 poses.append(("stage_corner", f"s{sx:+.0f}{sy:+.0f}", 0.0, 0.0, dz_safe, sx, sy))  # stage moves only at safe-Z
@@ -227,6 +293,15 @@ def sweep(variant, condenser, workflow="WA"):
                         sy=round(sy, 2), min_clear=round(worst[0], 2), pair=[worst[1], worst[2]],
                         hits=sorted(set(tuple(h) for h in hits))))
     return res
+
+
+def params_hash():
+    """Hash of the inputs that change analysis results (params.py + model.py + analysis.py)."""
+    import hashlib
+    h = hashlib.sha256()
+    for fn in ("params.py", "model.py", "analysis.py"):
+        h.update(open(os.path.join(HERE, fn), "rb").read())
+    return h.hexdigest()[:16]
 
 
 def d1_metrics():
@@ -296,8 +371,9 @@ if __name__ == "__main__":
             print(f"{wf} {var:4s} {cond:28s} pick ok {s['pick']['ok']:3d}/96  safe ok {s['safe']['ok']:3d}/96 "
                   f" grid_safe {s['grid_safe']['ok']}/35 grid_top {s['grid_top']['ok']}/35  "
                   f"minclear(pick)={s['pick']['min_clear']} {s['pick']['worst_pair']}  [{time.time()-t0:.0f}s]")
+    out["params_hash"] = params_hash()
     with open(os.path.join(OUT, "analysis.json"), "w") as f:
-        json.dump(out, f, indent=1)
+        json.dump(out, f, indent=1, default=lambda o: None)
 
     # markdown tables
     L = ["<!-- generated by cad/analysis.py - do not edit by hand -->",
@@ -315,17 +391,30 @@ if __name__ == "__main__":
           "|---|---|---|---|---|---|---|"]
     for c in out["capillary_set"]:
         L.append(f"| {c['name']} | {c['od']} | {c['id']} | {c['max_angle']:.1f}° | {c['rim_clear_8deg']:.2f} | {c['part']} | {c['status']} |")
-    L += ["", "### 1c. Plate formats x capillary angle (exposed length 30 mm, IX-ULWCD; OK = rim >= "
-          f"{p.RIM_MARGIN.v} mm, holder and condenser >= {p.MIN_MARGIN.v} mm)", "",
-          "| plate | angle | rim clearance | holder over plate material | condenser clearance at safe-Z | light blocked (NA 0.3) | OK |",
-          "|---|---|---|---|---|---|---|"]
+    L += ["", "### 1c. Plate formats x capillary angle (OD 1.0, exposed 30 mm, IX-ULWCD)", "",
+          f"OK = rim >= {p.RIM_MARGIN.v} mm, holder over plate and head top (arm + tubing) under the condenser at "
+          f"safe-Z >= {p.MIN_MARGIN.v} mm, flat wells reachable bottom area >= {p.MIN_REACH.v:.0%}. "
+          "Tip axis height tz keeps the lowest edge of the tilted tip >= 0.1 mm above the bottom.", "",
+          "| plate | angle | tz (mm) | rim clearance | holder over plate | condenser at safe-Z | reachable bottom | light blocked (NA 0.3) | OK |",
+          "|---|---|---|---|---|---|---|---|---|"]
     for r in out["format_angle"]["rows"]:
         nose = "not over rim" if r["nose"] == float("inf") else f"{r['nose']:.1f}"
-        L.append(f"| {r['fmt']} | {r['theta']:.0f}° | {r['rim']:.2f} | {nose} | {r['cond']:.1f} | {r['block']:.0%} | {'yes' if r['ok'] else 'no'} |")
-    L += ["", "Recommended angle block per plate format:", "", "| plate | block | exposed length | rim | condenser at safe-Z | light blocked |", "|---|---|---|---|---|---|"]
-    for fmt, r in out["format_angle"]["recommended"].items():
-        L.append(f"| {fmt} | " + (f"{r['theta']:.0f}° | {r['exposed']:.0f} mm | {r['rim']:.2f} | {r['cond']:.1f} | {r['block']:.0%} |" if r else "none | – | – | – | – |"))
-    L += ["", "## 2. Holder obstruction of transmitted light (holder Ø10 at the collet nose)", "",
+        reach = "centre (U)" if r["reach"] is None else f"{r['reach']:.0%}"
+        L.append(f"| {r['fmt']} | {r['theta']:.0f}° | {r['tz']:.2f} | {r['rim']:.2f} | {nose} | {r['cond']:.1f} | {reach} | "
+                 f"{r['block']:.0%} | {'yes' if r['ok'] else 'no'} |")
+    L += ["", "Recommended angle block and exposed length per plate and capillary class "
+          f"(max holder stack = longest HOLDER_L that keeps {p.MIN_MARGIN.v} mm under the condenser):", "",
+          "| plate | class | block | exposed | tz (mm) | rim | condenser at safe-Z | reachable | light blocked | max holder stack (mm) | note |",
+          "|---|---|---|---|---|---|---|---|---|---|---|"]
+    for key, r in out["format_angle"]["recommended"].items():
+        fmt, cls = key.split("|")
+        if not r:
+            L.append(f"| {fmt} | {cls} | none | – | – | – | – | – | – | – | no block meets the margins |")
+            continue
+        reach = "centre (U)" if r["reach"] is None else f"{r['reach']:.0%}"
+        L.append(f"| {fmt} | {cls} | {r['theta']:.0f}° | {r['exposed']:.0f} mm | {r['tz']:.2f} | {r['rim']:.2f} | {r['cond']:.1f} | "
+                 f"{reach} | {r['block']:.0%} | {r['holder_l_max']:.1f} | {r.get('note', '')} |")
+    L += ["", "## 2. Transmitted light blocked by the head (holder Ø10 + 12 mm arm, ray test; capillary ignored)", "",
           "| angle | condenser NA used | cone radius at holder nose (mm) | holder offset (mm) | blocked fraction |",
           "|---|---|---|---|---|"]
     for r in out["illumination"]:

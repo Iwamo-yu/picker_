@@ -20,6 +20,9 @@ for cand in (os.environ.get("JP_FONT", ""), os.path.join(HERE, "ipaexg.ttf"),
         font_manager.fontManager.addfont(cand)
         plt.rcParams["font.family"] = font_manager.FontProperties(fname=cand).get_name()
         break
+else:
+    sys.exit("figures.py: no Japanese font found. Set JP_FONT to an IPAexGothic/Noto CJK .ttf "
+             "(e.g. ipaexg.ttf from the japanize-matplotlib sdist) and re-run.")
 
 IMG = os.path.join(HERE, "img")
 RED = "#c0392f"
@@ -73,8 +76,8 @@ def measure_points():
     # ---------------- 正面 (オペレータ側から)
     ax = axs[0]
     draw(ax, m, "xz")
-    arrow(ax, (-215, T), (-215, 0), "M1 定盤 → ステージ上面\n(現在 仮 200 mm)", off=(-8, 0), rot=90)
-    arrow(ax, (-rc, zc + 85), (rc, zc + 85), "M6 コンデンサ外径\n(仮 Ø80)", off=(0, 18))
+    arrow(ax, (-215, T), (-215, 0), f"M1 定盤 → ステージ上面\n(現在 {p.STAGE_TOP_ABOVE_TABLE.v:.0f} mm, {p.STAGE_TOP_ABOVE_TABLE.status})", off=(-8, 0), rot=90)
+    arrow(ax, (-rc, zc + 85), (rc, zc + 85), f"M6 コンデンサ外径\n(Ø{p.COND_D.v:.0f}, {p.COND_D.status})", off=(0, 18))
     arrow(ax, (75, p.PLATE_H.v), (75, zc), "M8 プレート上面 → コンデンサ下端\n(ピント合わせ状態で)", off=(95, 0), ha="center")
     arrow(ax, (-p.STAGE_X.v / 2, -40), (p.STAGE_X.v / 2, -40), "M3 ステージ外形・クリップ", off=(0, -14))
     arrow(ax, (p.IX73_W.v / 2, T + 60), (L["tower_x"] + 120, T + 60), "M15 本体右側面 → 定盤端 の空き", off=(0, 16))

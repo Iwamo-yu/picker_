@@ -22,7 +22,7 @@ The layout follows from three constraints found and quantified in this study:
 2. **A near-vertical capillary must share the optical axis with the condenser.** That fits only under a long-working-distance condenser (**IX-ULWCD, WD 73 mm → {{SW_WB_R08_ULWCD_PICK}}/96 wells** in W-B, {{SW_WA_R08_ULWCD_PICK}}/96 in W-A) or with the illumination column tilted back. The IX2-LWUCD (WD 27 mm) and IX2-MLWCD (WD 45 mm) block most positions.
 3. **Only the well on the optical axis is seen.** Observed picking of all 96 wells therefore needs the stage to move them there. Evident's IX3-SSU (76 × 52 mm) reaches only {{D1_WB_SSU_WELLS}}/96. The manual IX3-SVR (114 × 75) and 120 × 80 motorised stages reach 96/96.
 
-**Freeze gate.** The condenser outline, stage height and eyepiece envelope are placeholders, because the IX73 drawing could not be obtained. The clearances near the condenser ({{SW_WB_R08_ULWCD_SAFE_CLEAR}}–5 mm) are **not design evidence yet**. Nothing is frozen until M1, M3, M4, M6, M7, M8, M10 and M15 are measured (`docs/05_measurement_checklist.md`).
+**Freeze gate.** The condenser outline, stage height and eyepiece envelope are placeholders, because the IX73 drawing could not be obtained. The clearances near the condenser ({{SW_WB_R08_ULWCD_SAFE_CLEAR}}–5 mm) are **not design evidence yet**. Nothing is frozen until {{FREEZE_GATE}} are measured (`docs/05_measurement_checklist.md`).
 
 ## Deliverables
 
@@ -45,7 +45,7 @@ The layout follows from three constraints found and quantified in this study:
 | – | Capillary sizing for 100 µm – 1 mm objects | `docs/08_capillary_sizing.md` |
 | – | Plate formats (6–96 well) and exchangeable angle blocks ({{ANGLE_BLOCKS_TXT}}) | `docs/10_plate_formats_angle_blocks.md` |
 | – | Pre-assembly actions (measure / decide / order / fabricate, Japanese) | `docs/11_pre_assembly_actions_ja.md` |
-| – | Parts candidates (38 items, from web excerpts; not an order list) | `docs/12_parts_candidates.md`, `docs/parts/candidates.csv`, `docs/parts/research_notes.md` |
+| – | Parts candidates (42 items, from web excerpts; not an order list) | `docs/12_parts_candidates.md`, `docs/parts/candidates.csv`, `docs/parts/research_notes.md` |
 | – | Japanese assembly guide (auto-updated) | `docs/assembly_ja/assembly_guide_ja.html` (`python tools/build_all.py`) |
 | – | Literature review (5 papers) | `docs/01_literature_review.md` |
 | – | Functional diagram (pump → tubing → capillary; PC → XYZ) | `docs/img/functional_diagram.png` |
@@ -66,7 +66,7 @@ The network policy of the authoring session blocked Zenodo, the publishers, Evid
 ```bash
 pip install build123d matplotlib
 python cad/model.py        # STEP + STL + parts.json          (~10 s)
-python cad/analysis.py     # well access, light obstruction, 96-well clearance sweep (~4 min)
+python cad/analysis.py     # well access, light obstruction, clearance sweeps (~10 min)
 python cad/views.py        # dimensioned views + diagrams
 python cad/render_docs.py  # README.md + docs/*.md from README.src.md + docs/src/*.md
 python viewer/build_viewer.py

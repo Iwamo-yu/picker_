@@ -19,7 +19,7 @@ It is the cleanest robust layout for three reasons, each backed by the model:
 2. **The frame avoids every side of the IX73 that is used or unknown.** The operator side and eyepieces (front), the illumination pillar and lamp (rear) and the camera port (left, assumed) all stay clear. The tower axis is {{WB_GAP:.0f}} mm clear of the body side (W-A: {{WA_GAP:.0f}} mm), and nothing touches the microscope or its stage.
 3. **The stiff, fixed parts are the long ones.** The Y beam is supported at both ends. The cantilevers are the X support beam and the arm ({{WB_ARM_L}} mm in W-B, {{WA_ARM_L}} mm in W-A). Both deflect repeatably, and the image calibration absorbs the static sag.
 
-**Nothing here is frozen** until M1, M3, M4, M6, M7, M8, M10 and M15 are measured (`09_workflow_D1.md`, freeze gate).
+**Nothing here is frozen** until {{FREEZE_GATE}} are measured (`09_workflow_D1.md`, freeze gate).
 
 ## 2. What is fixed and what moves
 
@@ -56,9 +56,10 @@ Why Y is the fixed axis and X the cantilever: the side tower gives a naturally l
 
 - **Screw.** Ball screw, lead 1 mm (THK KR20 class, S30), or TR8×2 *single-start, 2 mm lead* in the fallback architecture. Never the common Tr8×8(P2) four-start (8 mm lead), which can back-drive under load (S35).
 - **Holding without power.** Back-driving torque from the Z load is T = F·l·η/(2π). With F ≈ 3 N (0.3 kg), l = 1 mm and η ≈ 0.8, T ≈ 0.4 mN·m. A NEMA17's unpowered detent torque is typically about 10–20 mN·m (catalogue class, to be confirmed for the chosen motor), a margin of roughly 25–50×. With a TR8×2 bronze nut, the lead angle (≈5.2° at 7 mm pitch diameter) is below the friction angle (≈6–11° for μ = 0.1–0.2), so the screw is nominally self-locking. Vibration can still creep a marginal self-locking screw.
-- **Conclusion.** No brake and no counterbalance are needed at this Z load. Add a brake (for example the Oriental DRS2 brake option, S32) only if the Z group grows above about 0.5 kg or if a lead ≥2 mm ball screw is chosen.
+- **Conclusion.** No brake and no counterbalance are needed at this Z load. Add a brake (for example the Oriental DRS2 brake option, S32) if the holding ratio (motor detent torque ÷ back-driving torque) falls below about 10×. That happens with a Z group above about 1 kg on a 2 mm lead, or with any lead ≥ 5 mm.
 - **Resolution.** 1 mm lead / 200 full steps = 5 µm per full step, and 16× microstepping gives 0.31 µm commanded increments. Microstep linearity limits real incremental accuracy to a fraction of a full step, which is sufficient for the ≤5 µm command and 10–20 µm repeatability targets.
-- **Approach.** Move fast to safe-Z ({{SAFE_Z:.2f}}), then to a pre-contact height about 0.5 mm above the stored well bottom, then land at about 10 µm/s (S23) to the stand-off height.
+- **Homing.** Z to the **reference switch** (head clears the condenser at every XY), then X to park, then Z higher if needed (`06_electrical.md`). The top of the Z stroke is not a safe position near the optical axis.
+- **Approach.** Move fast to safe-Z ({{SAFE_Z:.2f}}), then to a pre-contact height about 0.5 mm above the stored well bottom, then land at about 10 µm/s (S23) over the last ~50 µm to the stand-off height (per plate × block × class, `10_…`). A 0.5 mm slow zone would take 50 s per landing, so the slow zone is kept short and the bottom height is calibrated per plate.
 
 ## 6. Capillary holder concept
 
@@ -118,6 +119,6 @@ Each loop takes the full stroke with a bend radius of at least 25 mm (PTFE kink 
 | Where does the capillary enter the plate? | Vertically from above with an 8° lean towards +X. The holder nose stays ≈19 mm above the plate top at pick height. |
 | Where does the tubing leave the head? | Holder top → side of the arm → clamp on the Z carriage (outboard, x ≈ tip + {{WB_ARM_L}} mm). |
 | Likely collision regions? | Condenser front (arm and tubing, {{SW_WB_R08_ULWCD_SAFE_CLEAR}} mm at safe-Z with a placeholder condenser); condenser carrier arm vs X support beam (placeholder); well rims (angle); lid; in W-B, the plate moving under the tip if the stage moves below safe-Z. |
-| How does the condenser constrain the angle? | Indirectly: the wells force near-vertical, so the capillary must sit below the condenser. That needs WD ≥ about 65 mm (IX-ULWCD) or the column tilted back. |
+| How does the condenser constrain the angle? | Indirectly: the wells force near-vertical, so the capillary must sit below the condenser. With the current head it needs a condenser front ≥ about {{WD_REQ:.0f}} mm above the well bottom (IX-ULWCD, WD 73 mm) for a {{MIN_MARGIN:.0f}} mm margin, or the column tilted back. |
 | Free space needed around the microscope? | Right side: from the body side (x = {{IX73_HALF_W}}) to x ≈ +{{WB_FOOT_X}} (W-B) / +{{WA_FOOT_X}} (W-A) for the frame, plus the pump and controller beyond, if placed there. Nothing on the front, left or rear. |
-| Which dimensions still need measuring? | Freeze gate: M1, M3, M4, M6, M7, M8, M10, M15 (`05_measurement_checklist.md`). |
+| Which dimensions still need measuring? | Freeze gate: {{FREEZE_GATE}} (`05_measurement_checklist.md`). |
