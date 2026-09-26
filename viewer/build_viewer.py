@@ -49,6 +49,9 @@ data = dict(parts=meta["parts"], variants=meta["variants"], condensers=meta["con
             workflows={k: dict(label=v["label"], layout=v["layout"]) for k, v in meta["workflows"].items()},
             export_set=meta["export_set"], d1=d1, steps=STEPS)
 html = open(os.path.join(HERE, "template.html")).read()
+from keynums import keynums  # noqa: E402
+from render_docs import render  # noqa: E402
+html = render(html, keynums())
 html = html.replace("/*__DATA__*/null", json.dumps(data, separators=(",", ":"))).replace("/*__STL__*/null", json.dumps(stl, separators=(",", ":")))
 fn = os.path.join(HERE, "ix73_picker_viewer.html")
 open(fn, "w").write(html)

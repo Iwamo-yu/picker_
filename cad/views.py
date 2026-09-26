@@ -17,11 +17,15 @@ from matplotlib.patches import Circle, FancyArrowPatch, Polygon, Rectangle  # no
 
 sys.path.insert(0, os.path.dirname(__file__))
 import params as p  # noqa: E402
-from model import ARM_L, Z_PICK, build, head_geometry, well_xy  # noqa: E402
+from model import Z_PICK, build, head_geometry, well_xy  # noqa: E402
+
+WF = p.DEFAULT_WORKFLOW                       # dimensioned views show the baseline workflow
+WFL = {"WA": "W-A", "WB": "W-B"}[WF]
+ARM_L = p.layout(WF)["arm_l"]
 
 IMG = os.path.join(os.path.dirname(__file__), "..", "docs", "img")
 os.makedirs(IMG, exist_ok=True)
-SC = {"STD": "#2f7d4f", "MFR": "#2f7d4f", "DER": "#3a64b0", "DES": "#3a64b0", "APX": "#b7791f", "PH": "#c0392f"}
+SC = {"STD": "#2f7d4f", "MFR": "#2f7d4f", "MEAS": "#2f7d4f", "DER": "#3a64b0", "DES": "#3a64b0", "APX": "#b7791f", "PH": "#c0392f"}
 FILL = {"ix73": "#cfd6d9", "condenser": "#b9aee0", "frame": "#7f98aa", "actuator": "#5f97ae", "motor": "#4a555b",
         "moving": "#6cc39f", "holder": "#2f8f6d", "plate": "#eef3f5", "pump": "#b0b4b7", "electronics": "#9aa7ae",
         "switch": "#e0a84a", "cable": "#9aa3a8", "tubing": "#e7b92f", "table": "#e9eced", "capillary": "#38c4d8"}
@@ -101,7 +105,7 @@ def capillary_line(ax, proj, theta, pose=(0, 0, 0)):
 
 # ---------------------------------------------------------------------------- TOP
 def top_view():
-    m = build("R08", "IX-ULWCD")
+    m = build("R08", "IX-ULWCD", WF)
     fig, ax = plt.subplots(figsize=(13, 9.2))
     draw_parts(ax, m, "xy", skip=("table",))
     L, W = p.PLATE_L.v, p.PLATE_W.v
@@ -111,18 +115,19 @@ def top_view():
             x, y = well_xy(r, c)
             ax.add_patch(Circle((x, y), p.WELL_D_TOP.v / 2, fc="white", ec="#555", lw=0.4))
             ax.plot(x, y, ".", color="#0f7483", ms=2)
-    LY = p.layout("WA")
+    LY = p.layout(WF)
     hx, hy = LY["travel_x"] / 2, LY["travel_y"] / 2
-    ax.add_patch(Rectangle((-hx, -hy), 2 * hx, 2 * hy, fc="none", ec="#3a64b0", lw=1.4, ls="--"))
-    ax.text(-hx + 2, hy - 5, f"W-A capillary-tip XY travel {LY['travel_x']:.0f} x {LY['travel_y']:.0f}",
+    ax.add_patch(Rectangle((LY["x_min"], LY["y_min"]), LY["travel_x"], LY["travel_y"], fc="none", ec="#3a64b0",
+                           lw=1.4, ls="--"))
+    ax.text(LY["x_min"] + 2, LY["y_max"] + 4, f"{WFL} capillary-tip XY travel {LY['travel_x']:.0f} x {LY['travel_y']:.0f}",
             color=SC["DES"], fontsize=7.5)
     ax.add_patch(Circle((0, 0), p.COND_D.v / 2 + 10, fc="none", ec=SC["PH"], lw=1, ls=":"))
-    ax.text(-70, -62, "condenser keep-out\n(Ø80 PH + 10)", color=SC["PH"], ha="right", fontsize=7)
+    ax.text(-70, -62, f"condenser keep-out\n(Ø{p.COND_D.v:.0f} {p.COND_D.status} + 10)", color=SC["PH"], ha="right", fontsize=7)
     # capillary + arm at reference pose
     ax.plot([0, ARM_L], [0, 0], color=FILL["moving"], lw=4)
     ax.plot(0, 0, "o", color="#1596a8", ms=4)
     # extreme arm positions (ghosts)
-    for tx, ty in [(-hx, hy), (hx, -hy)]:
+    for tx, ty in [(LY["x_min"], LY["y_max"]), (LY["x_max"], LY["y_min"])]:
         ax.plot([tx, tx + ARM_L], [ty, ty], color=FILL["moving"], lw=1.5, alpha=0.5, ls="--")
         ax.add_patch(Rectangle((tx + ARM_L, ty - 13), 30, 26, fc=FILL["actuator"], ec="#333", alpha=0.35, lw=0.5))
     # dims
@@ -136,7 +141,7 @@ def top_view():
     dim(ax, (-p.STAGE_X.v / 2, -p.STAGE_Y.v / 2 - 12), (p.STAGE_X.v / 2, -p.STAGE_Y.v / 2 - 12),
         "stage 232 (MFR plain stage), position PH", "MFR")
     dim(ax, (-p.IX73_W.v / 2, p.BODY_Y_FRONT.v - 22), (p.IX73_W.v / 2, p.BODY_Y_FRONT.v - 22),
-        "IX73 body W 323 (MFR); front face y=-235 PH", "MFR")
+        f"IX73 body W {p.IX73_W.v:.0f} (MFR); front face y={p.BODY_Y_FRONT.v:.0f} {p.BODY_Y_FRONT.status}", "MFR")
     dim(ax, (0, -hy - 30), (ARM_L, -hy - 30), f"dog-leg arm {ARM_L:.0f} (tip -> Z carriage)", "DES")
     tx = LY["tower_x"]
     dim(ax, (p.IX73_W.v / 2, 150), (tx, 150), f"{tx - p.IX73_W.v / 2:.0f} clear gap body -> tower axis", "DES")
@@ -148,7 +153,7 @@ def top_view():
     label(ax, 0, -300, "observation tube / eyepieces envelope (PH)", "PH", ha="center")
     ax.set_xlim(-260, 800); ax.set_ylim(-420, 420); ax.set_aspect("equal")
     ax.set_xlabel("X (mm) - operator's right"); ax.set_ylabel("Y (mm) - away from operator")
-    ax.set_title("TOP VIEW (W-A) - reference pose (tip on optical axis, well plate centred). Origin = optical axis.", fontsize=10)
+    ax.set_title(f"TOP VIEW ({WFL}) - reference pose (tip on optical axis, well plate centred). Origin = optical axis.", fontsize=10)
     ax.grid(alpha=0.25); legend(ax, "lower right")
     fig.tight_layout(); fig.savefig(os.path.join(IMG, "dim_top.png"), dpi=150); fig.savefig(os.path.join(IMG, "dim_top.svg"))
     plt.close(fig)
@@ -156,7 +161,7 @@ def top_view():
 
 # ---------------------------------------------------------------------------- FRONT
 def front_view():
-    m = build("R08", "IX-ULWCD")
+    m = build("R08", "IX-ULWCD", WF)
     fig, ax = plt.subplots(figsize=(13, 9.2))
     draw_parts(ax, m, "xz", ghost=("ix73_obs_tube_eyepieces",))
     capillary_line(ax, "xz", 8)
@@ -174,17 +179,17 @@ def front_view():
                         (p.WELL_BOTTOM_Z.v, -8, "well bottom ~3.05 (derived, plate specific)", "DER")]:
         ax.plot([80, 120, 128], [z, z, zt], color=SC[s], lw=0.8)
         label(ax, 131, zt, t, s, fs=7)
-    dim(ax, (-230, T), (-230, 0), "table -> stage top 200 ?\nPLACEHOLDER (M1)", "PH", rot=90)
+    dim(ax, (-230, T), (-230, 0), f"table -> stage top {p.STAGE_TOP_ABOVE_TABLE.v:.0f}\n{p.STAGE_TOP_ABOVE_TABLE.status} (M1)", p.STAGE_TOP_ABOVE_TABLE.status, rot=90)
     dim(ax, (-200, T), (-200, T + p.IX73_H.v), "IX73 H 656 (MFR, incl. pillar)", "MFR", rot=90, off=(-12, 0))
     zb = Z_PICK + 30
-    dim(ax, (ARM_L + 45, zb + 60), (ARM_L + 45, zb + 110), "Z stroke 50", "DES", rot=90, off=(8, 0))
+    dim(ax, (ARM_L + 45, zb + 60), (ARM_L + 45, zb + 60 + p.layout(WF)["travel_z"]), f"Z stroke {p.layout(WF)['travel_z']:.0f}", "DES", rot=90, off=(8, 0))
     label(ax, ARM_L + 50, zb + 200, "Z actuator lead 1 mm (self-holding\nvia detent / brake option)", "APX")
     label(ax, 20, 64, "thin arm 12x12, runs under condenser", "DES")
-    label(ax, 280, 205, "X actuator 150 stroke on stiff support beam", "APX")
-    label(ax, 330, 120, "Y actuator 100 stroke\non fixed beam", "APX")
+    label(ax, 280, 205, f"X actuator {p.layout(WF)['travel_x']:.0f} stroke on stiff support beam", "APX")
+    label(ax, 330, 120, f"Y actuator {p.layout(WF)['travel_y']:.0f} stroke\non fixed beam", "APX")
     ax.set_xlim(-330, 800); ax.set_ylim(T - 30, 520); ax.set_aspect("equal")
     ax.set_xlabel("X (mm)"); ax.set_ylabel("Z (mm) above stage top")
-    ax.set_title("FRONT VIEW (from operator, -Y) - 8° near-vertical dog-leg head under IX-ULWCD, tip at pick height",
+    ax.set_title(f"FRONT VIEW ({WFL}, from operator, -Y) - 8° near-vertical dog-leg head under IX-ULWCD, tip at pick height",
                  fontsize=10)
     ax.grid(alpha=0.25); legend(ax, "upper right")
     fig.tight_layout(); fig.savefig(os.path.join(IMG, "dim_front.png"), dpi=150); fig.savefig(os.path.join(IMG, "dim_front.svg"))
@@ -193,7 +198,7 @@ def front_view():
 
 # ---------------------------------------------------------------------------- SIDE (section at x=0)
 def side_view():
-    m = build("R08", "IX-ULWCD")
+    m = build("R08", "IX-ULWCD", WF)
     fig, ax = plt.subplots(figsize=(13, 9.2))
     # only parts that cross the x=0 plane +- 60 mm, plus the tower for reference (ghost)
     from model import posed
@@ -210,15 +215,15 @@ def side_view():
     capillary_line(ax, "yz", 8)
     T = -p.STAGE_TOP_ABOVE_TABLE.v
     ax.plot([-600, 600], [T, T], color="#555", lw=1)
-    hy = p.layout("WA")["travel_y"] / 2
-    dim(ax, (-hy, -30), (hy, -30), f"W-A tip Y travel {2 * hy:.0f}", "DES")
+    hy = p.layout(WF)["travel_y"] / 2
+    dim(ax, (-hy, -30), (hy, -30), f"{WFL} tip Y travel {2 * hy:.0f}", "DES")
     dim(ax, (-p.PLATE_W.v / 2, -48), (p.PLATE_W.v / 2, -48), "plate 85.48", "STD")
     dim(ax, (p.BODY_Y_FRONT.v, T - 15), (p.BODY_Y_FRONT.v + p.IX73_D.v, T - 15), "IX73 body D 475 (MFR); position PH", "MFR")
     zc = p.WELL_BOTTOM_Z.v + 73
-    dim(ax, (-70, p.WELL_BOTTOM_Z.v), (-70, zc), "WD 73 (IX-ULWCD, MFR)", "MFR", rot=90, off=(-9, 0))
+    dim(ax, (-70, p.WELL_BOTTOM_Z.v), (-70, zc), f"condenser front {zc - p.WELL_BOTTOM_Z.v:.0f} (IX-ULWCD)", "MFR", rot=90, off=(-9, 0))
     label(ax, 160, 330, "illumination pillar + condenser arm\n(section, position PH, M7-M10)", "PH")
     label(ax, -380, 60, "observation tube / eyepieces\n(PH, M12) - reason the frame\nis NOT a front bridge", "PH")
-    label(ax, -380, 250, f"tower posts (ghosted, x = +{p.layout('WA')['tower_x']})", "DES")
+    label(ax, -380, 250, f"tower posts (ghosted, x = +{p.layout(WF)['tower_x']})", "DES")
     ax.set_xlim(-470, 480); ax.set_ylim(T - 40, 520); ax.set_aspect("equal")
     ax.set_xlabel("Y (mm) - away from operator"); ax.set_ylabel("Z (mm)")
     ax.set_title("SIDE SECTION at optical axis (x = 0, viewed from +X). Tower beyond section shown ghosted.", fontsize=10)
@@ -372,12 +377,12 @@ def d1_compare():
     # --- W-B
     ax = axs[1]
     LB = p.layout("WB")
-    need = (99.0, 63.0)
+    need = ((p.N_COLS - 1) * p.WELL_PITCH.v, (p.N_ROWS - 1) * p.WELL_PITCH.v)
     cols = {"IX3-SVR (manual)": "#2f7d4f", "IX3-SSU (ultrasonic, motorised)": "#c0392f",
             "Maerzhaeuser SCAN IM for IX73": "#3a64b0"}
     for sname, st in p.STAGES.items():
         tx, ty = st["travel"]
-        ax.add_patch(Rectangle((-tx / 2, -ty / 2), tx, ty, fc="none", ec=cols[sname], lw=1.4,
+        ax.add_patch(Rectangle((-tx / 2, -ty / 2), tx, ty, fc="none", ec=cols.get(sname, "#555"), lw=1.4,
                                label=f"{sname}: {tx:.0f} x {ty:.0f}"))
     ax.add_patch(Rectangle((-need[0] / 2, -need[1] / 2), need[0], need[1], fc="#6cc39f", alpha=0.25, ec="#2b3439",
                            ls=":", label="required: well span 99 x 63"))
@@ -398,7 +403,45 @@ def d1_compare():
     fig.savefig(os.path.join(IMG, "d1_workflows.svg")); plt.close(fig)
 
 
+def formats_angles():
+    """Recommended angle block and exposed length per plate format: well section, capillary, holder, condenser."""
+    from analysis import format_angle_matrix
+    _, rec = format_angle_matrix()
+    fmts = list(p.PLATE_FORMATS)
+    fig, axs = plt.subplots(1, len(fmts), figsize=(3.3 * len(fmts), 5.2), sharey=True)
+    wd = p.CONDENSERS["IX-ULWCD"]["WD"].v
+    for ax, fmt in zip(axs, fmts):
+        f, r = p.PLATE_FORMATS[fmt], rec.get(f"{fmt}|S (OD 1.0)")
+        rt, rb, dep = f["d_top"] / 2, f["d_bot"] / 2, f["depth"]
+        wall = 4.0
+        ax.add_patch(Polygon([(-rt - wall, dep), (-rt, dep), (-rb, 0), (rb, 0), (rt, dep), (rt + wall, dep),
+                              (rt + wall, -1.2), (-rt - wall, -1.2)], fc="#dfe6e8", ec="#555", lw=0.7))
+        ax.plot([-45, 45], [wd, wd], color="#7d6aa8", lw=1.2)
+        ax.text(-44, wd + 1.5, "IX-ULWCD front", color="#7d6aa8", fontsize=7)
+        ax.axhline(dep + 5, color="#3a64b0", lw=0.8, ls=":")
+        ax.text(-44, dep + 6, "safe-Z (rim + 5)", color="#3a64b0", fontsize=7)
+        if r:
+            t = math.radians(r["theta"]); L = r["exposed"]
+            tip = (0.0, r["tz"])
+            nose = (L * math.sin(t), tip[1] + L * math.cos(t))
+            top = ((L + p.HOLDER_L.v) * math.sin(t), tip[1] + (L + p.HOLDER_L.v) * math.cos(t))
+            ax.plot([tip[0], nose[0]], [tip[1], nose[1]], color="#1596a8", lw=2)
+            ax.plot([nose[0], top[0]], [nose[1], top[1]], color=FILL["holder"], lw=9, solid_capstyle="butt")
+            ax.plot([top[0] - 4, top[0] + 30], [top[1], top[1]], color=FILL["moving"], lw=5)
+            ax.set_title(f"{fmt.split(' (')[0]}\nblock {r['theta']:.0f}°, exposed {L:.0f} mm", fontsize=9.5)
+            reach = "centre" if r["reach"] is None else f"{r['reach']:.0%} of bottom"
+            ax.text(0, -11, f"rim {r['rim']:.1f} · cond {r['cond']:.1f} mm\nlight blocked {r['block']:.0%} · reach {reach}",
+                    ha="center", fontsize=8)
+        ax.set_xlim(-46, 46); ax.set_ylim(-18, 82); ax.set_aspect("equal"); ax.grid(alpha=0.2)
+    axs[0].set_ylabel("mm above well bottom")
+    fig.suptitle("Angle block and exposed length per plate format, capillary class S (OD 1.0); other classes: docs/10. "
+                 "Tip at well-bottom centre; condenser geometry PH",
+                 fontsize=10)
+    fig.tight_layout(); fig.savefig(os.path.join(IMG, "formats_angle_blocks.png"), dpi=150); plt.close(fig)
+
+
 if __name__ == "__main__":
+    formats_angles()
     d1_compare()
     top_view(); front_view(); side_view(); angle_detail(); functional_diagram(); electrical_diagram()
     print("views written to", os.path.abspath(IMG))

@@ -91,7 +91,8 @@ class Model:
 VARIANTS = {
     "V00": dict(theta=0.0, label="0 deg (vertical)"),
     "R08": dict(theta=8.0, label="8 deg near-vertical dog-leg (RECOMMENDED)"),
-    "V30": dict(theta=30.0, label="30 deg inclined"),
+    "V20": dict(theta=20.0, label="20 deg block (24/12-well)"),
+    "V30": dict(theta=30.0, label="30 deg block (12/6-well)"),
     "V45": dict(theta=45.0, label="45 deg inclined"),
 }
 CONDENSER_CHOICES = ["IX2-LWUCD", "IX2-MLWCD", "IX-ULWCD", "NONE (pillar tilted back)"]
@@ -105,13 +106,13 @@ ARM_L = _L0["arm_l"]
 ARM_T = p.ARM_T.v
 ZB_W = 26.0              # Z actuator width (y)              [APX]
 ZB_D = _L0["zb_d"]       # Z actuator depth (x)              [APX]
-Z_BODY_L = p.TRAVEL_Z.v + p.ACT_TABLE_L.v + 2 * p.ACT_END.v   # 170
-X_BAND = _L0["x_band"]   # X actuator y-band relative to tip y
-X_Z = (150.0, 180.0)     # X actuator z (hangs under X support beam)
-XSB_Z = (180.0, 220.0)   # X support beam z
+X_BAND = p.X_BAND        # X actuator y-band relative to tip y
+XSB_BAND = p.XSB_BAND
+X_Z = p.X_Z              # X actuator z (hangs under X support beam)
+XSB_Z = p.XSB_Z          # X support beam z
 TOWER_X = _L0["tower_x"]
-Y_ACT_Z = (150.0, 168.0)
-BEAM_Z = (70.0, 150.0)
+Y_ACT_Z = p.Y_ACT_Z
+BEAM_Z = p.BEAM_Z
 POST_Y = _L0["post_y"]
 TABLE_Z = -p.STAGE_TOP_ABOVE_TABLE.v
 
@@ -128,12 +129,20 @@ def head_geometry(theta_deg):
     return dict(tip=tip, cap_top=cap_top, nose=nose, hold_top=hold_top, u=(ux, 0, uz))
 
 
+def z_ref_dz(variant="R08", exposed=None, cond="IX-ULWCD"):
+    """Z lift from pick height to the reference switch: head top (arm + tubing allowance) sits
+    Z_REF_MARGIN below the condenser front.  Depends on the carriage only (not on the plate)."""
+    hg = head_geometry(VARIANTS[variant]["theta"])
+    head_top = hg["hold_top"][2] + p.ARM_T.v / 2 + p.HEAD_TOP_ALLOW.v
+    return p.cond_front_z(cond) - p.Z_REF_MARGIN.v - head_top
+
+
 def build(variant="R08", condenser="IX-ULWCD", workflow=p.DEFAULT_WORKFLOW) -> Model:
     m = Model(variant, condenser)
     m.workflow = workflow
     LY = p.layout(workflow)
     ARM_L, TOWER_X, POST_Y = LY["arm_l"], LY["tower_x"], LY["post_y"]
-    X_BODY_L, Y_BODY_L = LY["x_body"], LY["y_body"]
+    X_BODY_L, Y_BODY_L, Z_BODY_L = LY["x_body"], LY["y_body"], LY["z_body"]
     th = VARIANTS[variant]["theta"]
     hg = head_geometry(th)
 
@@ -229,7 +238,7 @@ def build(variant="R08", condenser="IX-ULWCD", workflow=p.DEFAULT_WORKFLOW) -> M
     x_hi = x_lo + X_BODY_L
     m.add("Y_carriage", box(TOWER_X - 25, TOWER_X + 25, yc0 - 25, yc0 + 25, Y_ACT_Z[1], XSB_Z[0]),
           "actuator", "APX", group="Y")
-    m.add("X_support_beam", box(x_lo - 5, TOWER_X + 25, X_BAND[0], X_BAND[1], *XSB_Z),
+    m.add("X_support_beam", box(x_lo - 5, TOWER_X + 25, XSB_BAND[0], XSB_BAND[1], *XSB_Z),
           "frame", "APX", group="Y", note="stiff box section carrying the X actuator")
     m.add("X_actuator_body", box(x_lo, x_hi, X_BAND[0], X_BAND[1], *X_Z), "actuator", "APX", group="Y",
           note="150 mm stroke, ball-screw, width-26 class, table facing -Y")
@@ -250,7 +259,11 @@ def build(variant="R08", condenser="IX-ULWCD", workflow=p.DEFAULT_WORKFLOW) -> M
           "actuator", "APX", group="X", note="50 mm stroke, lead 1 mm ball screw or TR8x2")
     m.add("Z_motor", box(zx0 - 6, zx0 + 36, -21, 21, z_hi, z_hi + p.NEMA17_L.v), "motor", "APX", group="X")
     m.add("Z_home_switch_top", box(zx0 + ZB_D, zx0 + ZB_D + 8, -5, 5, z_hi - 14, z_hi - 2),
-          "switch", "DES", group="X")
+          "switch", "DES", group="X", note="top limit (not the homing reference)")
+    # Z reference switch: carriage level where the head top is Z_REF_MARGIN below the condenser front
+    zref = z_ref_dz(variant) + (hg["hold_top"][2] - p.ARM_T.v / 2)   # arm bottom at reference
+    m.add("Z_reference_switch", box(zx0 + ZB_D, zx0 + ZB_D + 8, 6, 16, zref - 6, zref + 6),
+          "switch", "DES", group="X", note="homing reference: head clears the condenser at any XY")
     m.add("tubing_clamp_Zbody", box(zx0 + ZB_D, zx0 + ZB_D + 12, -ZB_W / 2 - 14, -ZB_W / 2,
                                     z_hi - 30, z_hi - 10), "tubing", "DES", group="X")
 
@@ -345,7 +358,7 @@ def zones(condenser="IX-ULWCD", workflow=p.DEFAULT_WORKFLOW):
 
 
 SHARED_CATS = {"ix73", "plate", "table", "condenser"}
-EXPORT_SET = {"WA": list(VARIANTS), "WB": ["R08"]}
+EXPORT_SET = {"WA": list(VARIANTS), "WB": ["R08", "V20", "V30"]}
 
 
 def safe_key(k):

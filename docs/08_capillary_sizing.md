@@ -27,7 +27,7 @@ Notes:
 
 ## Effect on the mechanics
 
-- **Well access.** The maximum angle falls from 14.8° (OD 1.0) to 12.3° (OD 2.0). The recommended 8° fixed angle is kept for all classes.
+- **Well access.** The maximum angle falls from 14.8° (OD 1.0) to 12.3° (OD 2.0). The 8° block works for all classes in 96-well plates.
 - **Holder.** A collet with **exchangeable inserts for OD 1.0 / 1.5 / 2.0** fits in the same Ø10 mm envelope. The depth stop and liquid-port seal are per insert. If a Ø12 mm body turns out to be needed for the 2.0 mm insert, holder obstruction of the light cone rises slightly; re-run `analysis.py` with `HOLDER_D = 12`.
 - **Tubing.** 1/16″ OD tubing connects to all classes through the holder port, so tubing needs no change.
 - **Calibration.** After changing class, re-run the 3-point image calibration (tip position changes by up to ±0.5 mm between classes).

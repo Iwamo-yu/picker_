@@ -20,7 +20,26 @@ def img(name):
     raise FileNotFoundError(name)
 
 
+import html
+import subprocess
+from keynums import placeholders  # noqa: E402
+
+
+def git(*a):
+    try:
+        return subprocess.check_output(["git", "-C", ROOT, *a], text=True).strip()
+    except Exception:
+        return ""
+
+
 src = open(os.path.join(HERE, "guide.src.html"), encoding="utf-8").read()
+info = git("log", "-1", "--format=%cd · %h", "--date=format:%Y-%m-%d") or "unknown"
+ph_rows = "".join(f"<tr><td><code>{html.escape(n)}</code></td><td>{html.escape(str(v))}</td><td>{html.escape(note)}</td></tr>"
+                  for n, v, note in placeholders())
+log = git("log", "-8", "--format=%cd|%s", "--date=format:%Y-%m-%d")
+changelog = "".join(f"<li>{html.escape(l.split('|', 1)[0])}: {html.escape(l.split('|', 1)[1])}</li>" for l in log.splitlines() if "|" in l)
+parts = open(os.path.join(ROOT, "docs", "parts", "parts_table_ja.html"), encoding="utf-8").read()
+src = src.replace("{{PARTS_TABLE}}", parts).replace("{{BUILD_INFO}}", html.escape(info)).replace("{{PH_TABLE}}", ph_rows).replace("{{CHANGELOG}}", changelog)
 src = re.sub(r"\{\{IMG:([^}]+)\}\}", lambda m: img(m.group(1)), src)
 out = render(src, keynums())
 fn = os.path.join(HERE, "assembly_guide_ja.html")

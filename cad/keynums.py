@@ -54,4 +54,62 @@ def keynums():
         for sname, st in d["stages"].items():
             tag = {"IX3-SVR (manual)": "SVR", "IX3-SSU (ultrasonic, motorised)": "SSU"}.get(sname, "SCANIM")
             k[f"D1_{wf}_{tag}_WELLS"] = st["wells_to_axis"]
+    fa = an.get("format_angle", {}).get("recommended", {})
+    ang = set()
+    md = ["| Plate | Capillary class | Angle block | Exposed length | Rim clearance | Head under condenser at safe-Z | Reachable bottom | Light blocked (NA 0.3) | Note |",
+          "|---|---|---|---|---|---|---|---|---|"]
+    ja = []
+    for key, r in fa.items():
+        fmt, cls = key.split("|")
+        tag = fmt.split("-")[0].split(" ")[0] + "_" + cls[0]     # e.g. 96_S, 48_M
+        name = fmt.split(" (")[0]
+        if not r:
+            md.append(f"| {name} | {cls} | none | – | – | – | – | – | no block meets the margins |")
+            ja.append(f"<tr><td>{name}</td><td>{cls}</td><td colspan=6>条件を満たすブロックなし</td></tr>")
+            continue
+        ang.add(r["theta"])
+        reach = "centre (U-bottom)" if r["reach"] is None else f"{r['reach']:.0%}"
+        note = r.get("note") or ""
+        k[f"FMT{tag}_ANGLE"], k[f"FMT{tag}_EXP"] = r["theta"], r["exposed"]
+        md.append(f"| {name} | {cls} | {r['theta']:.0f}° | {r['exposed']:.0f} mm | {r['rim']:.2f} mm | {r['cond']:.1f} mm | "
+                  f"{reach} | {r['block']:.0%} | {note} |")
+        reach_ja = "中央(U 底)" if r["reach"] is None else f"{r['reach']:.0%}"
+        note_ja = ("底面の到達範囲が基準未満。0° ブロックなら広がるが透過光を大きく遮る(D8)" if note else "")
+        ja.append(f"<tr><td>{name}</td><td>{cls}</td><td>{r['theta']:.0f}°</td><td>{r['exposed']:.0f} mm</td>"
+                  f"<td>{r['rim']:.2f} mm</td><td>{r['cond']:.1f} mm</td><td>{reach_ja}</td><td>{r['block']:.0%}</td><td>{note_ja}</td></tr>")
+    k["FMT_TABLE_MD"] = "\n".join(md)
+    k["FMT_TABLE_JA"] = "".join(ja)
+    k["ANGLE_BLOCKS_TXT"] = " / ".join(f"{a:.0f}°" for a in sorted(ang))
+    hl = [r["holder_l_max"] for r in fa.values() if r]
+    k["HOLDER_L"] = p.HOLDER_L.v
+    k["HOLDER_L_MAX_MIN"] = min(hl) if hl else float("nan")
+    # condenser WD needed for MIN_MARGIN with the current head (from the W-B baseline sweep)
+    sw = an["sweeps"].get("WB|R08|IX-ULWCD")
+    if sw:
+        k["WD_REQ"] = p.CONDENSERS["IX-ULWCD"]["WD"].v - (sw["summary"]["safe"]["min_clear"] - p.MIN_MARGIN.v)
+    import model as mdl
+    for v in ("R08", "V20", "V30"):
+        k[f"ZREF_TIP_{v}"] = mdl.Z_PICK + mdl.z_ref_dz(v)
+    k["COND_ARM_W"] = p.COND_ARM_W.v
+    k["HEAD_TOP_ALLOW"] = p.HEAD_TOP_ALLOW.v
+    k["Z_REF_MARGIN"] = p.Z_REF_MARGIN.v
+    Lb = p.layout("WB")
+    k["WB_Z_MIN_DIST"] = Lb["arm_l"] + Lb["x_min"]
+    k["FREEZE_GATE"] = ", ".join(p.FREEZE_GATE)
+    k["FREEZE_GATE_N"] = len(p.FREEZE_GATE)
+    k["PARAMS_HASH_OK"] = an.get("params_hash") == __import__("analysis").params_hash()
+    k["PH_COUNT"] = len(placeholders())
+    k["MIN_MARGIN"] = p.MIN_MARGIN.v
+    k["RIM_MARGIN"] = p.RIM_MARGIN.v
     return k
+
+
+def placeholders():
+    """All parameters still marked PH (placeholder, to be measured)."""
+    out = []
+    for name, v in vars(p).items():
+        if isinstance(v, p.P) and v.status == "PH":
+            out.append((name, v.v, v.note))
+        elif isinstance(v, dict) and v.get("status") == "PH":
+            out.append((name, "", v.get("note", "")))
+    return out

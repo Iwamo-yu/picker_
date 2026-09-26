@@ -6,7 +6,7 @@
 
 If the requirement is **"pick from any of the 96 wells while watching it through the IX73"**, then **W-B is the baseline**. The IX73 stage brings the source well to the optical axis, the picker picks at the axis, and the stage then brings the destination well to the axis for an observed dispense. W-A (stage fixed, picker reaches every well) can *reach* all 96 wells but can *see* only the well on the optical axis. It observes {{D1_WA_OBSERVED}} well per stage setting, and none at all with a centred plate. W-A stays valid only if the non-axis wells are served blind or by a separate overview camera.
 
-This is a provisional choice. **Nothing is frozen until M1, M6, M7 and M8 are measured** (see "Freeze gate" below).
+This is a provisional choice. **Nothing is frozen until {{FREEZE_GATE}} are measured** (see "Freeze gate" below).
 
 ## Why (numbers from the same CAD and analysis)
 
@@ -40,7 +40,7 @@ Evident's own ultrasonic IX3-SSU stage **cannot** bring the outer columns and ro
 3. **Sequence.** Stage: source well → axis. Z: land at about 10 µm/s and pick. Z: rise to safe-Z ({{SAFE_Z:.2f}} mm). Stage: destination well → axis. Z: land and expel. Z: safe-Z. **The stage moves only with the tip at safe-Z**; the sweep confirms this is clear at all stage-travel corners. Moving it with the tip at pick height drags the capillary through the plate.
 4. **Calibration** simplifies. The pick point is always the optical axis, so image → picker mapping needs only a local 3-point calibration around the axis (SpheroidPicker method, S28). Well positions come from the stage coordinates.
 5. **Destination on another plate.** Two plates do not fit within the stage travel. Transfers between plates need either a plate change, or a hybrid (W-C, not modelled) where the picker carries the object at safe-Z to a fixed destination station beside the stage. W-C brings back W-A's long X travel for that one move.
-6. **Throughput.** Each transfer adds two stage moves (about 1–2 s each at typical 20–50 mm/s stage speeds; to be confirmed for the chosen stage). That is acceptable for spheroid picking, where settling and dwell times dominate (SpheroidPicker waits 7 s before the pick pulse, S28).
+6. **Throughput.** Each transfer adds two stage moves (about 1–2 s each at typical 20–50 mm/s stage speeds; to be confirmed for the chosen stage). The landings take longer. At 10 µm/s, a 50 µm slow zone costs 5 s per landing, or about 10 s per transfer. The SpheroidPicker also dwells 7 s before its pick pulse (S28). One transfer therefore takes roughly 20–30 s, which is acceptable for spheroid picking. The landings, not the stage, set the pace.
 
 ## When W-A is still the better choice
 
@@ -49,7 +49,7 @@ Evident's own ultrasonic IX3-SSU stage **cannot** bring the outer columns and ro
 
 ## Freeze gate
 
-The following must be measured and entered in `cad/params.py` before any part number or bracket is frozen. The model, the sweep and these documents then re-render automatically (`python cad/model.py && python cad/analysis.py && python cad/views.py && python cad/render_docs.py`).
+The following must be measured and entered in `cad/params.py` before any part number or bracket is frozen. The model, the sweep and these documents then re-render automatically (`python tools/build_all.py`).
 
 | Measurement | Decides |
 |---|---|

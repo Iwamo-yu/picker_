@@ -5,7 +5,7 @@ Values marked (S..) come from the source manifest. Values marked ~ are typical c
 
 | Criterion | **A. Industrial compact ball-screw stages** (THK KR20/KR26, MISUMI LX20/LX26, Oriental DRS2 for Z) | **B. Low-cost integrated stages** (FUYU FSL30/FSK30, generic MGN12 + SFU08/12 ball screw + NEMA17) | **C. Custom** (MGN12H rail + Tr8×2 single-start lead screw + NEMA17) |
 |---|---|---|---|
-| Travel availability | KR20: 30–130 mm (S30), so Z 55–80 OK and X 150 needs KR26/LX26; LX26: lead 2/5 mm (S31) | 50–300 mm (S33) | any |
+| Travel availability | KR20: 30–130 mm (S30), so Z 50 mm and X 100 mm (W-B) fit; W-A's X 150 mm needs KR26/LX26; LX26: lead 2/5 mm (S31) | 50–300 mm (S33) | any |
 | Repeatability | ~±0.003 mm (precision grade) to ~±0.01 mm; DRS2 ±0.003 (ground) / ±0.01 (rolled) (S32) | position accuracy 0.05 mm quoted (S33); repeatability ~±0.01–0.02, batch dependent | ~±0.01–0.02 mm with single-direction approach; depends on assembly |
 | Backlash | ~≤0.02 mm, preloaded nut options | ~0.01–0.03 mm | 0.05–0.1 mm with a plain brass nut; ~0.01–0.02 with an anti-backlash POM nut (wears) |
 | Lead / resolution | 1 or 2 mm, so 5–10 µm per full step | 1–5 mm typical | 2 mm, so 10 µm per full step |
@@ -20,8 +20,8 @@ Values marked (S..) come from the source manifest. Values marked ~ are typical c
 
 ## Recommendation (to be frozen only after the geometry is validated)
 
-- **Z: architecture A, 1 mm lead ball screw** (THK KR20 class, 55–80 mm stroke), or an Oriental DRS2 guide type with brake if a closed-loop absolute axis is preferred. Z sets landing accuracy and must not drop, so this is where the money should go.
-- **X: architecture A** (LX26/KR26 class, 150 mm stroke, lead 2 mm). It is the cantilevered axis, so body stiffness and low mass matter most.
+- **Z: architecture A, 1 mm lead ball screw** (THK KR20 class, stroke ≥ 50 mm; the next catalogue stroke up), or an Oriental DRS2 guide type with brake if a closed-loop absolute axis is preferred. Z sets landing accuracy and must not drop, so this is where the money should go.
+- **X: architecture A** (KR20/LX26 class, stroke ≥ 100 mm in W-B or 150 mm in W-A, lead 1–2 mm). It is the cantilevered axis, so body stiffness and low mass matter most.
 - **Y: A or B.** It is fixed on a supported beam, so a good integrated stage from B is acceptable. Choose A if one supplier and consistent documentation matter.
 - **Architecture C** is kept as a comparison and fallback. It is appropriate only if lead times block A/B. In that case, use a Tr8×2 single-start screw (2 mm lead, **not** Tr8×8), an anti-backlash nut, a fixed-floating bearing arrangement, and always approach from one direction.
 

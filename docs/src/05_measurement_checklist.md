@@ -1,10 +1,10 @@
 # Measurement checklist for the real IX73 (do this before detailed CAD)
 
-Reference frame: origin at the optical axis on the stage-insert top surface; +X operator's right, +Y away from the operator, +Z up. Photograph each measurement with a ruler in view. Enter the values in `cad/params.py`, change their status from `PH` to `MEAS`, and re-run `python cad/model.py && python cad/analysis.py && python cad/views.py && python viewer/build_viewer.py`.
+Reference frame: origin at the optical axis on the stage-insert top surface; +X operator's right, +Y away from the operator, +Z up. Photograph each measurement with a ruler in view. Enter the values in `cad/params.py`, change their status from `PH` to `MEAS`, and re-run `python tools/build_all.py`.
 
 **Priority:** A = decides feasibility now; B = needed before brackets; C = nice to have.
 
-**Freeze gate:** M1, M3, M4, M6, M7, M8, M10 and M15 must be measured before any bracket or part number is frozen (`09_workflow_D1.md`). For W-B, also record the chosen motorised stage's envelope and travel.
+**Freeze gate:** {{FREEZE_GATE}} must be measured before any bracket or part number is frozen (`09_workflow_D1.md`). For W-B, also record the chosen motorised stage's envelope and travel.
 
 | ID | Pri | Measurement | Currently in model | Why it matters |
 |---|---|---|---|---|
@@ -15,7 +15,7 @@ Reference frame: origin at the optical axis on the stage-insert top surface; +X 
 | M5 | B | Distances from optical axis to body front, rear, left, right faces | W/D MFR, position PH | tower placement |
 | M6 | A | **Condenser model(s) available in the lab** (IX2-LWUCD? IX-ULWCD? MLWCD?) and outer diameter | Ø80 PH | decides the whole approach (`02_…`) |
 | M7 | A | Condenser carrier / arm: width, lowest point, distance from axis to its left/right faces | ±45 mm PH | X support beam clearance (5 mm in model) |
-| M8 | A | Condenser front-lens height above plate top with the condenser focused for 4× and 10× (real WD in use) | WD MFR + derived | clearance under the condenser |
+| M8 | A | Condenser front-lens height above plate top with the condenser focused for 4× and 10× (real WD in use) | WD MFR + derived | clearance under the condenser. Enter the measured front height above the stage top as `COND_FRONT_Z_MEAS` in `cad/params.py`. |
 | M9 | B | Illumination pillar: position, section, height; lamp housing envelope | PH | rear clearance |
 | M10 | A | Illumination column tilted back: angle, and envelope of the column in the tilted position | PH | fallback option |
 | M11 | B | Free height above the plate with the condenser raised to its top stop | – | capillary change position |
@@ -30,3 +30,4 @@ Reference frame: origin at the optical axis on the stage-insert top surface; +X 
 | M20 | C | Vibration: table isolation on/off; bench vs floated table | – | settle time before pick |
 | M21 | B | Where the plate lid is placed during work | none | workflow |
 | M22 | C | Cable routes to the PC/controller location | – | cable lengths |
+| M23 | A | **Holder stack height**: with the real holder (collet, nut, depth stop, seal, side port) mounted on its angle block, the distance from the collet nose to the highest point of the head, including the tubing clip | `HOLDER_L` {{HOLDER_L:.0f}} mm + arm + {{HEAD_TOP_ALLOW}} mm tubing | condenser margin falls about 1 mm per mm; limit ≈ {{HOLDER_L_MAX_MIN:.1f}} mm (`10_…`) |

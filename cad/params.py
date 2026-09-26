@@ -10,6 +10,10 @@ Every dimension carries a provenance STATUS so unknowns are never hidden:
   APX   approximate envelope (catalogue class, not a frozen part number)
   PH    PLACEHOLDER - not verified, MUST be measured on the real IX73
   DES   design choice made in this layout study (free parameter)
+  MEAS  measured on the real IX73 / real part (replaces PH after the freeze-gate measurements)
+
+Note: most MFR values were read from search-engine excerpts of manufacturer pages, not from the
+documents themselves (see the "Retrieval" column of docs/source_manifest.md).
 
 Source IDs (Sxx) refer to docs/source_manifest.md.
 
@@ -50,6 +54,28 @@ WELL_BOTTOM_Z = P(PLATE_H.v - WELL_DEPTH.v, "DER", "S11,S13",
 PLATE_CENTER_XY = (P(0.0, "DES", "", "plate centred on optical axis = 'stage reference position'"),
                    P(0.0, "DES", "", ""))
 
+# Other plate formats (SBS footprint).  Flat-bottom Corning Costar TC plates.
+# d_top/d_bot/depth/pitch from Corning dimension-sheet excerpts (S16); 6-well diameter is a single value.
+PLATE_FORMATS = {
+    "96 U-bottom (Corning 7007)": dict(rows=8, cols=12, d_top=6.86, d_bot=6.35, depth=11.30, pitch=9.00,
+                                       status="MFR", src="S13"),
+    "48-well (Corning 3548)": dict(rows=6, cols=8, d_top=11.56, d_bot=11.05, depth=17.4, pitch=13.08,
+                                   status="MFR", src="S16"),
+    "24-well (Corning 3524)": dict(rows=4, cols=6, d_top=16.26, d_bot=15.62, depth=17.4, pitch=19.3,
+                                   status="MFR", src="S16"),
+    "12-well (Corning 3513)": dict(rows=3, cols=4, d_top=22.73, d_bot=22.11, depth=17.5, pitch=26.01,
+                                   status="MFR", src="S16"),
+    "6-well (Corning 3516)": dict(rows=2, cols=3, d_top=34.8, d_bot=34.8, depth=17.4, pitch=39.12,
+                                  status="MFR", src="S16"),
+}
+# Exchangeable angle blocks on the kinematic mount (design choice; 0-12 deg fine tilt is replaced by blocks)
+ANGLE_BLOCKS = [8.0, 20.0, 30.0]          # 45 deg evaluated but not needed (see docs/10)
+ANGLES_EVALUATED = [0.0, 8.0, 20.0, 30.0, 45.0]
+MIN_MARGIN = P(2.0, "DES", "", "minimum clearance accepted for rim / holder-over-rim / condenser at safe-Z (placeholder condenser -> keep >= 2 mm)")
+RIM_MARGIN = P(0.5, "DES", "", "minimum shaft-to-rim clearance (well geometry is MFR data, +-0.25 mm)")
+MIN_REACH = P(0.5, "DES", "", "flat wells: minimum reachable fraction of the bottom area")
+EXPOSED_OPTIONS = [30.0, 27.0, 24.0]  # capillary length below the collet nose; set by the depth stop
+
 # ----------------------------------------------------------------------------
 # IX73  (Evident).  Only a few numbers are manufacturer-verified.
 # ----------------------------------------------------------------------------
@@ -59,7 +85,7 @@ IX73_H = P(656.0, "MFR", "S01", "IX73 1-deck standard configuration H (incl. ill
 STAGE_TOP_ABOVE_TABLE = P(200.0, "PH", "", "NOT FOUND in any reachable source -> measure M1")
 STAGE_X = P(232.0, "MFR", "S01", "plain stage 232 (X) x 240 (Y)")
 STAGE_Y = P(240.0, "MFR", "S01", "")
-STAGE_T = P(20.0, "PH", "", "stage plate thickness")
+STAGE_T = P(20.0, "PH", "", "stage plate thickness (M3)")
 STAGE_TRAVEL_X = P(114.0, "MFR", "S02", "IX3-SVR mechanical stage stroke X")
 STAGE_TRAVEL_Y = P(75.0, "MFR", "S02", "IX3-SVR mechanical stage stroke Y")
 # location of the body/stage relative to the optical axis
@@ -72,7 +98,7 @@ PILLAR_Y1 = P(240.0, "PH", "", "rear face of pillar")
 PILLAR_TOP_Z = P(IX73_H.v - STAGE_TOP_ABOVE_TABLE.v, "DER", "S01+PH", "")
 COND_ARM_W = P(90.0, "PH", "", "condenser holder / arm width (M7)")
 COND_D = P(80.0, "PH", "", "condenser outer diameter (M6)")
-COND_BODY_H = P(70.0, "PH", "", "condenser body height")
+COND_BODY_H = P(70.0, "PH", "", "condenser body height (M6)")
 # condenser working distances (manufacturer)
 CONDENSERS = {
     "IX2-LWUCD": dict(NA=0.55, WD=P(27.0, "MFR", "S03", "long-WD universal condenser")),
@@ -84,7 +110,7 @@ OBS_TUBE_BOX = dict(x=(-70, 70), y=(-380, -215), z=(-150, 180),
                     status="PH", note="observation tube + eyepieces envelope (M12)")
 STAGE_HANDLE = dict(x=(105, 135), y=(-110, -80), z=(-140, -20),
                     status="PH", note="IX3-SVR right-hand coaxial handle (M13)")
-OBJECTIVE_ZONE = dict(r=45.0, z=(-110, -2), status="PH", note="nosepiece/objectives under stage")
+OBJECTIVE_ZONE = dict(r=45.0, z=(-110, -2), status="PH", note="nosepiece/objectives under stage (M14)")
 
 # ----------------------------------------------------------------------------
 # Capillary + holder
@@ -99,7 +125,7 @@ CAP_EXPOSED = P(CAP_L.v - CAP_GRIP.v, "DER", "", "")
 CAPILLARY_SET = [
     dict(name="S  (100-300 um)", od=1.0, id=0.58, status="MFR", src="S14", part="WPI 1B100-4 (or tip cut/pulled to ID 0.2-0.35)"),
     dict(name="M  (300-600 um)", od=1.5, id=0.84, status="MFR", src="S14", part="WPI 1B150-4 / Sutter B150-86 (ID 0.86)"),
-    dict(name="L  (600-1000 um)", od=2.0, id=1.12, status="MFR", src="S14", part="WPI 1B200-4 - only 1.12x a 1 mm object"),
+    dict(name="L  (600-800 um)", od=2.0, id=1.12, status="MFR", src="S14", part="WPI 1B200-4 - only 1.12x a 1 mm object"),
     dict(name="L' (800-1000 um)", od=2.0, id=1.56, status="MFR", src="S14", part="WPI thin-wall 2.00/1.56 (no filament)"),
 ]
 HOLDER_D = P(10.0, "APX", "", "collet body diameter envelope")
@@ -128,23 +154,39 @@ NEMA17_L = P(48.0, "APX", "S34", "")
 ARM_T = P(12.0, "DES", "", "arm section under the condenser (y and z)")
 ARM_DEEP_EXTRA = P(55.0, "DES", "", "deep arm section + kinematic mount beyond the thin section")
 COND_MARGIN = P(5.0, "DES", "", "margin beyond condenser radius for the thin-arm end")
-BODY_CLEAR = P(10.0, "DES", "", "X actuator inner end: condenser radius + this")
+BODY_CLEAR = P(10.0, "DES", "", "X support beam inner end: condenser carrier arm half-width + this")
+HEAD_TOP_ALLOW = P(2.3, "DES", "", "tubing (1/16 in) + clip above the arm top: highest point of the head")
+HOLDER_STACK_NOTE = "HOLDER_L is the collet body above the nose; an ER8-collet holder with nut, depth stop and seal may be 20-25 mm (P10, unverified)"
+Z_REF_MARGIN = P(2.0, "DES", "", "arm/tubing top below the condenser front when Z is at the reference switch")
+# Measured condenser-front height above the plate datum (stage top); None -> derive from WD (M8)
+COND_FRONT_Z_MEAS = None
 FOV_4X = P(5.5, "APX", "", "field of view at 4x: field number 22 / 4 (eyepiece); camera FOV is smaller")
 
 WORKFLOWS = {
     "WA": dict(
         label="W-A stage fixed: picker covers the plate",
         tip_x=(-75.0, 75.0), tip_y=(-50.0, 50.0), travel_z=50.0,
+        stroke=(150.0, 100.0, 80.0),   # catalogue strokes X/Y/Z (APX, P01-P03 class)
         stage_moves=False,
         note="picker reaches all 96 wells; only the well on the optical axis is observed"),
     "WB": dict(
         label="W-B stage moves wells to the optical axis: picker works locally",
         tip_x=(-15.0, 85.0), tip_y=(-15.0, 15.0), travel_z=50.0,
+        stroke=(110.0, 50.0, 80.0),    # catalogue strokes X/Y/Z: KR26-0110 / LX26 >=50 / KR2001A-0080 (APX, P01-P03)
         stage_moves=True,
         note="source and destination wells are brought to the axis by the IX73 stage; "
              "+X travel is the park / capillary-change retreat outside the condenser keep-out"),
 }
-DEFAULT_WORKFLOW = "WA"
+# Frame z-levels (above stage top) and y-bands relative to the tip (APX envelopes)
+BEAM_Z = (70.0, 150.0)        # Y beam 80 x 80
+Y_ACT_Z = (150.0, 168.0)      # Y actuator on the beam
+X_Z = (150.0, 180.0)          # X actuator (hangs under the X support beam)
+XSB_Z = (180.0, 260.0)        # X support beam, 40 wide x 80 tall
+X_BAND = (24.0, 50.0)         # X actuator y-band
+XSB_BAND = (24.0, 64.0)       # X support beam y-band (40 mm)
+# Freeze gate: nothing is frozen before these are measured / confirmed (see docs/05, docs/09)
+FREEZE_GATE = ["M1", "M3", "M4", "M6", "M7", "M8", "M10", "M15", "M23"]
+DEFAULT_WORKFLOW = "WB"   # baseline after D1
 
 # Stages that could move the plate (for W-B).  Required: >= 99 x 63 mm (well span).
 STAGES = {
@@ -154,27 +196,46 @@ STAGES = {
 }
 
 
+def cond_front_z(cond="IX-ULWCD"):
+    """Condenser front height above the plate datum: measured value (M8) if entered, else well bottom + WD."""
+    if COND_FRONT_Z_MEAS is not None:
+        return COND_FRONT_Z_MEAS
+    return WELL_BOTTOM_Z.v + CONDENSERS[cond]["WD"].v
+
+
 def layout(wf=DEFAULT_WORKFLOW):
-    """Derived frame layout for a workflow.  All positions relative to the optical axis (mm)."""
+    """Derived frame layout for a workflow.  All positions relative to the optical axis (mm).
+    Actuator bodies are sized from the CATALOGUE stroke and anchored at the inner (X), front (Y) and
+    lower (Z) ends, so extra stroke grows outboard / rearward / upward."""
     w = WORKFLOWS[wf]
     rc = COND_D.v / 2
     x_min, x_max = w["tip_x"]
     y_min, y_max = w["tip_y"]
-    thin_l = abs(x_min) + rc + COND_MARGIN.v                 # thin section must cover the keep-out
-    arm_l = thin_l + ARM_DEEP_EXTRA.v                         # tip axis -> Z carriage face
-    zb_d = 30.0                                               # Z actuator depth (APX)
-    xcc = arm_l + zb_d / 2                                    # X carriage centre rel. tip
+    stroke_x, stroke_y, stroke_z = w["stroke"]
     travel_x, travel_y = x_max - x_min, y_max - y_min
-    x_lo = xcc + x_min - ACT_TABLE_L.v / 2 - ACT_END.v        # X body inner end (Y-group, fixed x)
-    x_body = travel_x + ACT_TABLE_L.v + 2 * ACT_END.v
+    assert stroke_x >= travel_x and stroke_y >= travel_y and stroke_z >= w["travel_z"], "stroke < travel"
+    thin_l = abs(x_min) + rc + COND_MARGIN.v                 # thin section must cover the keep-out
+    zb_d = 30.0                                               # Z actuator depth (APX)
+    end = ACT_TABLE_L.v / 2 + ACT_END.v                       # carriage centre -> body end at end of stroke
+    # X body inner end must clear the condenser carrier arm (+ support-beam overhang 5 mm)
+    x_lo_min = COND_ARM_W.v / 2 + BODY_CLEAR.v + 5.0
+    arm_l = thin_l + ARM_DEEP_EXTRA.v                         # tip axis -> Z carriage face
+    xcc = arm_l + zb_d / 2
+    if xcc + x_min - end < x_lo_min:                          # lengthen the arm if needed
+        arm_l += x_lo_min - (xcc + x_min - end)
+        xcc = arm_l + zb_d / 2
+    x_lo = xcc + x_min - end
+    x_body = stroke_x + ACT_TABLE_L.v + 2 * ACT_END.v
     x_hi = x_lo + x_body
     tower_x = round(x_hi + NEMA17_L.v + 30.0)
-    x_band = (24.0, 50.0)
+    x_band = X_BAND
     yc0 = sum(x_band) / 2                                     # Y carriage centre rel. tip y
-    y_body = travel_y + ACT_TABLE_L.v + 2 * ACT_END.v
-    y_lo = yc0 + y_min - ACT_TABLE_L.v / 2 - ACT_END.v
+    y_body = stroke_y + ACT_TABLE_L.v + 2 * ACT_END.v
+    y_lo = yc0 + y_min - end
     post_y = (round(y_lo - 77.0), round(y_lo + y_body + 83.0))
+    z_body = stroke_z + ACT_TABLE_L.v + 2 * ACT_END.v
     return dict(wf=wf, x_min=x_min, x_max=x_max, y_min=y_min, y_max=y_max, travel_x=travel_x,
-                travel_y=travel_y, travel_z=w["travel_z"], thin_l=thin_l, arm_l=arm_l, zb_d=zb_d,
+                travel_y=travel_y, travel_z=w["travel_z"], stroke_x=stroke_x, stroke_y=stroke_y,
+                stroke_z=stroke_z, z_body=z_body, thin_l=thin_l, arm_l=arm_l, zb_d=zb_d,
                 xcc=xcc, x_lo=x_lo, x_hi=x_hi, x_body=x_body, tower_x=tower_x, x_band=x_band, yc0=yc0,
                 y_lo=y_lo, y_body=y_body, post_y=post_y, x_inner_clear=x_lo - rc)

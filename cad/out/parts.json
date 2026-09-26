@@ -8,9 +8,13 @@
    "theta": 8.0,
    "label": "8 deg near-vertical dog-leg (RECOMMENDED)"
   },
+  "V20": {
+   "theta": 20.0,
+   "label": "20 deg block (24/12-well)"
+  },
   "V30": {
    "theta": 30.0,
-   "label": "30 deg inclined"
+   "label": "30 deg block (12/6-well)"
   },
   "V45": {
    "theta": 45.0,
@@ -223,7 +227,16 @@
    "group": "X",
    "workflow": "WA",
    "variant": "all",
-   "note": ""
+   "note": "top limit (not the homing reference)"
+  },
+  "WA__Z_reference_switch": {
+   "file": "stl/WA__Z_reference_switch.stl",
+   "category": "switch",
+   "status": "DES",
+   "group": "X",
+   "workflow": "WA",
+   "variant": "all",
+   "note": "homing reference: head clears the condenser at any XY"
   },
   "WA__tubing_clamp_Zbody": {
    "file": "stl/WA__tubing_clamp_Zbody.stl",
@@ -565,6 +578,105 @@
    "group": "Z",
    "workflow": "WA",
    "variant": "R08",
+   "note": "PTFE/FEP 1/16in OD, liquid-filled"
+  },
+  "WA__V20__Z_carriage": {
+   "file": "stl/WA__V20__Z_carriage.stl",
+   "category": "moving",
+   "status": "APX",
+   "group": "Z",
+   "workflow": "WA",
+   "variant": "V20",
+   "note": ""
+  },
+  "WA__V20__breakaway_kinematic_mount": {
+   "file": "stl/WA__V20__breakaway_kinematic_mount.stl",
+   "category": "moving",
+   "status": "DES",
+   "group": "Z",
+   "workflow": "WA",
+   "variant": "V20",
+   "note": "3-ball kinematic + magnet preload: collision fuse"
+  },
+  "WA__V20__arm_thin": {
+   "file": "stl/WA__V20__arm_thin.stl",
+   "category": "moving",
+   "status": "DES",
+   "group": "Z",
+   "workflow": "WA",
+   "variant": "V20",
+   "note": ""
+  },
+  "WA__V20__arm_deep": {
+   "file": "stl/WA__V20__arm_deep.stl",
+   "category": "moving",
+   "status": "DES",
+   "group": "Z",
+   "workflow": "WA",
+   "variant": "V20",
+   "note": ""
+  },
+  "WA__V20__capillary_holder_collet": {
+   "file": "stl/WA__V20__capillary_holder_collet.stl",
+   "category": "holder",
+   "status": "APX",
+   "group": "Z",
+   "workflow": "WA",
+   "variant": "V20",
+   "note": "collet/split holder with depth stop, OD<=10"
+  },
+  "WA__V20__glass_capillary_OD1.0": {
+   "file": "stl/WA__V20__glass_capillary_OD1.0.stl",
+   "category": "capillary",
+   "status": "DES",
+   "group": "Z",
+   "workflow": "WA",
+   "variant": "V20",
+   "note": "OD 1.0 / ID 0.6 / L 40"
+  },
+  "WA__V20__tubing_head_0": {
+   "file": "stl/WA__V20__tubing_head_0.stl",
+   "category": "tubing",
+   "status": "DES",
+   "group": "Z",
+   "workflow": "WA",
+   "variant": "V20",
+   "note": "PTFE/FEP 1/16in OD, liquid-filled"
+  },
+  "WA__V20__tubing_head_1": {
+   "file": "stl/WA__V20__tubing_head_1.stl",
+   "category": "tubing",
+   "status": "DES",
+   "group": "Z",
+   "workflow": "WA",
+   "variant": "V20",
+   "note": "PTFE/FEP 1/16in OD, liquid-filled"
+  },
+  "WA__V20__tubing_head_2": {
+   "file": "stl/WA__V20__tubing_head_2.stl",
+   "category": "tubing",
+   "status": "DES",
+   "group": "Z",
+   "workflow": "WA",
+   "variant": "V20",
+   "note": "PTFE/FEP 1/16in OD, liquid-filled"
+  },
+  "WA__V20__tubing_head_3": {
+   "file": "stl/WA__V20__tubing_head_3.stl",
+   "category": "tubing",
+   "status": "DES",
+   "group": "Z",
+   "workflow": "WA",
+   "variant": "V20",
+   "note": "PTFE/FEP 1/16in OD, liquid-filled"
+  },
+  "WA__V20__tubing_head_4": {
+   "file": "stl/WA__V20__tubing_head_4.stl",
+   "category": "tubing",
+   "status": "DES",
+   "group": "Z",
+   "workflow": "WA",
+   "variant": "V20",
    "note": "PTFE/FEP 1/16in OD, liquid-filled"
   },
   "WA__V30__Z_carriage": {
@@ -970,7 +1082,16 @@
    "group": "X",
    "workflow": "WB",
    "variant": "all",
-   "note": ""
+   "note": "top limit (not the homing reference)"
+  },
+  "WB__Z_reference_switch": {
+   "file": "stl/WB__Z_reference_switch.stl",
+   "category": "switch",
+   "status": "DES",
+   "group": "X",
+   "workflow": "WB",
+   "variant": "all",
+   "note": "homing reference: head clears the condenser at any XY"
   },
   "WB__tubing_clamp_Zbody": {
    "file": "stl/WB__tubing_clamp_Zbody.stl",
@@ -1215,6 +1336,204 @@
    "variant": "all",
    "note": ""
   },
+  "WB__V20__Z_carriage": {
+   "file": "stl/WB__V20__Z_carriage.stl",
+   "category": "moving",
+   "status": "APX",
+   "group": "Z",
+   "workflow": "WB",
+   "variant": "V20",
+   "note": ""
+  },
+  "WB__V20__breakaway_kinematic_mount": {
+   "file": "stl/WB__V20__breakaway_kinematic_mount.stl",
+   "category": "moving",
+   "status": "DES",
+   "group": "Z",
+   "workflow": "WB",
+   "variant": "V20",
+   "note": "3-ball kinematic + magnet preload: collision fuse"
+  },
+  "WB__V20__arm_thin": {
+   "file": "stl/WB__V20__arm_thin.stl",
+   "category": "moving",
+   "status": "DES",
+   "group": "Z",
+   "workflow": "WB",
+   "variant": "V20",
+   "note": ""
+  },
+  "WB__V20__arm_deep": {
+   "file": "stl/WB__V20__arm_deep.stl",
+   "category": "moving",
+   "status": "DES",
+   "group": "Z",
+   "workflow": "WB",
+   "variant": "V20",
+   "note": ""
+  },
+  "WB__V20__capillary_holder_collet": {
+   "file": "stl/WB__V20__capillary_holder_collet.stl",
+   "category": "holder",
+   "status": "APX",
+   "group": "Z",
+   "workflow": "WB",
+   "variant": "V20",
+   "note": "collet/split holder with depth stop, OD<=10"
+  },
+  "WB__V20__glass_capillary_OD1.0": {
+   "file": "stl/WB__V20__glass_capillary_OD1.0.stl",
+   "category": "capillary",
+   "status": "DES",
+   "group": "Z",
+   "workflow": "WB",
+   "variant": "V20",
+   "note": "OD 1.0 / ID 0.6 / L 40"
+  },
+  "WB__V20__tubing_head_0": {
+   "file": "stl/WB__V20__tubing_head_0.stl",
+   "category": "tubing",
+   "status": "DES",
+   "group": "Z",
+   "workflow": "WB",
+   "variant": "V20",
+   "note": "PTFE/FEP 1/16in OD, liquid-filled"
+  },
+  "WB__V20__tubing_head_1": {
+   "file": "stl/WB__V20__tubing_head_1.stl",
+   "category": "tubing",
+   "status": "DES",
+   "group": "Z",
+   "workflow": "WB",
+   "variant": "V20",
+   "note": "PTFE/FEP 1/16in OD, liquid-filled"
+  },
+  "WB__V20__tubing_head_2": {
+   "file": "stl/WB__V20__tubing_head_2.stl",
+   "category": "tubing",
+   "status": "DES",
+   "group": "Z",
+   "workflow": "WB",
+   "variant": "V20",
+   "note": "PTFE/FEP 1/16in OD, liquid-filled"
+  },
+  "WB__V20__tubing_head_3": {
+   "file": "stl/WB__V20__tubing_head_3.stl",
+   "category": "tubing",
+   "status": "DES",
+   "group": "Z",
+   "workflow": "WB",
+   "variant": "V20",
+   "note": "PTFE/FEP 1/16in OD, liquid-filled"
+  },
+  "WB__V20__tubing_head_4": {
+   "file": "stl/WB__V20__tubing_head_4.stl",
+   "category": "tubing",
+   "status": "DES",
+   "group": "Z",
+   "workflow": "WB",
+   "variant": "V20",
+   "note": "PTFE/FEP 1/16in OD, liquid-filled"
+  },
+  "WB__V30__Z_carriage": {
+   "file": "stl/WB__V30__Z_carriage.stl",
+   "category": "moving",
+   "status": "APX",
+   "group": "Z",
+   "workflow": "WB",
+   "variant": "V30",
+   "note": ""
+  },
+  "WB__V30__breakaway_kinematic_mount": {
+   "file": "stl/WB__V30__breakaway_kinematic_mount.stl",
+   "category": "moving",
+   "status": "DES",
+   "group": "Z",
+   "workflow": "WB",
+   "variant": "V30",
+   "note": "3-ball kinematic + magnet preload: collision fuse"
+  },
+  "WB__V30__arm_thin": {
+   "file": "stl/WB__V30__arm_thin.stl",
+   "category": "moving",
+   "status": "DES",
+   "group": "Z",
+   "workflow": "WB",
+   "variant": "V30",
+   "note": ""
+  },
+  "WB__V30__arm_deep": {
+   "file": "stl/WB__V30__arm_deep.stl",
+   "category": "moving",
+   "status": "DES",
+   "group": "Z",
+   "workflow": "WB",
+   "variant": "V30",
+   "note": ""
+  },
+  "WB__V30__capillary_holder_collet": {
+   "file": "stl/WB__V30__capillary_holder_collet.stl",
+   "category": "holder",
+   "status": "APX",
+   "group": "Z",
+   "workflow": "WB",
+   "variant": "V30",
+   "note": "collet/split holder with depth stop, OD<=10"
+  },
+  "WB__V30__glass_capillary_OD1.0": {
+   "file": "stl/WB__V30__glass_capillary_OD1.0.stl",
+   "category": "capillary",
+   "status": "DES",
+   "group": "Z",
+   "workflow": "WB",
+   "variant": "V30",
+   "note": "OD 1.0 / ID 0.6 / L 40"
+  },
+  "WB__V30__tubing_head_0": {
+   "file": "stl/WB__V30__tubing_head_0.stl",
+   "category": "tubing",
+   "status": "DES",
+   "group": "Z",
+   "workflow": "WB",
+   "variant": "V30",
+   "note": "PTFE/FEP 1/16in OD, liquid-filled"
+  },
+  "WB__V30__tubing_head_1": {
+   "file": "stl/WB__V30__tubing_head_1.stl",
+   "category": "tubing",
+   "status": "DES",
+   "group": "Z",
+   "workflow": "WB",
+   "variant": "V30",
+   "note": "PTFE/FEP 1/16in OD, liquid-filled"
+  },
+  "WB__V30__tubing_head_2": {
+   "file": "stl/WB__V30__tubing_head_2.stl",
+   "category": "tubing",
+   "status": "DES",
+   "group": "Z",
+   "workflow": "WB",
+   "variant": "V30",
+   "note": "PTFE/FEP 1/16in OD, liquid-filled"
+  },
+  "WB__V30__tubing_head_3": {
+   "file": "stl/WB__V30__tubing_head_3.stl",
+   "category": "tubing",
+   "status": "DES",
+   "group": "Z",
+   "workflow": "WB",
+   "variant": "V30",
+   "note": "PTFE/FEP 1/16in OD, liquid-filled"
+  },
+  "WB__V30__tubing_head_4": {
+   "file": "stl/WB__V30__tubing_head_4.stl",
+   "category": "tubing",
+   "status": "DES",
+   "group": "Z",
+   "workflow": "WB",
+   "variant": "V30",
+   "note": "PTFE/FEP 1/16in OD, liquid-filled"
+  },
   "optical_table_patch": {
    "file": "stl/optical_table_patch.stl",
    "category": "table",
@@ -1258,7 +1577,7 @@
    "group": "fixed",
    "workflow": "all",
    "variant": "all",
-   "note": "nosepiece/objectives under stage"
+   "note": "nosepiece/objectives under stage (M14)"
   },
   "ix73_obs_tube_eyepieces": {
    "file": "stl/ix73_obs_tube_eyepieces.stl",
@@ -1597,6 +1916,11 @@
     50.0
    ],
    "travel_z": 50.0,
+   "stroke": [
+    150.0,
+    100.0,
+    80.0
+   ],
    "stage_moves": false,
    "note": "picker reaches all 96 wells; only the well on the optical axis is observed",
    "layout": {
@@ -1608,14 +1932,18 @@
     "travel_x": 150.0,
     "travel_y": 100.0,
     "travel_z": 50.0,
+    "stroke_x": 150.0,
+    "stroke_y": 100.0,
+    "stroke_z": 80.0,
+    "z_body": 200.0,
     "thin_l": 120.0,
-    "arm_l": 175.0,
+    "arm_l": 180.0,
     "zb_d": 30.0,
-    "xcc": 190.0,
-    "x_lo": 55.0,
-    "x_hi": 325.0,
+    "xcc": 195.0,
+    "x_lo": 60.0,
+    "x_hi": 330.0,
     "x_body": 270.0,
-    "tower_x": 403,
+    "tower_x": 408,
     "x_band": [
      24.0,
      50.0
@@ -1627,7 +1955,7 @@
      -150,
      230
     ],
-    "x_inner_clear": 15.0
+    "x_inner_clear": 20.0
    }
   },
   "WB": {
@@ -1641,6 +1969,11 @@
     15.0
    ],
    "travel_z": 50.0,
+   "stroke": [
+    110.0,
+    50.0,
+    80.0
+   ],
    "stage_moves": true,
    "note": "source and destination wells are brought to the axis by the IX73 stage; +X travel is the park / capillary-change retreat outside the condenser keep-out",
    "layout": {
@@ -1652,26 +1985,30 @@
     "travel_x": 100.0,
     "travel_y": 30.0,
     "travel_z": 50.0,
+    "stroke_x": 110.0,
+    "stroke_y": 50.0,
+    "stroke_z": 80.0,
+    "z_body": 200.0,
     "thin_l": 60.0,
-    "arm_l": 115.0,
+    "arm_l": 120.0,
     "zb_d": 30.0,
-    "xcc": 130.0,
-    "x_lo": 55.0,
-    "x_hi": 275.0,
-    "x_body": 220.0,
-    "tower_x": 353,
+    "xcc": 135.0,
+    "x_lo": 60.0,
+    "x_hi": 290.0,
+    "x_body": 230.0,
+    "tower_x": 368,
     "x_band": [
      24.0,
      50.0
     ],
     "yc0": 37.0,
     "y_lo": -38.0,
-    "y_body": 150.0,
+    "y_body": 170.0,
     "post_y": [
      -115,
-     195
+     215
     ],
-    "x_inner_clear": 15.0
+    "x_inner_clear": 20.0
    }
   }
  },
@@ -1679,11 +2016,14 @@
   "WA": [
    "V00",
    "R08",
+   "V20",
    "V30",
    "V45"
   ],
   "WB": [
-   "R08"
+   "R08",
+   "V20",
+   "V30"
   ]
  }
 }

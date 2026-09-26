@@ -13,7 +13,7 @@ The ratio rule below is 【私の提案 / proposal】, not taken from a source. 
 | Class | Object | Capillary (OD / ID, mm) | ID ÷ object | Max angle for bottom centre | Rim clearance at 8° | Data |
 |---|---|---|---|---|---|---|
 | S | 100–300 µm | 1.0 / 0.58 (WPI 1B100-4) | 1.9–5.8 | {{CAP_S_MAXANG:.1f}}° | {{CAP_S_RIM8:.2f}} mm | MFR (S14) |
-| S′ | ~100 µm, when selectivity matters | 1.0 OD, tip cut or pulled to ID 0.2–0.35 | 2–3.5 | 14.8° | 1.38 mm | shaft MFR; tip made in-house |
+| S′ | ~100 µm, when selectivity matters | 1.0 OD, tip cut or pulled to ID 0.2–0.35 | 2–3.5 | {{CAP_S_MAXANG:.1f}}° | {{CAP_S_RIM8:.2f}} mm | shaft MFR; tip made in-house |
 | M | 300–600 µm | 1.5 / 0.84 (WPI 1B150-4; Sutter B150-86 = 0.86) | 1.4–2.8 | {{CAP_M_MAXANG:.1f}}° | {{CAP_M_RIM8:.2f}} mm | MFR (S14) |
 | L | 600–800 µm | 2.0 / 1.12 (WPI 1B200-4) | 1.4–1.9 | {{CAP_L_MAXANG:.1f}}° | {{CAP_L_RIM8:.2f}} mm | MFR (S14) |
 | **L′** | 800–1000 µm | **2.00 / 1.56 thin wall (WPI, no filament)** | 1.56–1.95 | {{CAP_Lp_MAXANG:.1f}}° | {{CAP_Lp_RIM8:.2f}} mm | MFR (S14) |
@@ -26,7 +26,7 @@ Notes:
 
 ## Effect on the mechanics
 
-- **Well access.** The maximum angle falls from 14.8° (OD 1.0) to 12.3° (OD 2.0). The recommended 8° fixed angle is kept for all classes.
+- **Well access.** The maximum angle falls from {{CAP_S_MAXANG:.1f}}° (OD 1.0) to {{CAP_L_MAXANG:.1f}}° (OD 2.0). The 8° block works for all classes in 96-well plates.
 - **Holder.** A collet with **exchangeable inserts for OD 1.0 / 1.5 / 2.0** fits in the same Ø10 mm envelope. The depth stop and liquid-port seal are per insert. If a Ø12 mm body turns out to be needed for the 2.0 mm insert, holder obstruction of the light cone rises slightly; re-run `analysis.py` with `HOLDER_D = 12`.
 - **Tubing.** 1/16″ OD tubing connects to all classes through the holder port, so tubing needs no change.
 - **Calibration.** After changing class, re-run the 3-point image calibration (tip position changes by up to ±0.5 mm between classes).

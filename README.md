@@ -12,10 +12,10 @@ Stage 1 is a **spatial and mechanical feasibility study**: architecture, placeme
 **Provisional baseline: workflow W-B plus a side-tower picker.**
 
 - **Workflow W-B.** The IX73 stage, motorised with ≥ 99 × 63 mm travel, brings each source and destination well to the optical axis, so **every pick and dispense is observed** (96/96). This is decision D1; see `docs/09_workflow_D1.md`.
-- **Picker.** A side tower bolted to the optical table on the right of the IX73. It is a local XYZ manipulator (100 × 30 × 50 mm, Z with a 1 mm-lead ball screw) whose Z carriage holds a **thin dog-leg arm (115 mm) that reaches under the condenser to a near-vertical (8°) glass capillary**.
+- **Picker.** A side tower bolted to the optical table on the right of the IX73. It is a local XYZ manipulator (100 × 30 × 50 mm, Z with a 1 mm-lead ball screw) whose Z carriage holds a **thin dog-leg arm (120 mm) that reaches under the condenser to a near-vertical (8°) glass capillary**.
 - **Independence from the microscope.** Nothing touches the microscope, and the frame unbolts without affecting IX73 alignment.
 
-The stage-fixed alternative **W-A** is kept in the same CAD. Its picker covers the whole plate (150 × 100 mm, arm 175 mm) but observes only 1 well per stage setting.
+The stage-fixed alternative **W-A** is kept in the same CAD. Its picker covers the whole plate (150 × 100 mm, arm 180 mm) but observes only 1 well per stage setting.
 
 The layout follows from three constraints found and quantified in this study:
 
@@ -23,7 +23,7 @@ The layout follows from three constraints found and quantified in this study:
 2. **A near-vertical capillary must share the optical axis with the condenser.** That fits only under a long-working-distance condenser (**IX-ULWCD, WD 73 mm → 96/96 wells** in W-B, 96/96 in W-A) or with the illumination column tilted back. The IX2-LWUCD (WD 27 mm) and IX2-MLWCD (WD 45 mm) block most positions.
 3. **Only the well on the optical axis is seen.** Observed picking of all 96 wells therefore needs the stage to move them there. Evident's IX3-SSU (76 × 52 mm) reaches only 48/96. The manual IX3-SVR (114 × 75) and 120 × 80 motorised stages reach 96/96.
 
-**Freeze gate.** The condenser outline, stage height and eyepiece envelope are placeholders, because the IX73 drawing could not be obtained. The clearances near the condenser (4.83–5 mm) are **not design evidence yet**. Nothing is frozen until M1, M3, M4, M6, M7, M8, M10 and M15 are measured (`docs/05_measurement_checklist.md`).
+**Freeze gate.** The condenser outline, stage height and eyepiece envelope are placeholders, because the IX73 drawing could not be obtained. The clearances near the condenser (4.83–5 mm) are **not design evidence yet**. Nothing is frozen until M1, M3, M4, M6, M7, M8, M10, M15, M23 are measured (`docs/05_measurement_checklist.md`).
 
 ## Deliverables
 
@@ -44,6 +44,10 @@ The layout follows from three constraints found and quantified in this study:
 | 16 | Assumptions | `docs/07_assumptions_and_open_items.md` |
 | 17 | Items NOT to finalise yet | `docs/07_assumptions_and_open_items.md` |
 | – | Capillary sizing for 100 µm – 1 mm objects | `docs/08_capillary_sizing.md` |
+| – | Plate formats (6–96 well) and exchangeable angle blocks (8° / 20° / 30°) | `docs/10_plate_formats_angle_blocks.md` |
+| – | Pre-assembly actions (measure / decide / order / fabricate, Japanese) | `docs/11_pre_assembly_actions_ja.md` |
+| – | Parts candidates (42 items, from web excerpts; not an order list) | `docs/12_parts_candidates.md`, `docs/parts/candidates.csv`, `docs/parts/research_notes.md` |
+| – | Japanese assembly guide (auto-updated) | `docs/assembly_ja/assembly_guide_ja.html` (`python tools/build_all.py`) |
 | – | Literature review (5 papers) | `docs/01_literature_review.md` |
 | – | Functional diagram (pump → tubing → capillary; PC → XYZ) | `docs/img/functional_diagram.png` |
 
@@ -63,10 +67,12 @@ The network policy of the authoring session blocked Zenodo, the publishers, Evid
 ```bash
 pip install build123d matplotlib
 python cad/model.py        # STEP + STL + parts.json          (~10 s)
-python cad/analysis.py     # well access, light obstruction, 96-well clearance sweep (~4 min)
+python cad/analysis.py     # well access, light obstruction, clearance sweeps (~10 min)
 python cad/views.py        # dimensioned views + diagrams
 python cad/render_docs.py  # README.md + docs/*.md from README.src.md + docs/src/*.md
 python viewer/build_viewer.py
+# or all of the above plus the assembly-guide renders:
+python tools/build_all.py            # --fast skips the 8-min clearance sweep
 ```
 
 `cad/params.py` is the **single source of truth**. Documents are written as templates (`README.src.md`, `docs/src/*.md`) with `{{ KEY }}` numbers from `cad/keynums.py`; edit the templates, never the rendered files. `python cad/render_docs.py --check` fails if a rendered file is stale. Change any value in `params.py` (for example, replace a `PH` with a measured value), rerun, and every figure, table and document number updates.
