@@ -1,7 +1,7 @@
 <!-- GENERATED from docs/parts/candidates.csv by docs/parts/build_parts.py - edit the CSV -->
 # Parts candidates (stage 1, NOT an order list)
 
-Candidates for each line item of the W-B baseline, researched from web-search excerpts on 2026-09-26. Vendor pages could not be opened from the authoring environment, so **part numbers, specs, prices and lead times must be confirmed in a quotation** before ordering, and nothing is ordered before the freeze gate (M1, M3, M4, M6, M7, M8, M10, M15). Research notes and all URLs: `docs/parts/research_notes.md`.
+Candidates for each line item of the W-B baseline, researched from web-search excerpts on 2026-09-26. Vendor pages could not be opened from the authoring environment, so **part numbers, specs, prices and lead times must be confirmed in a quotation** before ordering, and nothing is ordered before the freeze gate (M1, M3, M4, M6, M7, M8, M10, M15, M19, M23). Research notes and all URLs: `docs/parts/research_notes.md`.
 
 | ID | Category | Item | Qty | Requirement | Candidate 1 | Candidate 2 | Key spec | Approx. price | Verified |
 |---|---|---|---|---|---|---|---|---|---|

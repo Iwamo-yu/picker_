@@ -60,6 +60,12 @@ def test_verification_separates_excerpt_from_official():
     assert p.verification("MEAS") == "MEASURED"
 
 
+def test_part_map_complete():
+    sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "docs", "parts"))
+    import part_map
+    assert part_map.check() == []
+
+
 def test_freeze_gate_contains_plate_and_head():
     assert "M19" in p.FREEZE_GATE and "M23" in p.FREEZE_GATE
 

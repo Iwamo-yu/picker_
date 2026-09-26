@@ -131,6 +131,7 @@ a{color:var(--accent)}
 
 <section id="s2c">
   <h2>部品候補リスト</h2>
+  <p>図の番号から部品を引く「部品の対応表」は <code>docs/13_part_map_ja.md</code>(HTML 版 <code>docs/assembly_ja/part_map_ja.html</code>)にあります。番号付きの全体図とヘッド拡大図、実物・CAD・部品候補・組立工程・実測の対応をまとめています。</p>
   <p>各品目の候補をまとめた一覧です(42 品目、P01–P42)。候補は検索結果の抜粋から集めたもので、型番、価格、納期は見積で確認します。凍結ゲートを通過するまで発注は確定しません。発注の順序と事前にやることは、別冊の「組立前にやること」(<code>docs/11_pre_assembly_actions_ja.md</code>)にあります。</p>
   <div class="box"><p style="margin:0"><b>先に確かめること。</b>(1) IX-ULWCD コンデンサ(P09)は、地域によって入手できないという記載がありました。この設計は IX-ULWCD が前提なので、最初に Evident に在庫と納期を確認します。(2) 電動 XY ステージ(P07)は見積制で、納期も長くなりがちです。機種が決まると、架台が避けるべき外形も決まります。(3) X/Y/Z すべてに工業用ステージを使うと、ピッカー本体は約 25–35 万円になる見込みです(調査担当の推定)。20 万円前後に収めるなら、Y を安価な一体型ステージにします。(4) 1.0/1.5/2.0 mm の 3 サイズを確実に掴めて横ポートを持つ市販ホルダーは見つかりませんでした。ER8 コレットを使った自作ホルダーを第一候補にしています(P10)。ナット外径が Ø10 mm の想定より大きくなる可能性があります。</p></div>
   {{PARTS_TABLE}}
@@ -218,7 +219,7 @@ a{color:var(--accent)}
 
   <article class="step">
     <div class="step-h"><span class="num">6</span><h3>Z ステージを取り付ける</h3></div>
-    <figure><img src="{{IMG:step06.png}}" alt="工程6 Zステージ"><figcaption>オレンジ: X キャリッジブラケット、Z ステージ、Z モーター、上端原点スイッチ、Z キャリッジ</figcaption></figure>
+    <figure><img src="{{IMG:step06.png}}" alt="工程6 Zステージ"><figcaption>オレンジ: X キャリッジブラケット、Z ステージ、Z モーター、上端リミットスイッチ、Z 基準スイッチ、Z キャリッジ</figcaption></figure>
     <div>
       <ol>
         <li>X キャリッジにブラケットを付け、Z ステージを鉛直に固定します。スコヤと水準器で鉛直を確認します。</li>

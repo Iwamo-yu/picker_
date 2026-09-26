@@ -3,9 +3,12 @@
 import csv
 import html
 import os
+import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.abspath(os.path.join(HERE, "..", ".."))
+sys.path.insert(0, os.path.join(ROOT, "cad"))
+from params import FREEZE_GATE  # noqa: E402
 ROWS = list(csv.DictReader(open(os.path.join(HERE, "candidates.csv"), encoding="utf-8")))
 
 
@@ -19,7 +22,7 @@ def markdown():
          "Candidates for each line item of the W-B baseline, researched from web-search excerpts on 2026-09-26. "
          "Vendor pages could not be opened from the authoring environment, so **part numbers, specs, prices and "
          "lead times must be confirmed in a quotation** before ordering, and nothing is ordered before the freeze "
-         "gate (M1, M3, M4, M6, M7, M8, M10, M15). Research notes and all URLs: `docs/parts/research_notes.md`.", "",
+         f"gate ({', '.join(FREEZE_GATE)}). Research notes and all URLs: `docs/parts/research_notes.md`.", "",
          "| ID | Category | Item | Qty | Requirement | Candidate 1 | Candidate 2 | Key spec | Approx. price | Verified |",
          "|---|---|---|---|---|---|---|---|---|---|"]
     for r in ROWS:
