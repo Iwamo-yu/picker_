@@ -24,6 +24,8 @@ const THREE = process.env.THREE_DIR;
     await shoot('step' + n, path.join(ROOT, 'docs/assembly_ja/img', `step${String(n).padStart(2, '0')}.png`), 1200, 800);
   await shoot('partmap', path.join(ROOT, 'docs/assembly_ja/img', 'partmap_overall.png'), 1400, 900);
   await shoot('partmap-head', path.join(ROOT, 'docs/assembly_ja/img', 'partmap_head.png'), 1400, 900);
+  await shoot('partmap-labels', path.join(ROOT, 'docs/assembly_ja/img', 'partlabels_overall.png'), 1400, 900);
+  await shoot('partmap-head-labels', path.join(ROOT, 'docs/assembly_ja/img', 'partlabels_head.png'), 1400, 900);
   for (const v of ['iso', 'top', 'front', 'side', 'head'])
     await shoot(v + '-render', path.join(ROOT, 'docs/img', `view_${v}.png`), 1500, 1000);
   await b.close();

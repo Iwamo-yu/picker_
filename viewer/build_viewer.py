@@ -27,7 +27,7 @@ for k, v in an["sweeps"].items():
 theta = {k: v["theta"] for k, v in meta["variants"].items()}
 # assembly steps and numbered part groups: single source in docs/parts/part_map.py
 sys.path.insert(0, os.path.join(HERE, "..", "docs", "parts"))
-from part_map import STEPS, GROUPS  # noqa: E402
+from part_map import STEPS, GROUPS, LABELS  # noqa: E402
 PARTMAP = [dict(n=g["n"], cad=g["cad"], side=g["side"]) for g in GROUPS]
 d1 = {k: dict(label=v["label"], observed=v["observed_pick"]) for k, v in an["d1"].items()}
 import analysis  # noqa
@@ -38,7 +38,7 @@ for k, t in theta.items():
 data = dict(parts=meta["parts"], variants=meta["variants"], condensers=meta["condensers"], condenser_choices=CONDENSER_CHOICES,
             Z_PICK=meta["Z_PICK"], safe_z=meta["safe_z"], corridor=meta.get("corridor", {}), wells=wells, sweep=sweep, access=access,
             workflows={k: dict(label=v["label"], layout=v["layout"]) for k, v in meta["workflows"].items()},
-            export_set=meta["export_set"], d1=d1, steps=STEPS, partmap=PARTMAP)
+            export_set=meta["export_set"], d1=d1, steps=STEPS, partmap=PARTMAP, partlabels=LABELS)
 html = open(os.path.join(HERE, "template.html")).read()
 from keynums import keynums  # noqa: E402
 from render_docs import render  # noqa: E402

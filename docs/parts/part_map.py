@@ -91,6 +91,17 @@ GROUPS = [
          cad=[r"^condenser_IX2-(LWUCD|MLWCD)", r"^illum_arm_tilted_back$"], pids=[], kind="顕微鏡", side="reference",
          meas="M10"),
 ]
+# plain-word call-outs for readers who do not need the numbered map (anchor = the group number pointed at)
+LABELS = {
+    "overall": [dict(text="架台(土台・支柱・梁)", anchor=2), dict(text="XYZ ステージ(3 軸)", anchor=8),
+                dict(text="キャピラリーとホルダー", anchor=17), dict(text="シリンジポンプ", anchor=20),
+                dict(text="制御箱(電源・コントローラ)", anchor=22), dict(text="コンデンサ(照明)", anchor=25),
+                dict(text="電動ステージとプレート", anchor=23), dict(text="顕微鏡本体(IX73)", anchor=26)],
+    "head": [dict(text="キャピラリー(ガラス管)", anchor=18), dict(text="ホルダー", anchor=17),
+             dict(text="アーム", anchor=16), dict(text="Z ステージ(上下)", anchor=11),
+             dict(text="チューブ(ポンプへ)", anchor=19), dict(text="コンデンサ(照明)", anchor=25),
+             dict(text="96 穴プレート", anchor=24)],
+}
 KIND_ORDER = {"製作": 0, "購入": 1, "既存": 2, "顕微鏡": 3}
 
 
