@@ -18,99 +18,1209 @@
   }
  },
  "parts": {
-  "V00__Z_carriage": {
-   "file": "stl/V00__Z_carriage.stl",
+  "WA__base_plate": {
+   "file": "stl/WA__base_plate.stl",
+   "category": "frame",
+   "status": "DES",
+   "group": "fixed",
+   "workflow": "WA",
+   "variant": "all",
+   "note": "15 mm Al plate bolted to table (M25 hole grid)"
+  },
+  "WA__post_0": {
+   "file": "stl/WA__post_0.stl",
+   "category": "frame",
+   "status": "APX",
+   "group": "fixed",
+   "workflow": "WA",
+   "variant": "all",
+   "note": "80x80 extrusion/column"
+  },
+  "WA__post_brace_0": {
+   "file": "stl/WA__post_brace_0.stl",
+   "category": "frame",
+   "status": "APX",
+   "group": "fixed",
+   "workflow": "WA",
+   "variant": "all",
+   "note": ""
+  },
+  "WA__post_1": {
+   "file": "stl/WA__post_1.stl",
+   "category": "frame",
+   "status": "APX",
+   "group": "fixed",
+   "workflow": "WA",
+   "variant": "all",
+   "note": "80x80 extrusion/column"
+  },
+  "WA__post_brace_1": {
+   "file": "stl/WA__post_brace_1.stl",
+   "category": "frame",
+   "status": "APX",
+   "group": "fixed",
+   "workflow": "WA",
+   "variant": "all",
+   "note": ""
+  },
+  "WA__y_beam": {
+   "file": "stl/WA__y_beam.stl",
+   "category": "frame",
+   "status": "APX",
+   "group": "fixed",
+   "workflow": "WA",
+   "variant": "all",
+   "note": ""
+  },
+  "WA__Y_actuator_body": {
+   "file": "stl/WA__Y_actuator_body.stl",
+   "category": "actuator",
+   "status": "APX",
+   "group": "fixed",
+   "workflow": "WA",
+   "variant": "all",
+   "note": "100 mm stroke, ball-screw, width-26 class"
+  },
+  "WA__Y_motor": {
+   "file": "stl/WA__Y_motor.stl",
+   "category": "motor",
+   "status": "APX",
+   "group": "fixed",
+   "workflow": "WA",
+   "variant": "all",
+   "note": ""
+  },
+  "WA__Y_home_switch": {
+   "file": "stl/WA__Y_home_switch.stl",
+   "category": "switch",
+   "status": "DES",
+   "group": "fixed",
+   "workflow": "WA",
+   "variant": "all",
+   "note": ""
+  },
+  "WA__Y_cable_chain": {
+   "file": "stl/WA__Y_cable_chain.stl",
+   "category": "cable",
+   "status": "DES",
+   "group": "fixed",
+   "workflow": "WA",
+   "variant": "all",
+   "note": "motor/switch cables only; tubing is routed separately"
+  },
+  "WA__tubing_fixed_clamp": {
+   "file": "stl/WA__tubing_fixed_clamp.stl",
+   "category": "tubing",
+   "status": "DES",
+   "group": "fixed",
+   "workflow": "WA",
+   "variant": "all",
+   "note": "fixed strain relief on frame"
+  },
+  "WA__syringe_pump_existing": {
+   "file": "stl/WA__syringe_pump_existing.stl",
+   "category": "pump",
+   "status": "PH",
+   "group": "fixed",
+   "workflow": "WA",
+   "variant": "all",
+   "note": "existing Harvard/Tecan pump - footprint PH (M17)"
+  },
+  "WA__motion_controller_24V": {
+   "file": "stl/WA__motion_controller_24V.stl",
+   "category": "electronics",
+   "status": "DES",
+   "group": "fixed",
+   "workflow": "WA",
+   "variant": "all",
+   "note": ""
+  },
+  "WA__Y_carriage": {
+   "file": "stl/WA__Y_carriage.stl",
+   "category": "actuator",
+   "status": "APX",
+   "group": "Y",
+   "workflow": "WA",
+   "variant": "all",
+   "note": ""
+  },
+  "WA__X_support_beam": {
+   "file": "stl/WA__X_support_beam.stl",
+   "category": "frame",
+   "status": "APX",
+   "group": "Y",
+   "workflow": "WA",
+   "variant": "all",
+   "note": "stiff box section carrying the X actuator"
+  },
+  "WA__X_actuator_body": {
+   "file": "stl/WA__X_actuator_body.stl",
+   "category": "actuator",
+   "status": "APX",
+   "group": "Y",
+   "workflow": "WA",
+   "variant": "all",
+   "note": "150 mm stroke, ball-screw, width-26 class, table facing -Y"
+  },
+  "WA__X_motor": {
+   "file": "stl/WA__X_motor.stl",
+   "category": "motor",
+   "status": "APX",
+   "group": "Y",
+   "workflow": "WA",
+   "variant": "all",
+   "note": ""
+  },
+  "WA__X_home_switch": {
+   "file": "stl/WA__X_home_switch.stl",
+   "category": "switch",
+   "status": "DES",
+   "group": "Y",
+   "workflow": "WA",
+   "variant": "all",
+   "note": ""
+  },
+  "WA__X_cable_chain": {
+   "file": "stl/WA__X_cable_chain.stl",
+   "category": "cable",
+   "status": "DES",
+   "group": "Y",
+   "workflow": "WA",
+   "variant": "all",
+   "note": ""
+  },
+  "WA__X_carriage_bracket": {
+   "file": "stl/WA__X_carriage_bracket.stl",
+   "category": "actuator",
+   "status": "APX",
+   "group": "X",
+   "workflow": "WA",
+   "variant": "all",
+   "note": ""
+  },
+  "WA__Z_actuator_body": {
+   "file": "stl/WA__Z_actuator_body.stl",
+   "category": "actuator",
+   "status": "APX",
+   "group": "X",
+   "workflow": "WA",
+   "variant": "all",
+   "note": "50 mm stroke, lead 1 mm ball screw or TR8x2"
+  },
+  "WA__Z_motor": {
+   "file": "stl/WA__Z_motor.stl",
+   "category": "motor",
+   "status": "APX",
+   "group": "X",
+   "workflow": "WA",
+   "variant": "all",
+   "note": ""
+  },
+  "WA__Z_home_switch_top": {
+   "file": "stl/WA__Z_home_switch_top.stl",
+   "category": "switch",
+   "status": "DES",
+   "group": "X",
+   "workflow": "WA",
+   "variant": "all",
+   "note": ""
+  },
+  "WA__tubing_clamp_Zbody": {
+   "file": "stl/WA__tubing_clamp_Zbody.stl",
+   "category": "tubing",
+   "status": "DES",
+   "group": "X",
+   "workflow": "WA",
+   "variant": "all",
+   "note": ""
+  },
+  "WA__V00__Z_carriage": {
+   "file": "stl/WA__V00__Z_carriage.stl",
    "category": "moving",
    "status": "APX",
    "group": "Z",
+   "workflow": "WA",
    "variant": "V00",
    "note": ""
   },
-  "V00__breakaway_kinematic_mount": {
-   "file": "stl/V00__breakaway_kinematic_mount.stl",
+  "WA__V00__breakaway_kinematic_mount": {
+   "file": "stl/WA__V00__breakaway_kinematic_mount.stl",
    "category": "moving",
    "status": "DES",
    "group": "Z",
+   "workflow": "WA",
    "variant": "V00",
    "note": "3-ball kinematic + magnet preload: collision fuse"
   },
-  "V00__arm_thin": {
-   "file": "stl/V00__arm_thin.stl",
+  "WA__V00__arm_thin": {
+   "file": "stl/WA__V00__arm_thin.stl",
    "category": "moving",
    "status": "DES",
    "group": "Z",
+   "workflow": "WA",
    "variant": "V00",
    "note": ""
   },
-  "V00__arm_deep": {
-   "file": "stl/V00__arm_deep.stl",
+  "WA__V00__arm_deep": {
+   "file": "stl/WA__V00__arm_deep.stl",
    "category": "moving",
    "status": "DES",
    "group": "Z",
+   "workflow": "WA",
    "variant": "V00",
    "note": ""
   },
-  "V00__capillary_holder_collet": {
-   "file": "stl/V00__capillary_holder_collet.stl",
+  "WA__V00__capillary_holder_collet": {
+   "file": "stl/WA__V00__capillary_holder_collet.stl",
    "category": "holder",
    "status": "APX",
    "group": "Z",
+   "workflow": "WA",
    "variant": "V00",
    "note": "collet/split holder with depth stop, OD<=10"
   },
-  "V00__glass_capillary_OD1.0": {
-   "file": "stl/V00__glass_capillary_OD1.0.stl",
+  "WA__V00__glass_capillary_OD1.0": {
+   "file": "stl/WA__V00__glass_capillary_OD1.0.stl",
    "category": "capillary",
    "status": "DES",
    "group": "Z",
+   "workflow": "WA",
    "variant": "V00",
    "note": "OD 1.0 / ID 0.6 / L 40"
   },
-  "V00__tubing_head_0": {
-   "file": "stl/V00__tubing_head_0.stl",
+  "WA__V00__tubing_head_0": {
+   "file": "stl/WA__V00__tubing_head_0.stl",
    "category": "tubing",
    "status": "DES",
    "group": "Z",
+   "workflow": "WA",
    "variant": "V00",
    "note": "PTFE/FEP 1/16in OD, liquid-filled"
   },
-  "V00__tubing_head_1": {
-   "file": "stl/V00__tubing_head_1.stl",
+  "WA__V00__tubing_head_1": {
+   "file": "stl/WA__V00__tubing_head_1.stl",
    "category": "tubing",
    "status": "DES",
    "group": "Z",
+   "workflow": "WA",
    "variant": "V00",
    "note": "PTFE/FEP 1/16in OD, liquid-filled"
   },
-  "V00__tubing_head_2": {
-   "file": "stl/V00__tubing_head_2.stl",
+  "WA__V00__tubing_head_2": {
+   "file": "stl/WA__V00__tubing_head_2.stl",
    "category": "tubing",
    "status": "DES",
    "group": "Z",
+   "workflow": "WA",
    "variant": "V00",
    "note": "PTFE/FEP 1/16in OD, liquid-filled"
   },
-  "V00__tubing_head_3": {
-   "file": "stl/V00__tubing_head_3.stl",
+  "WA__V00__tubing_head_3": {
+   "file": "stl/WA__V00__tubing_head_3.stl",
    "category": "tubing",
    "status": "DES",
    "group": "Z",
+   "workflow": "WA",
    "variant": "V00",
    "note": "PTFE/FEP 1/16in OD, liquid-filled"
   },
-  "V00__tubing_head_4": {
-   "file": "stl/V00__tubing_head_4.stl",
+  "WA__V00__tubing_head_4": {
+   "file": "stl/WA__V00__tubing_head_4.stl",
    "category": "tubing",
    "status": "DES",
    "group": "Z",
+   "workflow": "WA",
    "variant": "V00",
    "note": "PTFE/FEP 1/16in OD, liquid-filled"
+  },
+  "WA__tubing_loopZ_0": {
+   "file": "stl/WA__tubing_loopZ_0.stl",
+   "category": "tubing",
+   "status": "DES",
+   "group": "X",
+   "workflow": "WA",
+   "variant": "all",
+   "note": ""
+  },
+  "WA__tubing_loopZ_1": {
+   "file": "stl/WA__tubing_loopZ_1.stl",
+   "category": "tubing",
+   "status": "DES",
+   "group": "X",
+   "workflow": "WA",
+   "variant": "all",
+   "note": ""
+  },
+  "WA__tubing_loopZ_2": {
+   "file": "stl/WA__tubing_loopZ_2.stl",
+   "category": "tubing",
+   "status": "DES",
+   "group": "X",
+   "workflow": "WA",
+   "variant": "all",
+   "note": ""
+  },
+  "WA__tubing_loopZ_3": {
+   "file": "stl/WA__tubing_loopZ_3.stl",
+   "category": "tubing",
+   "status": "DES",
+   "group": "X",
+   "workflow": "WA",
+   "variant": "all",
+   "note": ""
+  },
+  "WA__tubing_loopZ_4": {
+   "file": "stl/WA__tubing_loopZ_4.stl",
+   "category": "tubing",
+   "status": "DES",
+   "group": "X",
+   "workflow": "WA",
+   "variant": "all",
+   "note": ""
+  },
+  "WA__tubing_loopXY_0": {
+   "file": "stl/WA__tubing_loopXY_0.stl",
+   "category": "tubing",
+   "status": "DES",
+   "group": "Y",
+   "workflow": "WA",
+   "variant": "all",
+   "note": ""
+  },
+  "WA__tubing_loopXY_1": {
+   "file": "stl/WA__tubing_loopXY_1.stl",
+   "category": "tubing",
+   "status": "DES",
+   "group": "Y",
+   "workflow": "WA",
+   "variant": "all",
+   "note": ""
+  },
+  "WA__tubing_loopXY_2": {
+   "file": "stl/WA__tubing_loopXY_2.stl",
+   "category": "tubing",
+   "status": "DES",
+   "group": "Y",
+   "workflow": "WA",
+   "variant": "all",
+   "note": ""
+  },
+  "WA__tubing_loopXY_3": {
+   "file": "stl/WA__tubing_loopXY_3.stl",
+   "category": "tubing",
+   "status": "DES",
+   "group": "Y",
+   "workflow": "WA",
+   "variant": "all",
+   "note": ""
+  },
+  "WA__tubing_loopXY_4": {
+   "file": "stl/WA__tubing_loopXY_4.stl",
+   "category": "tubing",
+   "status": "DES",
+   "group": "Y",
+   "workflow": "WA",
+   "variant": "all",
+   "note": ""
+  },
+  "WA__tubing_to_pump_0": {
+   "file": "stl/WA__tubing_to_pump_0.stl",
+   "category": "tubing",
+   "status": "DES",
+   "group": "fixed",
+   "workflow": "WA",
+   "variant": "all",
+   "note": ""
+  },
+  "WA__tubing_to_pump_1": {
+   "file": "stl/WA__tubing_to_pump_1.stl",
+   "category": "tubing",
+   "status": "DES",
+   "group": "fixed",
+   "workflow": "WA",
+   "variant": "all",
+   "note": ""
+  },
+  "WA__tubing_to_pump_2": {
+   "file": "stl/WA__tubing_to_pump_2.stl",
+   "category": "tubing",
+   "status": "DES",
+   "group": "fixed",
+   "workflow": "WA",
+   "variant": "all",
+   "note": ""
+  },
+  "WA__tubing_to_pump_3": {
+   "file": "stl/WA__tubing_to_pump_3.stl",
+   "category": "tubing",
+   "status": "DES",
+   "group": "fixed",
+   "workflow": "WA",
+   "variant": "all",
+   "note": ""
+  },
+  "WA__tubing_to_pump_4": {
+   "file": "stl/WA__tubing_to_pump_4.stl",
+   "category": "tubing",
+   "status": "DES",
+   "group": "fixed",
+   "workflow": "WA",
+   "variant": "all",
+   "note": ""
+  },
+  "WA__R08__Z_carriage": {
+   "file": "stl/WA__R08__Z_carriage.stl",
+   "category": "moving",
+   "status": "APX",
+   "group": "Z",
+   "workflow": "WA",
+   "variant": "R08",
+   "note": ""
+  },
+  "WA__R08__breakaway_kinematic_mount": {
+   "file": "stl/WA__R08__breakaway_kinematic_mount.stl",
+   "category": "moving",
+   "status": "DES",
+   "group": "Z",
+   "workflow": "WA",
+   "variant": "R08",
+   "note": "3-ball kinematic + magnet preload: collision fuse"
+  },
+  "WA__R08__arm_thin": {
+   "file": "stl/WA__R08__arm_thin.stl",
+   "category": "moving",
+   "status": "DES",
+   "group": "Z",
+   "workflow": "WA",
+   "variant": "R08",
+   "note": ""
+  },
+  "WA__R08__arm_deep": {
+   "file": "stl/WA__R08__arm_deep.stl",
+   "category": "moving",
+   "status": "DES",
+   "group": "Z",
+   "workflow": "WA",
+   "variant": "R08",
+   "note": ""
+  },
+  "WA__R08__capillary_holder_collet": {
+   "file": "stl/WA__R08__capillary_holder_collet.stl",
+   "category": "holder",
+   "status": "APX",
+   "group": "Z",
+   "workflow": "WA",
+   "variant": "R08",
+   "note": "collet/split holder with depth stop, OD<=10"
+  },
+  "WA__R08__glass_capillary_OD1.0": {
+   "file": "stl/WA__R08__glass_capillary_OD1.0.stl",
+   "category": "capillary",
+   "status": "DES",
+   "group": "Z",
+   "workflow": "WA",
+   "variant": "R08",
+   "note": "OD 1.0 / ID 0.6 / L 40"
+  },
+  "WA__R08__tubing_head_0": {
+   "file": "stl/WA__R08__tubing_head_0.stl",
+   "category": "tubing",
+   "status": "DES",
+   "group": "Z",
+   "workflow": "WA",
+   "variant": "R08",
+   "note": "PTFE/FEP 1/16in OD, liquid-filled"
+  },
+  "WA__R08__tubing_head_1": {
+   "file": "stl/WA__R08__tubing_head_1.stl",
+   "category": "tubing",
+   "status": "DES",
+   "group": "Z",
+   "workflow": "WA",
+   "variant": "R08",
+   "note": "PTFE/FEP 1/16in OD, liquid-filled"
+  },
+  "WA__R08__tubing_head_2": {
+   "file": "stl/WA__R08__tubing_head_2.stl",
+   "category": "tubing",
+   "status": "DES",
+   "group": "Z",
+   "workflow": "WA",
+   "variant": "R08",
+   "note": "PTFE/FEP 1/16in OD, liquid-filled"
+  },
+  "WA__R08__tubing_head_3": {
+   "file": "stl/WA__R08__tubing_head_3.stl",
+   "category": "tubing",
+   "status": "DES",
+   "group": "Z",
+   "workflow": "WA",
+   "variant": "R08",
+   "note": "PTFE/FEP 1/16in OD, liquid-filled"
+  },
+  "WA__R08__tubing_head_4": {
+   "file": "stl/WA__R08__tubing_head_4.stl",
+   "category": "tubing",
+   "status": "DES",
+   "group": "Z",
+   "workflow": "WA",
+   "variant": "R08",
+   "note": "PTFE/FEP 1/16in OD, liquid-filled"
+  },
+  "WA__V30__Z_carriage": {
+   "file": "stl/WA__V30__Z_carriage.stl",
+   "category": "moving",
+   "status": "APX",
+   "group": "Z",
+   "workflow": "WA",
+   "variant": "V30",
+   "note": ""
+  },
+  "WA__V30__breakaway_kinematic_mount": {
+   "file": "stl/WA__V30__breakaway_kinematic_mount.stl",
+   "category": "moving",
+   "status": "DES",
+   "group": "Z",
+   "workflow": "WA",
+   "variant": "V30",
+   "note": "3-ball kinematic + magnet preload: collision fuse"
+  },
+  "WA__V30__arm_thin": {
+   "file": "stl/WA__V30__arm_thin.stl",
+   "category": "moving",
+   "status": "DES",
+   "group": "Z",
+   "workflow": "WA",
+   "variant": "V30",
+   "note": ""
+  },
+  "WA__V30__arm_deep": {
+   "file": "stl/WA__V30__arm_deep.stl",
+   "category": "moving",
+   "status": "DES",
+   "group": "Z",
+   "workflow": "WA",
+   "variant": "V30",
+   "note": ""
+  },
+  "WA__V30__capillary_holder_collet": {
+   "file": "stl/WA__V30__capillary_holder_collet.stl",
+   "category": "holder",
+   "status": "APX",
+   "group": "Z",
+   "workflow": "WA",
+   "variant": "V30",
+   "note": "collet/split holder with depth stop, OD<=10"
+  },
+  "WA__V30__glass_capillary_OD1.0": {
+   "file": "stl/WA__V30__glass_capillary_OD1.0.stl",
+   "category": "capillary",
+   "status": "DES",
+   "group": "Z",
+   "workflow": "WA",
+   "variant": "V30",
+   "note": "OD 1.0 / ID 0.6 / L 40"
+  },
+  "WA__V30__tubing_head_0": {
+   "file": "stl/WA__V30__tubing_head_0.stl",
+   "category": "tubing",
+   "status": "DES",
+   "group": "Z",
+   "workflow": "WA",
+   "variant": "V30",
+   "note": "PTFE/FEP 1/16in OD, liquid-filled"
+  },
+  "WA__V30__tubing_head_1": {
+   "file": "stl/WA__V30__tubing_head_1.stl",
+   "category": "tubing",
+   "status": "DES",
+   "group": "Z",
+   "workflow": "WA",
+   "variant": "V30",
+   "note": "PTFE/FEP 1/16in OD, liquid-filled"
+  },
+  "WA__V30__tubing_head_2": {
+   "file": "stl/WA__V30__tubing_head_2.stl",
+   "category": "tubing",
+   "status": "DES",
+   "group": "Z",
+   "workflow": "WA",
+   "variant": "V30",
+   "note": "PTFE/FEP 1/16in OD, liquid-filled"
+  },
+  "WA__V30__tubing_head_3": {
+   "file": "stl/WA__V30__tubing_head_3.stl",
+   "category": "tubing",
+   "status": "DES",
+   "group": "Z",
+   "workflow": "WA",
+   "variant": "V30",
+   "note": "PTFE/FEP 1/16in OD, liquid-filled"
+  },
+  "WA__V30__tubing_head_4": {
+   "file": "stl/WA__V30__tubing_head_4.stl",
+   "category": "tubing",
+   "status": "DES",
+   "group": "Z",
+   "workflow": "WA",
+   "variant": "V30",
+   "note": "PTFE/FEP 1/16in OD, liquid-filled"
+  },
+  "WA__V45__Z_carriage": {
+   "file": "stl/WA__V45__Z_carriage.stl",
+   "category": "moving",
+   "status": "APX",
+   "group": "Z",
+   "workflow": "WA",
+   "variant": "V45",
+   "note": ""
+  },
+  "WA__V45__breakaway_kinematic_mount": {
+   "file": "stl/WA__V45__breakaway_kinematic_mount.stl",
+   "category": "moving",
+   "status": "DES",
+   "group": "Z",
+   "workflow": "WA",
+   "variant": "V45",
+   "note": "3-ball kinematic + magnet preload: collision fuse"
+  },
+  "WA__V45__arm_thin": {
+   "file": "stl/WA__V45__arm_thin.stl",
+   "category": "moving",
+   "status": "DES",
+   "group": "Z",
+   "workflow": "WA",
+   "variant": "V45",
+   "note": ""
+  },
+  "WA__V45__arm_deep": {
+   "file": "stl/WA__V45__arm_deep.stl",
+   "category": "moving",
+   "status": "DES",
+   "group": "Z",
+   "workflow": "WA",
+   "variant": "V45",
+   "note": ""
+  },
+  "WA__V45__capillary_holder_collet": {
+   "file": "stl/WA__V45__capillary_holder_collet.stl",
+   "category": "holder",
+   "status": "APX",
+   "group": "Z",
+   "workflow": "WA",
+   "variant": "V45",
+   "note": "collet/split holder with depth stop, OD<=10"
+  },
+  "WA__V45__glass_capillary_OD1.0": {
+   "file": "stl/WA__V45__glass_capillary_OD1.0.stl",
+   "category": "capillary",
+   "status": "DES",
+   "group": "Z",
+   "workflow": "WA",
+   "variant": "V45",
+   "note": "OD 1.0 / ID 0.6 / L 40"
+  },
+  "WA__V45__tubing_head_0": {
+   "file": "stl/WA__V45__tubing_head_0.stl",
+   "category": "tubing",
+   "status": "DES",
+   "group": "Z",
+   "workflow": "WA",
+   "variant": "V45",
+   "note": "PTFE/FEP 1/16in OD, liquid-filled"
+  },
+  "WA__V45__tubing_head_1": {
+   "file": "stl/WA__V45__tubing_head_1.stl",
+   "category": "tubing",
+   "status": "DES",
+   "group": "Z",
+   "workflow": "WA",
+   "variant": "V45",
+   "note": "PTFE/FEP 1/16in OD, liquid-filled"
+  },
+  "WA__V45__tubing_head_2": {
+   "file": "stl/WA__V45__tubing_head_2.stl",
+   "category": "tubing",
+   "status": "DES",
+   "group": "Z",
+   "workflow": "WA",
+   "variant": "V45",
+   "note": "PTFE/FEP 1/16in OD, liquid-filled"
+  },
+  "WA__V45__tubing_head_3": {
+   "file": "stl/WA__V45__tubing_head_3.stl",
+   "category": "tubing",
+   "status": "DES",
+   "group": "Z",
+   "workflow": "WA",
+   "variant": "V45",
+   "note": "PTFE/FEP 1/16in OD, liquid-filled"
+  },
+  "WA__V45__tubing_head_4": {
+   "file": "stl/WA__V45__tubing_head_4.stl",
+   "category": "tubing",
+   "status": "DES",
+   "group": "Z",
+   "workflow": "WA",
+   "variant": "V45",
+   "note": "PTFE/FEP 1/16in OD, liquid-filled"
+  },
+  "WB__base_plate": {
+   "file": "stl/WB__base_plate.stl",
+   "category": "frame",
+   "status": "DES",
+   "group": "fixed",
+   "workflow": "WB",
+   "variant": "all",
+   "note": "15 mm Al plate bolted to table (M25 hole grid)"
+  },
+  "WB__post_0": {
+   "file": "stl/WB__post_0.stl",
+   "category": "frame",
+   "status": "APX",
+   "group": "fixed",
+   "workflow": "WB",
+   "variant": "all",
+   "note": "80x80 extrusion/column"
+  },
+  "WB__post_brace_0": {
+   "file": "stl/WB__post_brace_0.stl",
+   "category": "frame",
+   "status": "APX",
+   "group": "fixed",
+   "workflow": "WB",
+   "variant": "all",
+   "note": ""
+  },
+  "WB__post_1": {
+   "file": "stl/WB__post_1.stl",
+   "category": "frame",
+   "status": "APX",
+   "group": "fixed",
+   "workflow": "WB",
+   "variant": "all",
+   "note": "80x80 extrusion/column"
+  },
+  "WB__post_brace_1": {
+   "file": "stl/WB__post_brace_1.stl",
+   "category": "frame",
+   "status": "APX",
+   "group": "fixed",
+   "workflow": "WB",
+   "variant": "all",
+   "note": ""
+  },
+  "WB__y_beam": {
+   "file": "stl/WB__y_beam.stl",
+   "category": "frame",
+   "status": "APX",
+   "group": "fixed",
+   "workflow": "WB",
+   "variant": "all",
+   "note": ""
+  },
+  "WB__Y_actuator_body": {
+   "file": "stl/WB__Y_actuator_body.stl",
+   "category": "actuator",
+   "status": "APX",
+   "group": "fixed",
+   "workflow": "WB",
+   "variant": "all",
+   "note": "100 mm stroke, ball-screw, width-26 class"
+  },
+  "WB__Y_motor": {
+   "file": "stl/WB__Y_motor.stl",
+   "category": "motor",
+   "status": "APX",
+   "group": "fixed",
+   "workflow": "WB",
+   "variant": "all",
+   "note": ""
+  },
+  "WB__Y_home_switch": {
+   "file": "stl/WB__Y_home_switch.stl",
+   "category": "switch",
+   "status": "DES",
+   "group": "fixed",
+   "workflow": "WB",
+   "variant": "all",
+   "note": ""
+  },
+  "WB__Y_cable_chain": {
+   "file": "stl/WB__Y_cable_chain.stl",
+   "category": "cable",
+   "status": "DES",
+   "group": "fixed",
+   "workflow": "WB",
+   "variant": "all",
+   "note": "motor/switch cables only; tubing is routed separately"
+  },
+  "WB__tubing_fixed_clamp": {
+   "file": "stl/WB__tubing_fixed_clamp.stl",
+   "category": "tubing",
+   "status": "DES",
+   "group": "fixed",
+   "workflow": "WB",
+   "variant": "all",
+   "note": "fixed strain relief on frame"
+  },
+  "WB__syringe_pump_existing": {
+   "file": "stl/WB__syringe_pump_existing.stl",
+   "category": "pump",
+   "status": "PH",
+   "group": "fixed",
+   "workflow": "WB",
+   "variant": "all",
+   "note": "existing Harvard/Tecan pump - footprint PH (M17)"
+  },
+  "WB__motion_controller_24V": {
+   "file": "stl/WB__motion_controller_24V.stl",
+   "category": "electronics",
+   "status": "DES",
+   "group": "fixed",
+   "workflow": "WB",
+   "variant": "all",
+   "note": ""
+  },
+  "WB__Y_carriage": {
+   "file": "stl/WB__Y_carriage.stl",
+   "category": "actuator",
+   "status": "APX",
+   "group": "Y",
+   "workflow": "WB",
+   "variant": "all",
+   "note": ""
+  },
+  "WB__X_support_beam": {
+   "file": "stl/WB__X_support_beam.stl",
+   "category": "frame",
+   "status": "APX",
+   "group": "Y",
+   "workflow": "WB",
+   "variant": "all",
+   "note": "stiff box section carrying the X actuator"
+  },
+  "WB__X_actuator_body": {
+   "file": "stl/WB__X_actuator_body.stl",
+   "category": "actuator",
+   "status": "APX",
+   "group": "Y",
+   "workflow": "WB",
+   "variant": "all",
+   "note": "150 mm stroke, ball-screw, width-26 class, table facing -Y"
+  },
+  "WB__X_motor": {
+   "file": "stl/WB__X_motor.stl",
+   "category": "motor",
+   "status": "APX",
+   "group": "Y",
+   "workflow": "WB",
+   "variant": "all",
+   "note": ""
+  },
+  "WB__X_home_switch": {
+   "file": "stl/WB__X_home_switch.stl",
+   "category": "switch",
+   "status": "DES",
+   "group": "Y",
+   "workflow": "WB",
+   "variant": "all",
+   "note": ""
+  },
+  "WB__X_cable_chain": {
+   "file": "stl/WB__X_cable_chain.stl",
+   "category": "cable",
+   "status": "DES",
+   "group": "Y",
+   "workflow": "WB",
+   "variant": "all",
+   "note": ""
+  },
+  "WB__X_carriage_bracket": {
+   "file": "stl/WB__X_carriage_bracket.stl",
+   "category": "actuator",
+   "status": "APX",
+   "group": "X",
+   "workflow": "WB",
+   "variant": "all",
+   "note": ""
+  },
+  "WB__Z_actuator_body": {
+   "file": "stl/WB__Z_actuator_body.stl",
+   "category": "actuator",
+   "status": "APX",
+   "group": "X",
+   "workflow": "WB",
+   "variant": "all",
+   "note": "50 mm stroke, lead 1 mm ball screw or TR8x2"
+  },
+  "WB__Z_motor": {
+   "file": "stl/WB__Z_motor.stl",
+   "category": "motor",
+   "status": "APX",
+   "group": "X",
+   "workflow": "WB",
+   "variant": "all",
+   "note": ""
+  },
+  "WB__Z_home_switch_top": {
+   "file": "stl/WB__Z_home_switch_top.stl",
+   "category": "switch",
+   "status": "DES",
+   "group": "X",
+   "workflow": "WB",
+   "variant": "all",
+   "note": ""
+  },
+  "WB__tubing_clamp_Zbody": {
+   "file": "stl/WB__tubing_clamp_Zbody.stl",
+   "category": "tubing",
+   "status": "DES",
+   "group": "X",
+   "workflow": "WB",
+   "variant": "all",
+   "note": ""
+  },
+  "WB__R08__Z_carriage": {
+   "file": "stl/WB__R08__Z_carriage.stl",
+   "category": "moving",
+   "status": "APX",
+   "group": "Z",
+   "workflow": "WB",
+   "variant": "R08",
+   "note": ""
+  },
+  "WB__R08__breakaway_kinematic_mount": {
+   "file": "stl/WB__R08__breakaway_kinematic_mount.stl",
+   "category": "moving",
+   "status": "DES",
+   "group": "Z",
+   "workflow": "WB",
+   "variant": "R08",
+   "note": "3-ball kinematic + magnet preload: collision fuse"
+  },
+  "WB__R08__arm_thin": {
+   "file": "stl/WB__R08__arm_thin.stl",
+   "category": "moving",
+   "status": "DES",
+   "group": "Z",
+   "workflow": "WB",
+   "variant": "R08",
+   "note": ""
+  },
+  "WB__R08__arm_deep": {
+   "file": "stl/WB__R08__arm_deep.stl",
+   "category": "moving",
+   "status": "DES",
+   "group": "Z",
+   "workflow": "WB",
+   "variant": "R08",
+   "note": ""
+  },
+  "WB__R08__capillary_holder_collet": {
+   "file": "stl/WB__R08__capillary_holder_collet.stl",
+   "category": "holder",
+   "status": "APX",
+   "group": "Z",
+   "workflow": "WB",
+   "variant": "R08",
+   "note": "collet/split holder with depth stop, OD<=10"
+  },
+  "WB__R08__glass_capillary_OD1.0": {
+   "file": "stl/WB__R08__glass_capillary_OD1.0.stl",
+   "category": "capillary",
+   "status": "DES",
+   "group": "Z",
+   "workflow": "WB",
+   "variant": "R08",
+   "note": "OD 1.0 / ID 0.6 / L 40"
+  },
+  "WB__R08__tubing_head_0": {
+   "file": "stl/WB__R08__tubing_head_0.stl",
+   "category": "tubing",
+   "status": "DES",
+   "group": "Z",
+   "workflow": "WB",
+   "variant": "R08",
+   "note": "PTFE/FEP 1/16in OD, liquid-filled"
+  },
+  "WB__R08__tubing_head_1": {
+   "file": "stl/WB__R08__tubing_head_1.stl",
+   "category": "tubing",
+   "status": "DES",
+   "group": "Z",
+   "workflow": "WB",
+   "variant": "R08",
+   "note": "PTFE/FEP 1/16in OD, liquid-filled"
+  },
+  "WB__R08__tubing_head_2": {
+   "file": "stl/WB__R08__tubing_head_2.stl",
+   "category": "tubing",
+   "status": "DES",
+   "group": "Z",
+   "workflow": "WB",
+   "variant": "R08",
+   "note": "PTFE/FEP 1/16in OD, liquid-filled"
+  },
+  "WB__R08__tubing_head_3": {
+   "file": "stl/WB__R08__tubing_head_3.stl",
+   "category": "tubing",
+   "status": "DES",
+   "group": "Z",
+   "workflow": "WB",
+   "variant": "R08",
+   "note": "PTFE/FEP 1/16in OD, liquid-filled"
+  },
+  "WB__R08__tubing_head_4": {
+   "file": "stl/WB__R08__tubing_head_4.stl",
+   "category": "tubing",
+   "status": "DES",
+   "group": "Z",
+   "workflow": "WB",
+   "variant": "R08",
+   "note": "PTFE/FEP 1/16in OD, liquid-filled"
+  },
+  "WB__tubing_loopZ_0": {
+   "file": "stl/WB__tubing_loopZ_0.stl",
+   "category": "tubing",
+   "status": "DES",
+   "group": "X",
+   "workflow": "WB",
+   "variant": "all",
+   "note": ""
+  },
+  "WB__tubing_loopZ_1": {
+   "file": "stl/WB__tubing_loopZ_1.stl",
+   "category": "tubing",
+   "status": "DES",
+   "group": "X",
+   "workflow": "WB",
+   "variant": "all",
+   "note": ""
+  },
+  "WB__tubing_loopZ_2": {
+   "file": "stl/WB__tubing_loopZ_2.stl",
+   "category": "tubing",
+   "status": "DES",
+   "group": "X",
+   "workflow": "WB",
+   "variant": "all",
+   "note": ""
+  },
+  "WB__tubing_loopZ_3": {
+   "file": "stl/WB__tubing_loopZ_3.stl",
+   "category": "tubing",
+   "status": "DES",
+   "group": "X",
+   "workflow": "WB",
+   "variant": "all",
+   "note": ""
+  },
+  "WB__tubing_loopZ_4": {
+   "file": "stl/WB__tubing_loopZ_4.stl",
+   "category": "tubing",
+   "status": "DES",
+   "group": "X",
+   "workflow": "WB",
+   "variant": "all",
+   "note": ""
+  },
+  "WB__tubing_loopXY_0": {
+   "file": "stl/WB__tubing_loopXY_0.stl",
+   "category": "tubing",
+   "status": "DES",
+   "group": "Y",
+   "workflow": "WB",
+   "variant": "all",
+   "note": ""
+  },
+  "WB__tubing_loopXY_1": {
+   "file": "stl/WB__tubing_loopXY_1.stl",
+   "category": "tubing",
+   "status": "DES",
+   "group": "Y",
+   "workflow": "WB",
+   "variant": "all",
+   "note": ""
+  },
+  "WB__tubing_loopXY_2": {
+   "file": "stl/WB__tubing_loopXY_2.stl",
+   "category": "tubing",
+   "status": "DES",
+   "group": "Y",
+   "workflow": "WB",
+   "variant": "all",
+   "note": ""
+  },
+  "WB__tubing_loopXY_3": {
+   "file": "stl/WB__tubing_loopXY_3.stl",
+   "category": "tubing",
+   "status": "DES",
+   "group": "Y",
+   "workflow": "WB",
+   "variant": "all",
+   "note": ""
+  },
+  "WB__tubing_loopXY_4": {
+   "file": "stl/WB__tubing_loopXY_4.stl",
+   "category": "tubing",
+   "status": "DES",
+   "group": "Y",
+   "workflow": "WB",
+   "variant": "all",
+   "note": ""
+  },
+  "WB__tubing_to_pump_0": {
+   "file": "stl/WB__tubing_to_pump_0.stl",
+   "category": "tubing",
+   "status": "DES",
+   "group": "fixed",
+   "workflow": "WB",
+   "variant": "all",
+   "note": ""
+  },
+  "WB__tubing_to_pump_1": {
+   "file": "stl/WB__tubing_to_pump_1.stl",
+   "category": "tubing",
+   "status": "DES",
+   "group": "fixed",
+   "workflow": "WB",
+   "variant": "all",
+   "note": ""
+  },
+  "WB__tubing_to_pump_2": {
+   "file": "stl/WB__tubing_to_pump_2.stl",
+   "category": "tubing",
+   "status": "DES",
+   "group": "fixed",
+   "workflow": "WB",
+   "variant": "all",
+   "note": ""
+  },
+  "WB__tubing_to_pump_3": {
+   "file": "stl/WB__tubing_to_pump_3.stl",
+   "category": "tubing",
+   "status": "DES",
+   "group": "fixed",
+   "workflow": "WB",
+   "variant": "all",
+   "note": ""
+  },
+  "WB__tubing_to_pump_4": {
+   "file": "stl/WB__tubing_to_pump_4.stl",
+   "category": "tubing",
+   "status": "DES",
+   "group": "fixed",
+   "workflow": "WB",
+   "variant": "all",
+   "note": ""
   },
   "optical_table_patch": {
    "file": "stl/optical_table_patch.stl",
    "category": "table",
    "status": "PH",
    "group": "fixed",
+   "workflow": "all",
    "variant": "all",
    "note": "optical table / breadboard surface, level = M1"
   },
@@ -119,6 +1229,7 @@
    "category": "ix73",
    "status": "PH",
    "group": "fixed",
+   "workflow": "all",
    "variant": "all",
    "note": "W x D = 323 x 475 MFR; placement & height PH"
   },
@@ -126,15 +1237,17 @@
    "file": "stl/ix73_stage.stl",
    "category": "ix73",
    "status": "MFR",
-   "group": "fixed",
+   "group": "S",
+   "workflow": "all",
    "variant": "all",
-   "note": "232 x 240 plain stage MFR; thickness & position PH"
+   "note": "232 x 240 plain stage MFR; thickness & position PH; moves with stage"
   },
   "ix73_stage_support": {
    "file": "stl/ix73_stage_support.stl",
    "category": "ix73",
    "status": "PH",
    "group": "fixed",
+   "workflow": "all",
    "variant": "all",
    "note": ""
   },
@@ -143,6 +1256,7 @@
    "category": "ix73",
    "status": "PH",
    "group": "fixed",
+   "workflow": "all",
    "variant": "all",
    "note": "nosepiece/objectives under stage"
   },
@@ -151,6 +1265,7 @@
    "category": "ix73",
    "status": "PH",
    "group": "fixed",
+   "workflow": "all",
    "variant": "all",
    "note": "observation tube + eyepieces envelope (M12)"
   },
@@ -159,6 +1274,7 @@
    "category": "ix73",
    "status": "PH",
    "group": "fixed",
+   "workflow": "all",
    "variant": "all",
    "note": "IX3-SVR right-hand coaxial handle (M13)"
   },
@@ -167,6 +1283,7 @@
    "category": "ix73",
    "status": "PH",
    "group": "fixed",
+   "workflow": "all",
    "variant": "all",
    "note": "pillar height from MFR total H 656; x/y/section PH"
   },
@@ -175,598 +1292,16 @@
    "category": "ix73",
    "status": "PH",
    "group": "fixed",
+   "workflow": "all",
    "variant": "all",
    "note": ""
-  },
-  "plate_96_SLAS": {
-   "file": "stl/plate_96_SLAS.stl",
-   "category": "plate",
-   "status": "STD",
-   "group": "fixed",
-   "variant": "all",
-   "note": "SLAS 1/2/4 + Corning 7007 wells"
-  },
-  "base_plate": {
-   "file": "stl/base_plate.stl",
-   "category": "frame",
-   "status": "DES",
-   "group": "fixed",
-   "variant": "all",
-   "note": "15 mm Al plate bolted to table (M25 hole grid)"
-  },
-  "post_0": {
-   "file": "stl/post_0.stl",
-   "category": "frame",
-   "status": "APX",
-   "group": "fixed",
-   "variant": "all",
-   "note": "80x80 extrusion/column"
-  },
-  "post_brace_0": {
-   "file": "stl/post_brace_0.stl",
-   "category": "frame",
-   "status": "APX",
-   "group": "fixed",
-   "variant": "all",
-   "note": ""
-  },
-  "post_1": {
-   "file": "stl/post_1.stl",
-   "category": "frame",
-   "status": "APX",
-   "group": "fixed",
-   "variant": "all",
-   "note": "80x80 extrusion/column"
-  },
-  "post_brace_1": {
-   "file": "stl/post_brace_1.stl",
-   "category": "frame",
-   "status": "APX",
-   "group": "fixed",
-   "variant": "all",
-   "note": ""
-  },
-  "y_beam": {
-   "file": "stl/y_beam.stl",
-   "category": "frame",
-   "status": "APX",
-   "group": "fixed",
-   "variant": "all",
-   "note": ""
-  },
-  "Y_actuator_body": {
-   "file": "stl/Y_actuator_body.stl",
-   "category": "actuator",
-   "status": "APX",
-   "group": "fixed",
-   "variant": "all",
-   "note": "100 mm stroke, ball-screw, width-26 class"
-  },
-  "Y_motor": {
-   "file": "stl/Y_motor.stl",
-   "category": "motor",
-   "status": "APX",
-   "group": "fixed",
-   "variant": "all",
-   "note": ""
-  },
-  "Y_home_switch": {
-   "file": "stl/Y_home_switch.stl",
-   "category": "switch",
-   "status": "DES",
-   "group": "fixed",
-   "variant": "all",
-   "note": ""
-  },
-  "Y_cable_chain": {
-   "file": "stl/Y_cable_chain.stl",
-   "category": "cable",
-   "status": "DES",
-   "group": "fixed",
-   "variant": "all",
-   "note": "motor/switch cables only; tubing is routed separately"
-  },
-  "tubing_fixed_clamp": {
-   "file": "stl/tubing_fixed_clamp.stl",
-   "category": "tubing",
-   "status": "DES",
-   "group": "fixed",
-   "variant": "all",
-   "note": "fixed strain relief on frame"
-  },
-  "syringe_pump_existing": {
-   "file": "stl/syringe_pump_existing.stl",
-   "category": "pump",
-   "status": "PH",
-   "group": "fixed",
-   "variant": "all",
-   "note": "existing Harvard/Tecan pump - footprint PH (M17)"
-  },
-  "motion_controller_24V": {
-   "file": "stl/motion_controller_24V.stl",
-   "category": "electronics",
-   "status": "DES",
-   "group": "fixed",
-   "variant": "all",
-   "note": ""
-  },
-  "Y_carriage": {
-   "file": "stl/Y_carriage.stl",
-   "category": "actuator",
-   "status": "APX",
-   "group": "Y",
-   "variant": "all",
-   "note": ""
-  },
-  "X_support_beam": {
-   "file": "stl/X_support_beam.stl",
-   "category": "frame",
-   "status": "APX",
-   "group": "Y",
-   "variant": "all",
-   "note": "stiff box section carrying the X actuator"
-  },
-  "X_actuator_body": {
-   "file": "stl/X_actuator_body.stl",
-   "category": "actuator",
-   "status": "APX",
-   "group": "Y",
-   "variant": "all",
-   "note": "150 mm stroke, ball-screw, width-26 class, table facing -Y"
-  },
-  "X_motor": {
-   "file": "stl/X_motor.stl",
-   "category": "motor",
-   "status": "APX",
-   "group": "Y",
-   "variant": "all",
-   "note": ""
-  },
-  "X_home_switch": {
-   "file": "stl/X_home_switch.stl",
-   "category": "switch",
-   "status": "DES",
-   "group": "Y",
-   "variant": "all",
-   "note": ""
-  },
-  "X_cable_chain": {
-   "file": "stl/X_cable_chain.stl",
-   "category": "cable",
-   "status": "DES",
-   "group": "Y",
-   "variant": "all",
-   "note": ""
-  },
-  "X_carriage_bracket": {
-   "file": "stl/X_carriage_bracket.stl",
-   "category": "actuator",
-   "status": "APX",
-   "group": "X",
-   "variant": "all",
-   "note": ""
-  },
-  "Z_actuator_body": {
-   "file": "stl/Z_actuator_body.stl",
-   "category": "actuator",
-   "status": "APX",
-   "group": "X",
-   "variant": "all",
-   "note": "50 mm stroke, lead 1 mm ball screw or TR8x2"
-  },
-  "Z_motor": {
-   "file": "stl/Z_motor.stl",
-   "category": "motor",
-   "status": "APX",
-   "group": "X",
-   "variant": "all",
-   "note": ""
-  },
-  "Z_home_switch_top": {
-   "file": "stl/Z_home_switch_top.stl",
-   "category": "switch",
-   "status": "DES",
-   "group": "X",
-   "variant": "all",
-   "note": ""
-  },
-  "tubing_clamp_Zbody": {
-   "file": "stl/tubing_clamp_Zbody.stl",
-   "category": "tubing",
-   "status": "DES",
-   "group": "X",
-   "variant": "all",
-   "note": ""
-  },
-  "R08__Z_carriage": {
-   "file": "stl/R08__Z_carriage.stl",
-   "category": "moving",
-   "status": "APX",
-   "group": "Z",
-   "variant": "R08",
-   "note": ""
-  },
-  "R08__breakaway_kinematic_mount": {
-   "file": "stl/R08__breakaway_kinematic_mount.stl",
-   "category": "moving",
-   "status": "DES",
-   "group": "Z",
-   "variant": "R08",
-   "note": "3-ball kinematic + magnet preload: collision fuse"
-  },
-  "R08__arm_thin": {
-   "file": "stl/R08__arm_thin.stl",
-   "category": "moving",
-   "status": "DES",
-   "group": "Z",
-   "variant": "R08",
-   "note": ""
-  },
-  "R08__arm_deep": {
-   "file": "stl/R08__arm_deep.stl",
-   "category": "moving",
-   "status": "DES",
-   "group": "Z",
-   "variant": "R08",
-   "note": ""
-  },
-  "R08__capillary_holder_collet": {
-   "file": "stl/R08__capillary_holder_collet.stl",
-   "category": "holder",
-   "status": "APX",
-   "group": "Z",
-   "variant": "R08",
-   "note": "collet/split holder with depth stop, OD<=10"
-  },
-  "R08__glass_capillary_OD1.0": {
-   "file": "stl/R08__glass_capillary_OD1.0.stl",
-   "category": "capillary",
-   "status": "DES",
-   "group": "Z",
-   "variant": "R08",
-   "note": "OD 1.0 / ID 0.6 / L 40"
-  },
-  "R08__tubing_head_0": {
-   "file": "stl/R08__tubing_head_0.stl",
-   "category": "tubing",
-   "status": "DES",
-   "group": "Z",
-   "variant": "R08",
-   "note": "PTFE/FEP 1/16in OD, liquid-filled"
-  },
-  "R08__tubing_head_1": {
-   "file": "stl/R08__tubing_head_1.stl",
-   "category": "tubing",
-   "status": "DES",
-   "group": "Z",
-   "variant": "R08",
-   "note": "PTFE/FEP 1/16in OD, liquid-filled"
-  },
-  "R08__tubing_head_2": {
-   "file": "stl/R08__tubing_head_2.stl",
-   "category": "tubing",
-   "status": "DES",
-   "group": "Z",
-   "variant": "R08",
-   "note": "PTFE/FEP 1/16in OD, liquid-filled"
-  },
-  "R08__tubing_head_3": {
-   "file": "stl/R08__tubing_head_3.stl",
-   "category": "tubing",
-   "status": "DES",
-   "group": "Z",
-   "variant": "R08",
-   "note": "PTFE/FEP 1/16in OD, liquid-filled"
-  },
-  "R08__tubing_head_4": {
-   "file": "stl/R08__tubing_head_4.stl",
-   "category": "tubing",
-   "status": "DES",
-   "group": "Z",
-   "variant": "R08",
-   "note": "PTFE/FEP 1/16in OD, liquid-filled"
-  },
-  "tubing_loopZ_0": {
-   "file": "stl/tubing_loopZ_0.stl",
-   "category": "tubing",
-   "status": "DES",
-   "group": "X",
-   "variant": "all",
-   "note": ""
-  },
-  "tubing_loopZ_1": {
-   "file": "stl/tubing_loopZ_1.stl",
-   "category": "tubing",
-   "status": "DES",
-   "group": "X",
-   "variant": "all",
-   "note": ""
-  },
-  "tubing_loopZ_2": {
-   "file": "stl/tubing_loopZ_2.stl",
-   "category": "tubing",
-   "status": "DES",
-   "group": "X",
-   "variant": "all",
-   "note": ""
-  },
-  "tubing_loopZ_3": {
-   "file": "stl/tubing_loopZ_3.stl",
-   "category": "tubing",
-   "status": "DES",
-   "group": "X",
-   "variant": "all",
-   "note": ""
-  },
-  "tubing_loopZ_4": {
-   "file": "stl/tubing_loopZ_4.stl",
-   "category": "tubing",
-   "status": "DES",
-   "group": "X",
-   "variant": "all",
-   "note": ""
-  },
-  "tubing_loopXY_0": {
-   "file": "stl/tubing_loopXY_0.stl",
-   "category": "tubing",
-   "status": "DES",
-   "group": "Y",
-   "variant": "all",
-   "note": ""
-  },
-  "tubing_loopXY_1": {
-   "file": "stl/tubing_loopXY_1.stl",
-   "category": "tubing",
-   "status": "DES",
-   "group": "Y",
-   "variant": "all",
-   "note": ""
-  },
-  "tubing_loopXY_2": {
-   "file": "stl/tubing_loopXY_2.stl",
-   "category": "tubing",
-   "status": "DES",
-   "group": "Y",
-   "variant": "all",
-   "note": ""
-  },
-  "tubing_loopXY_3": {
-   "file": "stl/tubing_loopXY_3.stl",
-   "category": "tubing",
-   "status": "DES",
-   "group": "Y",
-   "variant": "all",
-   "note": ""
-  },
-  "tubing_loopXY_4": {
-   "file": "stl/tubing_loopXY_4.stl",
-   "category": "tubing",
-   "status": "DES",
-   "group": "Y",
-   "variant": "all",
-   "note": ""
-  },
-  "tubing_to_pump_0": {
-   "file": "stl/tubing_to_pump_0.stl",
-   "category": "tubing",
-   "status": "DES",
-   "group": "fixed",
-   "variant": "all",
-   "note": ""
-  },
-  "tubing_to_pump_1": {
-   "file": "stl/tubing_to_pump_1.stl",
-   "category": "tubing",
-   "status": "DES",
-   "group": "fixed",
-   "variant": "all",
-   "note": ""
-  },
-  "tubing_to_pump_2": {
-   "file": "stl/tubing_to_pump_2.stl",
-   "category": "tubing",
-   "status": "DES",
-   "group": "fixed",
-   "variant": "all",
-   "note": ""
-  },
-  "tubing_to_pump_3": {
-   "file": "stl/tubing_to_pump_3.stl",
-   "category": "tubing",
-   "status": "DES",
-   "group": "fixed",
-   "variant": "all",
-   "note": ""
-  },
-  "tubing_to_pump_4": {
-   "file": "stl/tubing_to_pump_4.stl",
-   "category": "tubing",
-   "status": "DES",
-   "group": "fixed",
-   "variant": "all",
-   "note": ""
-  },
-  "V30__Z_carriage": {
-   "file": "stl/V30__Z_carriage.stl",
-   "category": "moving",
-   "status": "APX",
-   "group": "Z",
-   "variant": "V30",
-   "note": ""
-  },
-  "V30__breakaway_kinematic_mount": {
-   "file": "stl/V30__breakaway_kinematic_mount.stl",
-   "category": "moving",
-   "status": "DES",
-   "group": "Z",
-   "variant": "V30",
-   "note": "3-ball kinematic + magnet preload: collision fuse"
-  },
-  "V30__arm_thin": {
-   "file": "stl/V30__arm_thin.stl",
-   "category": "moving",
-   "status": "DES",
-   "group": "Z",
-   "variant": "V30",
-   "note": ""
-  },
-  "V30__arm_deep": {
-   "file": "stl/V30__arm_deep.stl",
-   "category": "moving",
-   "status": "DES",
-   "group": "Z",
-   "variant": "V30",
-   "note": ""
-  },
-  "V30__capillary_holder_collet": {
-   "file": "stl/V30__capillary_holder_collet.stl",
-   "category": "holder",
-   "status": "APX",
-   "group": "Z",
-   "variant": "V30",
-   "note": "collet/split holder with depth stop, OD<=10"
-  },
-  "V30__glass_capillary_OD1.0": {
-   "file": "stl/V30__glass_capillary_OD1.0.stl",
-   "category": "capillary",
-   "status": "DES",
-   "group": "Z",
-   "variant": "V30",
-   "note": "OD 1.0 / ID 0.6 / L 40"
-  },
-  "V30__tubing_head_0": {
-   "file": "stl/V30__tubing_head_0.stl",
-   "category": "tubing",
-   "status": "DES",
-   "group": "Z",
-   "variant": "V30",
-   "note": "PTFE/FEP 1/16in OD, liquid-filled"
-  },
-  "V30__tubing_head_1": {
-   "file": "stl/V30__tubing_head_1.stl",
-   "category": "tubing",
-   "status": "DES",
-   "group": "Z",
-   "variant": "V30",
-   "note": "PTFE/FEP 1/16in OD, liquid-filled"
-  },
-  "V30__tubing_head_2": {
-   "file": "stl/V30__tubing_head_2.stl",
-   "category": "tubing",
-   "status": "DES",
-   "group": "Z",
-   "variant": "V30",
-   "note": "PTFE/FEP 1/16in OD, liquid-filled"
-  },
-  "V30__tubing_head_3": {
-   "file": "stl/V30__tubing_head_3.stl",
-   "category": "tubing",
-   "status": "DES",
-   "group": "Z",
-   "variant": "V30",
-   "note": "PTFE/FEP 1/16in OD, liquid-filled"
-  },
-  "V30__tubing_head_4": {
-   "file": "stl/V30__tubing_head_4.stl",
-   "category": "tubing",
-   "status": "DES",
-   "group": "Z",
-   "variant": "V30",
-   "note": "PTFE/FEP 1/16in OD, liquid-filled"
-  },
-  "V45__Z_carriage": {
-   "file": "stl/V45__Z_carriage.stl",
-   "category": "moving",
-   "status": "APX",
-   "group": "Z",
-   "variant": "V45",
-   "note": ""
-  },
-  "V45__breakaway_kinematic_mount": {
-   "file": "stl/V45__breakaway_kinematic_mount.stl",
-   "category": "moving",
-   "status": "DES",
-   "group": "Z",
-   "variant": "V45",
-   "note": "3-ball kinematic + magnet preload: collision fuse"
-  },
-  "V45__arm_thin": {
-   "file": "stl/V45__arm_thin.stl",
-   "category": "moving",
-   "status": "DES",
-   "group": "Z",
-   "variant": "V45",
-   "note": ""
-  },
-  "V45__arm_deep": {
-   "file": "stl/V45__arm_deep.stl",
-   "category": "moving",
-   "status": "DES",
-   "group": "Z",
-   "variant": "V45",
-   "note": ""
-  },
-  "V45__capillary_holder_collet": {
-   "file": "stl/V45__capillary_holder_collet.stl",
-   "category": "holder",
-   "status": "APX",
-   "group": "Z",
-   "variant": "V45",
-   "note": "collet/split holder with depth stop, OD<=10"
-  },
-  "V45__glass_capillary_OD1.0": {
-   "file": "stl/V45__glass_capillary_OD1.0.stl",
-   "category": "capillary",
-   "status": "DES",
-   "group": "Z",
-   "variant": "V45",
-   "note": "OD 1.0 / ID 0.6 / L 40"
-  },
-  "V45__tubing_head_0": {
-   "file": "stl/V45__tubing_head_0.stl",
-   "category": "tubing",
-   "status": "DES",
-   "group": "Z",
-   "variant": "V45",
-   "note": "PTFE/FEP 1/16in OD, liquid-filled"
-  },
-  "V45__tubing_head_1": {
-   "file": "stl/V45__tubing_head_1.stl",
-   "category": "tubing",
-   "status": "DES",
-   "group": "Z",
-   "variant": "V45",
-   "note": "PTFE/FEP 1/16in OD, liquid-filled"
-  },
-  "V45__tubing_head_2": {
-   "file": "stl/V45__tubing_head_2.stl",
-   "category": "tubing",
-   "status": "DES",
-   "group": "Z",
-   "variant": "V45",
-   "note": "PTFE/FEP 1/16in OD, liquid-filled"
-  },
-  "V45__tubing_head_3": {
-   "file": "stl/V45__tubing_head_3.stl",
-   "category": "tubing",
-   "status": "DES",
-   "group": "Z",
-   "variant": "V45",
-   "note": "PTFE/FEP 1/16in OD, liquid-filled"
-  },
-  "V45__tubing_head_4": {
-   "file": "stl/V45__tubing_head_4.stl",
-   "category": "tubing",
-   "status": "DES",
-   "group": "Z",
-   "variant": "V45",
-   "note": "PTFE/FEP 1/16in OD, liquid-filled"
   },
   "COND[IX2-LWUCD]__condenser_IX2-LWUCD": {
    "file": "stl/COND[IX2-LWUCD]__condenser_IX2-LWUCD.stl",
    "category": "condenser",
    "status": "PH",
    "group": "fixed",
+   "workflow": "all",
    "variant": "all",
    "condenser": "IX2-LWUCD",
    "note": "WD 27.0 mm MFR (IX2-LWUCD); diameter/height PH"
@@ -776,6 +1311,7 @@
    "category": "condenser",
    "status": "PH",
    "group": "fixed",
+   "workflow": "all",
    "variant": "all",
    "condenser": "IX2-LWUCD",
    "note": ""
@@ -785,15 +1321,26 @@
    "category": "ix73",
    "status": "PH",
    "group": "fixed",
+   "workflow": "all",
    "variant": "all",
    "condenser": "IX2-LWUCD",
    "note": ""
+  },
+  "plate_96_SLAS": {
+   "file": "stl/plate_96_SLAS.stl",
+   "category": "plate",
+   "status": "STD",
+   "group": "S",
+   "workflow": "all",
+   "variant": "all",
+   "note": "SLAS 1/2/4 + Corning 7007 wells"
   },
   "COND[IX2-MLWCD]__condenser_IX2-MLWCD": {
    "file": "stl/COND[IX2-MLWCD]__condenser_IX2-MLWCD.stl",
    "category": "condenser",
    "status": "PH",
    "group": "fixed",
+   "workflow": "all",
    "variant": "all",
    "condenser": "IX2-MLWCD",
    "note": "WD 45.0 mm MFR (IX2-MLWCD); diameter/height PH"
@@ -803,6 +1350,7 @@
    "category": "condenser",
    "status": "PH",
    "group": "fixed",
+   "workflow": "all",
    "variant": "all",
    "condenser": "IX2-MLWCD",
    "note": ""
@@ -812,6 +1360,7 @@
    "category": "ix73",
    "status": "PH",
    "group": "fixed",
+   "workflow": "all",
    "variant": "all",
    "condenser": "IX2-MLWCD",
    "note": ""
@@ -821,6 +1370,7 @@
    "category": "condenser",
    "status": "PH",
    "group": "fixed",
+   "workflow": "all",
    "variant": "all",
    "condenser": "IX-ULWCD",
    "note": "WD 73.0 mm MFR (IX-ULWCD); diameter/height PH"
@@ -830,6 +1380,7 @@
    "category": "condenser",
    "status": "PH",
    "group": "fixed",
+   "workflow": "all",
    "variant": "all",
    "condenser": "IX-ULWCD",
    "note": ""
@@ -839,6 +1390,7 @@
    "category": "ix73",
    "status": "PH",
    "group": "fixed",
+   "workflow": "all",
    "variant": "all",
    "condenser": "IX-ULWCD",
    "note": ""
@@ -848,90 +1400,173 @@
    "category": "ix73",
    "status": "PH",
    "group": "fixed",
+   "workflow": "all",
    "variant": "all",
    "condenser": "NONE (pillar tilted back)",
    "note": "tilted-back illumination column; geometry PH (M10)"
   },
-  "ZONE[IX-ULWCD]__tip_travel_envelope": {
-   "file": "stl/ZONE[IX-ULWCD]__tip_travel_envelope.stl",
+  "ZONE[WA][IX-ULWCD]__tip_travel_envelope": {
+   "file": "stl/ZONE[WA][IX-ULWCD]__tip_travel_envelope.stl",
    "category": "zone",
    "status": "DER",
    "group": "fixed",
+   "workflow": "WA",
    "variant": "all",
    "condenser": "IX-ULWCD",
    "note": "tip_travel_envelope"
   },
-  "ZONE[IX-ULWCD]__safe_z_plane": {
-   "file": "stl/ZONE[IX-ULWCD]__safe_z_plane.stl",
+  "ZONE[WA][IX-ULWCD]__safe_z_plane": {
+   "file": "stl/ZONE[WA][IX-ULWCD]__safe_z_plane.stl",
    "category": "zone",
    "status": "DER",
    "group": "fixed",
+   "workflow": "WA",
    "variant": "all",
    "condenser": "IX-ULWCD",
    "note": "safe_z_plane"
   },
-  "ZONE[IX-ULWCD]__condenser_keepout": {
-   "file": "stl/ZONE[IX-ULWCD]__condenser_keepout.stl",
+  "ZONE[WA][IX-ULWCD]__condenser_keepout": {
+   "file": "stl/ZONE[WA][IX-ULWCD]__condenser_keepout.stl",
    "category": "zone",
    "status": "DER",
    "group": "fixed",
+   "workflow": "WA",
    "variant": "all",
    "condenser": "IX-ULWCD",
    "note": "condenser_keepout"
   },
-  "ZONE[IX-ULWCD]__illumination_cone_NA0.3": {
-   "file": "stl/ZONE[IX-ULWCD]__illumination_cone_NA0.3.stl",
+  "ZONE[WA][IX-ULWCD]__illumination_cone_NA0.3": {
+   "file": "stl/ZONE[WA][IX-ULWCD]__illumination_cone_NA0.3.stl",
    "category": "zone",
    "status": "DER",
    "group": "fixed",
+   "workflow": "WA",
    "variant": "all",
    "condenser": "IX-ULWCD",
    "note": "illumination_cone_NA0.3"
   },
-  "ZONE[IX2-LWUCD]__tip_travel_envelope": {
-   "file": "stl/ZONE[IX2-LWUCD]__tip_travel_envelope.stl",
+  "ZONE[WA][IX2-LWUCD]__tip_travel_envelope": {
+   "file": "stl/ZONE[WA][IX2-LWUCD]__tip_travel_envelope.stl",
    "category": "zone",
    "status": "DER",
    "group": "fixed",
+   "workflow": "WA",
    "variant": "all",
    "condenser": "IX2-LWUCD",
    "note": "tip_travel_envelope"
   },
-  "ZONE[IX2-LWUCD]__safe_z_plane": {
-   "file": "stl/ZONE[IX2-LWUCD]__safe_z_plane.stl",
+  "ZONE[WA][IX2-LWUCD]__safe_z_plane": {
+   "file": "stl/ZONE[WA][IX2-LWUCD]__safe_z_plane.stl",
    "category": "zone",
    "status": "DER",
    "group": "fixed",
+   "workflow": "WA",
    "variant": "all",
    "condenser": "IX2-LWUCD",
    "note": "safe_z_plane"
   },
-  "ZONE[IX2-LWUCD]__condenser_keepout": {
-   "file": "stl/ZONE[IX2-LWUCD]__condenser_keepout.stl",
+  "ZONE[WA][IX2-LWUCD]__condenser_keepout": {
+   "file": "stl/ZONE[WA][IX2-LWUCD]__condenser_keepout.stl",
    "category": "zone",
    "status": "DER",
    "group": "fixed",
+   "workflow": "WA",
    "variant": "all",
    "condenser": "IX2-LWUCD",
    "note": "condenser_keepout"
   },
-  "ZONE[IX2-LWUCD]__illumination_cone_NA0.3": {
-   "file": "stl/ZONE[IX2-LWUCD]__illumination_cone_NA0.3.stl",
+  "ZONE[WA][IX2-LWUCD]__illumination_cone_NA0.3": {
+   "file": "stl/ZONE[WA][IX2-LWUCD]__illumination_cone_NA0.3.stl",
    "category": "zone",
    "status": "DER",
    "group": "fixed",
+   "workflow": "WA",
+   "variant": "all",
+   "condenser": "IX2-LWUCD",
+   "note": "illumination_cone_NA0.3"
+  },
+  "ZONE[WB][IX-ULWCD]__tip_travel_envelope": {
+   "file": "stl/ZONE[WB][IX-ULWCD]__tip_travel_envelope.stl",
+   "category": "zone",
+   "status": "DER",
+   "group": "fixed",
+   "workflow": "WB",
+   "variant": "all",
+   "condenser": "IX-ULWCD",
+   "note": "tip_travel_envelope"
+  },
+  "ZONE[WB][IX-ULWCD]__safe_z_plane": {
+   "file": "stl/ZONE[WB][IX-ULWCD]__safe_z_plane.stl",
+   "category": "zone",
+   "status": "DER",
+   "group": "fixed",
+   "workflow": "WB",
+   "variant": "all",
+   "condenser": "IX-ULWCD",
+   "note": "safe_z_plane"
+  },
+  "ZONE[WB][IX-ULWCD]__condenser_keepout": {
+   "file": "stl/ZONE[WB][IX-ULWCD]__condenser_keepout.stl",
+   "category": "zone",
+   "status": "DER",
+   "group": "fixed",
+   "workflow": "WB",
+   "variant": "all",
+   "condenser": "IX-ULWCD",
+   "note": "condenser_keepout"
+  },
+  "ZONE[WB][IX-ULWCD]__illumination_cone_NA0.3": {
+   "file": "stl/ZONE[WB][IX-ULWCD]__illumination_cone_NA0.3.stl",
+   "category": "zone",
+   "status": "DER",
+   "group": "fixed",
+   "workflow": "WB",
+   "variant": "all",
+   "condenser": "IX-ULWCD",
+   "note": "illumination_cone_NA0.3"
+  },
+  "ZONE[WB][IX2-LWUCD]__tip_travel_envelope": {
+   "file": "stl/ZONE[WB][IX2-LWUCD]__tip_travel_envelope.stl",
+   "category": "zone",
+   "status": "DER",
+   "group": "fixed",
+   "workflow": "WB",
+   "variant": "all",
+   "condenser": "IX2-LWUCD",
+   "note": "tip_travel_envelope"
+  },
+  "ZONE[WB][IX2-LWUCD]__safe_z_plane": {
+   "file": "stl/ZONE[WB][IX2-LWUCD]__safe_z_plane.stl",
+   "category": "zone",
+   "status": "DER",
+   "group": "fixed",
+   "workflow": "WB",
+   "variant": "all",
+   "condenser": "IX2-LWUCD",
+   "note": "safe_z_plane"
+  },
+  "ZONE[WB][IX2-LWUCD]__condenser_keepout": {
+   "file": "stl/ZONE[WB][IX2-LWUCD]__condenser_keepout.stl",
+   "category": "zone",
+   "status": "DER",
+   "group": "fixed",
+   "workflow": "WB",
+   "variant": "all",
+   "condenser": "IX2-LWUCD",
+   "note": "condenser_keepout"
+  },
+  "ZONE[WB][IX2-LWUCD]__illumination_cone_NA0.3": {
+   "file": "stl/ZONE[WB][IX2-LWUCD]__illumination_cone_NA0.3.stl",
+   "category": "zone",
+   "status": "DER",
+   "group": "fixed",
+   "workflow": "WB",
    "variant": "all",
    "condenser": "IX2-LWUCD",
    "note": "illumination_cone_NA0.3"
   }
  },
  "Z_PICK": 3.3499999999999988,
- "ARM_L": 175.0,
- "travel": [
-  150.0,
-  100.0,
-  50.0
- ],
  "safe_z": 19.35,
  "condensers": {
   "IX2-LWUCD": {
@@ -949,5 +1584,106 @@
    "NA": 0.3,
    "z_bottom": 76.05
   }
+ },
+ "workflows": {
+  "WA": {
+   "label": "W-A stage fixed: picker covers the plate",
+   "tip_x": [
+    -75.0,
+    75.0
+   ],
+   "tip_y": [
+    -50.0,
+    50.0
+   ],
+   "travel_z": 50.0,
+   "stage_moves": false,
+   "note": "picker reaches all 96 wells; only the well on the optical axis is observed",
+   "layout": {
+    "wf": "WA",
+    "x_min": -75.0,
+    "x_max": 75.0,
+    "y_min": -50.0,
+    "y_max": 50.0,
+    "travel_x": 150.0,
+    "travel_y": 100.0,
+    "travel_z": 50.0,
+    "thin_l": 120.0,
+    "arm_l": 175.0,
+    "zb_d": 30.0,
+    "xcc": 190.0,
+    "x_lo": 55.0,
+    "x_hi": 325.0,
+    "x_body": 270.0,
+    "tower_x": 403,
+    "x_band": [
+     24.0,
+     50.0
+    ],
+    "yc0": 37.0,
+    "y_lo": -73.0,
+    "y_body": 220.0,
+    "post_y": [
+     -150,
+     230
+    ],
+    "x_inner_clear": 15.0
+   }
+  },
+  "WB": {
+   "label": "W-B stage moves wells to the optical axis: picker works locally",
+   "tip_x": [
+    -15.0,
+    85.0
+   ],
+   "tip_y": [
+    -15.0,
+    15.0
+   ],
+   "travel_z": 50.0,
+   "stage_moves": true,
+   "note": "source and destination wells are brought to the axis by the IX73 stage; +X travel is the park / capillary-change retreat outside the condenser keep-out",
+   "layout": {
+    "wf": "WB",
+    "x_min": -15.0,
+    "x_max": 85.0,
+    "y_min": -15.0,
+    "y_max": 15.0,
+    "travel_x": 100.0,
+    "travel_y": 30.0,
+    "travel_z": 50.0,
+    "thin_l": 60.0,
+    "arm_l": 115.0,
+    "zb_d": 30.0,
+    "xcc": 130.0,
+    "x_lo": 55.0,
+    "x_hi": 275.0,
+    "x_body": 220.0,
+    "tower_x": 353,
+    "x_band": [
+     24.0,
+     50.0
+    ],
+    "yc0": 37.0,
+    "y_lo": -38.0,
+    "y_body": 150.0,
+    "post_y": [
+     -115,
+     195
+    ],
+    "x_inner_clear": 15.0
+   }
+  }
+ },
+ "export_set": {
+  "WA": [
+   "V00",
+   "R08",
+   "V30",
+   "V45"
+  ],
+  "WB": [
+   "R08"
+  ]
  }
 }

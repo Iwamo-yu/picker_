@@ -111,9 +111,11 @@ def top_view():
             x, y = well_xy(r, c)
             ax.add_patch(Circle((x, y), p.WELL_D_TOP.v / 2, fc="white", ec="#555", lw=0.4))
             ax.plot(x, y, ".", color="#0f7483", ms=2)
-    hx, hy = p.TRAVEL_X.v / 2, p.TRAVEL_Y.v / 2
+    LY = p.layout("WA")
+    hx, hy = LY["travel_x"] / 2, LY["travel_y"] / 2
     ax.add_patch(Rectangle((-hx, -hy), 2 * hx, 2 * hy, fc="none", ec="#3a64b0", lw=1.4, ls="--"))
-    ax.text(-hx + 2, hy - 5, "capillary-tip XY travel 150 x 100", color=SC["DES"], fontsize=7.5)
+    ax.text(-hx + 2, hy - 5, f"W-A capillary-tip XY travel {LY['travel_x']:.0f} x {LY['travel_y']:.0f}",
+            color=SC["DES"], fontsize=7.5)
     ax.add_patch(Circle((0, 0), p.COND_D.v / 2 + 10, fc="none", ec=SC["PH"], lw=1, ls=":"))
     ax.text(-70, -62, "condenser keep-out\n(Ø80 PH + 10)", color=SC["PH"], ha="right", fontsize=7)
     # capillary + arm at reference pose
@@ -136,8 +138,9 @@ def top_view():
     dim(ax, (-p.IX73_W.v / 2, p.BODY_Y_FRONT.v - 22), (p.IX73_W.v / 2, p.BODY_Y_FRONT.v - 22),
         "IX73 body W 323 (MFR); front face y=-235 PH", "MFR")
     dim(ax, (0, -hy - 30), (ARM_L, -hy - 30), f"dog-leg arm {ARM_L:.0f} (tip -> Z carriage)", "DES")
-    dim(ax, (p.IX73_W.v / 2, 150), (400, 150), f"{400 - p.IX73_W.v / 2:.0f} clear gap body -> tower axis", "DES")
-    dim(ax, (0, 290), (490, 290), "tower footprint reaches x = +490 from optical axis", "DES")
+    tx = LY["tower_x"]
+    dim(ax, (p.IX73_W.v / 2, 150), (tx, 150), f"{tx - p.IX73_W.v / 2:.0f} clear gap body -> tower axis", "DES")
+    dim(ax, (0, 290), (tx + 90, 290), f"tower footprint reaches x = +{tx + 90:.0f} from optical axis", "DES")
     label(ax, 90, 60, "X support beam + X actuator (Y group)", "APX")
     label(ax, 410, -210, "posts + Y beam on base plate\n(bolted to optical table)", "DES")
     label(ax, 525, -140, "existing syringe pump\n(footprint PH)", "PH")
@@ -145,7 +148,7 @@ def top_view():
     label(ax, 0, -300, "observation tube / eyepieces envelope (PH)", "PH", ha="center")
     ax.set_xlim(-260, 800); ax.set_ylim(-420, 420); ax.set_aspect("equal")
     ax.set_xlabel("X (mm) - operator's right"); ax.set_ylabel("Y (mm) - away from operator")
-    ax.set_title("TOP VIEW - reference pose (tip on optical axis, well plate centred). Origin = optical axis.", fontsize=10)
+    ax.set_title("TOP VIEW (W-A) - reference pose (tip on optical axis, well plate centred). Origin = optical axis.", fontsize=10)
     ax.grid(alpha=0.25); legend(ax, "lower right")
     fig.tight_layout(); fig.savefig(os.path.join(IMG, "dim_top.png"), dpi=150); fig.savefig(os.path.join(IMG, "dim_top.svg"))
     plt.close(fig)
@@ -207,15 +210,15 @@ def side_view():
     capillary_line(ax, "yz", 8)
     T = -p.STAGE_TOP_ABOVE_TABLE.v
     ax.plot([-600, 600], [T, T], color="#555", lw=1)
-    hy = p.TRAVEL_Y.v / 2
-    dim(ax, (-hy, -30), (hy, -30), "tip Y travel 100", "DES")
+    hy = p.layout("WA")["travel_y"] / 2
+    dim(ax, (-hy, -30), (hy, -30), f"W-A tip Y travel {2 * hy:.0f}", "DES")
     dim(ax, (-p.PLATE_W.v / 2, -48), (p.PLATE_W.v / 2, -48), "plate 85.48", "STD")
     dim(ax, (p.BODY_Y_FRONT.v, T - 15), (p.BODY_Y_FRONT.v + p.IX73_D.v, T - 15), "IX73 body D 475 (MFR); position PH", "MFR")
     zc = p.WELL_BOTTOM_Z.v + 73
     dim(ax, (-70, p.WELL_BOTTOM_Z.v), (-70, zc), "WD 73 (IX-ULWCD, MFR)", "MFR", rot=90, off=(-9, 0))
     label(ax, 160, 330, "illumination pillar + condenser arm\n(section, position PH, M7-M10)", "PH")
     label(ax, -380, 60, "observation tube / eyepieces\n(PH, M12) - reason the frame\nis NOT a front bridge", "PH")
-    label(ax, -380, 250, "tower posts (ghosted, x = +400)", "DES")
+    label(ax, -380, 250, f"tower posts (ghosted, x = +{p.layout('WA')['tower_x']})", "DES")
     ax.set_xlim(-470, 480); ax.set_ylim(T - 40, 520); ax.set_aspect("equal")
     ax.set_xlabel("Y (mm) - away from operator"); ax.set_ylabel("Z (mm)")
     ax.set_title("SIDE SECTION at optical axis (x = 0, viewed from +X). Tower beyond section shown ghosted.", fontsize=10)
@@ -345,6 +348,57 @@ def electrical_diagram():
     fig.savefig(os.path.join(IMG, "electrical_block_diagram.svg")); plt.close(fig)
 
 
+def d1_compare():
+    """Top-view comparison of the two workflows against 'observe while picking'."""
+    fig, axs = plt.subplots(1, 2, figsize=(15, 7.4))
+    wells = [(well_xy(r, c), r, c) for r in range(8) for c in range(12)]
+    L, W = p.PLATE_L.v, p.PLATE_W.v
+    fov = p.FOV_4X.v / 2
+    # --- W-A
+    ax = axs[0]
+    LA = p.layout("WA")
+    ax.add_patch(Rectangle((-L / 2, -W / 2), L, W, fc="#eef3f5", ec="#222"))
+    for (x, y), r, c in wells:
+        seen = math.hypot(x, y) <= fov
+        ax.add_patch(Circle((x, y), p.WELL_D_TOP.v / 2, fc="#6cc39f" if seen else "#d7dcde", ec="#666", lw=0.4))
+    ax.add_patch(Rectangle((LA["x_min"], LA["y_min"]), LA["travel_x"], LA["travel_y"], fc="none", ec="#3a64b0",
+                           lw=1.6, ls="--"))
+    ax.add_patch(Circle((0, 0), fov, fc="none", ec="#c0392f", lw=1.4))
+    ax.set_title(f"W-A  stage fixed, picker travel {LA['travel_x']:.0f} x {LA['travel_y']:.0f}\n"
+                 "picker reaches 96/96, but only the well on the optical axis is SEEN (red circle = 4x FOV)",
+                 fontsize=9.5)
+    ax.text(0, -W / 2 - 22, "grey = reachable but not observed (blind); a centred plate puts NO well on the axis",
+            ha="center", fontsize=8)
+    # --- W-B
+    ax = axs[1]
+    LB = p.layout("WB")
+    need = (99.0, 63.0)
+    cols = {"IX3-SVR (manual)": "#2f7d4f", "IX3-SSU (ultrasonic, motorised)": "#c0392f",
+            "Maerzhaeuser SCAN IM for IX73": "#3a64b0"}
+    for sname, st in p.STAGES.items():
+        tx, ty = st["travel"]
+        ax.add_patch(Rectangle((-tx / 2, -ty / 2), tx, ty, fc="none", ec=cols[sname], lw=1.4,
+                               label=f"{sname}: {tx:.0f} x {ty:.0f}"))
+    ax.add_patch(Rectangle((-need[0] / 2, -need[1] / 2), need[0], need[1], fc="#6cc39f", alpha=0.25, ec="#2b3439",
+                           ls=":", label="required: well span 99 x 63"))
+    for (x, y), r, c in wells:
+        ax.plot(-x, -y, ".", color="#2b3439", ms=3)
+    ax.add_patch(Rectangle((LB["x_min"], LB["y_min"]), LB["travel_x"], LB["travel_y"], fc="none", ec="#3a64b0",
+                           lw=1.6, ls="--"))
+    ax.text(LB["x_max"] + 2, LB["y_max"] + 2, f"picker tip travel {LB['travel_x']:.0f} x {LB['travel_y']:.0f}\n"
+            "(-15..+85: +X = park outside keep-out)", fontsize=7.5, color=SC["DES"])
+    ax.add_patch(Circle((0, 0), fov, fc="none", ec="#c0392f", lw=1.4))
+    ax.legend(loc="lower left", fontsize=7.5)
+    ax.set_title("W-B  stage moves each source/destination well to the axis\n"
+                 "dots = required stage offsets (one per well); every pick and dispense is SEEN", fontsize=9.5)
+    for a in axs:
+        a.set_xlim(-95, 120); a.set_ylim(-75, 75); a.set_aspect("equal"); a.grid(alpha=0.25)
+        a.set_xlabel("X (mm, optical axis at 0)"); a.set_ylabel("Y (mm)")
+    fig.tight_layout(); fig.savefig(os.path.join(IMG, "d1_workflows.png"), dpi=150)
+    fig.savefig(os.path.join(IMG, "d1_workflows.svg")); plt.close(fig)
+
+
 if __name__ == "__main__":
+    d1_compare()
     top_view(); front_view(); side_view(); angle_detail(); functional_diagram(); electrical_diagram()
     print("views written to", os.path.abspath(IMG))

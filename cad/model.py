@@ -98,21 +98,21 @@ CONDENSER_CHOICES = ["IX2-LWUCD", "IX2-MLWCD", "IX-ULWCD", "NONE (pillar tilted 
 
 Z_PICK = p.WELL_BOTTOM_Z.v + p.TIP_CLEAR_BOTTOM.v  # tip z at reference pose
 
-# frame / stacking layout (design parameters; see docs/architecture.md)
-ARM_L = 175.0            # tip axis -> Z-carriage face (x)   [DES]
-ARM_T = 12.0             # arm section under the condenser  [DES]
+# frame / stacking layout: derived in params.layout(workflow) (single source of truth).
+# Module-level names below are the DEFAULT workflow's values, kept for importers.
+_L0 = p.layout(p.DEFAULT_WORKFLOW)
+ARM_L = _L0["arm_l"]
+ARM_T = p.ARM_T.v
 ZB_W = 26.0              # Z actuator width (y)              [APX]
-ZB_D = 30.0              # Z actuator depth (x)              [APX]
+ZB_D = _L0["zb_d"]       # Z actuator depth (x)              [APX]
 Z_BODY_L = p.TRAVEL_Z.v + p.ACT_TABLE_L.v + 2 * p.ACT_END.v   # 170
-X_BODY_L = p.TRAVEL_X.v + p.ACT_TABLE_L.v + 2 * p.ACT_END.v   # 270
-Y_BODY_L = p.TRAVEL_Y.v + p.ACT_TABLE_L.v + 2 * p.ACT_END.v   # 220
-X_BAND = (24.0, 50.0)    # X actuator y-band relative to tip y
+X_BAND = _L0["x_band"]   # X actuator y-band relative to tip y
 X_Z = (150.0, 180.0)     # X actuator z (hangs under X support beam)
 XSB_Z = (180.0, 220.0)   # X support beam z
-TOWER_X = 400.0          # Y beam centre-line x
+TOWER_X = _L0["tower_x"]
 Y_ACT_Z = (150.0, 168.0)
 BEAM_Z = (70.0, 150.0)
-POST_Y = (-150.0, 230.0)
+POST_Y = _L0["post_y"]
 TABLE_Z = -p.STAGE_TOP_ABOVE_TABLE.v
 
 
@@ -128,8 +128,12 @@ def head_geometry(theta_deg):
     return dict(tip=tip, cap_top=cap_top, nose=nose, hold_top=hold_top, u=(ux, 0, uz))
 
 
-def build(variant="R08", condenser="IX-ULWCD") -> Model:
+def build(variant="R08", condenser="IX-ULWCD", workflow=p.DEFAULT_WORKFLOW) -> Model:
     m = Model(variant, condenser)
+    m.workflow = workflow
+    LY = p.layout(workflow)
+    ARM_L, TOWER_X, POST_Y = LY["arm_l"], LY["tower_x"], LY["post_y"]
+    X_BODY_L, Y_BODY_L = LY["x_body"], LY["y_body"]
     th = VARIANTS[variant]["theta"]
     hg = head_geometry(th)
 
@@ -143,7 +147,7 @@ def build(variant="R08", condenser="IX-ULWCD") -> Model:
     m.add("ix73_stage", box(-p.STAGE_X.v / 2, p.STAGE_X.v / 2,
                             p.STAGE_CENTER_Y.v - p.STAGE_Y.v / 2, p.STAGE_CENTER_Y.v + p.STAGE_Y.v / 2,
                             -p.STAGE_T.v, 0.0),
-          "ix73", "MFR", note="232 x 240 plain stage MFR; thickness & position PH")
+          "ix73", "MFR", group="S", note="232 x 240 plain stage MFR; thickness & position PH; moves with stage")
     m.add("ix73_stage_support", box(-p.IX73_W.v / 2 + 20, p.IX73_W.v / 2 - 20, -120, 120,
                                     -p.STAGE_T.v - 25, -p.STAGE_T.v), "ix73", "PH")
     oz = p.OBJECTIVE_ZONE
@@ -186,7 +190,7 @@ def build(variant="R08", condenser="IX-ULWCD") -> Model:
             x, y = well_xy(r, c)
             wells.append(zcyl(x, y, p.WELL_D_TOP.v / 2, p.WELL_BOTTOM_Z.v, H + 1))
     plate = plate - Compound(wells)
-    m.add("plate_96_SLAS", plate, "plate", "STD", note="SLAS 1/2/4 + Corning 7007 wells")
+    m.add("plate_96_SLAS", plate, "plate", "STD", group="S", note="SLAS 1/2/4 + Corning 7007 wells")
 
     # ------------------------------------------------------------------ frame (fixed)
     bx0, bx1 = TOWER_X - 70, TOWER_X + 90
@@ -201,7 +205,7 @@ def build(variant="R08", condenser="IX-ULWCD") -> Model:
           "frame", "APX")
     # Y actuator body on the beam (carriage centre y = tip_y + 37)
     yc0 = sum(X_BAND) / 2
-    y_lo = yc0 - p.TRAVEL_Y.v / 2 - p.ACT_TABLE_L.v / 2 - p.ACT_END.v
+    y_lo = LY["y_lo"]
     m.add("Y_actuator_body", box(TOWER_X - 13, TOWER_X + 13, y_lo, y_lo + Y_BODY_L, *Y_ACT_Z),
           "actuator", "APX", note="100 mm stroke, ball-screw, width-26 class")
     m.add("Y_motor", box(TOWER_X - 21, TOWER_X + 21, y_lo + Y_BODY_L, y_lo + Y_BODY_L + p.NEMA17_L.v,
@@ -221,7 +225,7 @@ def build(variant="R08", condenser="IX-ULWCD") -> Model:
 
     # ------------------------------------------------------------------ Y group
     xcc = ARM_L + ZB_D / 2  # X-carriage centre x (tip-relative)
-    x_lo = xcc - p.TRAVEL_X.v / 2 - p.ACT_TABLE_L.v / 2 - p.ACT_END.v
+    x_lo = LY["x_lo"]
     x_hi = x_lo + X_BODY_L
     m.add("Y_carriage", box(TOWER_X - 25, TOWER_X + 25, yc0 - 25, yc0 + 25, Y_ACT_Z[1], XSB_Z[0]),
           "actuator", "APX", group="Y")
@@ -260,7 +264,7 @@ def build(variant="R08", condenser="IX-ULWCD") -> Model:
     m.add("breakaway_kinematic_mount", box(zx0 - 22, zx0 - 10, -15, 15, arm_z0 - 5, arm_z0 + 30),
           "moving", "DES", group="Z", note="3-ball kinematic + magnet preload: collision fuse")
     # dog-leg arm: thin section under condenser (first 120 mm), deep section outboard
-    thin_end = ht[0] + 120.0  # must cover |tip_x|max + condenser radius + margin
+    thin_end = ht[0] + LY["thin_l"]  # covers |tip_x min| + condenser radius + margin
     m.add("arm_thin", box(ht[0] - 6, thin_end, -ARM_T / 2, ARM_T / 2, arm_z0, arm_z0 + ARM_T),
           "moving", "DES", group="Z")
     m.add("arm_deep", box(thin_end, zx0 - 22, -ARM_T / 2, ARM_T / 2, arm_z0, arm_z0 + 30),
@@ -304,11 +308,13 @@ def well_name(r, c):
     return "ABCDEFGH"[r] + str(c + 1)
 
 
-def posed(m: Model, dx=0.0, dy=0.0, dz=0.0):
-    """Return list of (Part, solid-at-pose)."""
+def posed(m: Model, dx=0.0, dy=0.0, dz=0.0, sx=0.0, sy=0.0):
+    """Return list of (Part, solid-at-pose).  (sx, sy) = IX73 stage offset (plate + stage move)."""
     out = []
     for q in m.parts:
-        if q.group == "Y":
+        if q.group == "S":
+            s = Pos(sx, sy, 0) * q.solid if (sx or sy) else q.solid
+        elif q.group == "Y":
             s = Pos(0, dy, 0) * q.solid
         elif q.group == "X":
             s = Pos(dx, dy, 0) * q.solid
@@ -320,16 +326,16 @@ def posed(m: Model, dx=0.0, dy=0.0, dz=0.0):
     return out
 
 
-def zones(condenser="IX-ULWCD"):
+def zones(condenser="IX-ULWCD", workflow=p.DEFAULT_WORKFLOW):
     """Visual-only zones: tip travel envelope, safe-Z slab, condenser keep-out, illumination cone."""
     z = {}
-    hx, hy = p.TRAVEL_X.v / 2, p.TRAVEL_Y.v / 2
-    z["tip_travel_envelope"] = box(-hx, hx, -hy, hy, Z_PICK - 3, Z_PICK - 3 + p.TRAVEL_Z.v)
-    z["safe_z_plane"] = box(-hx, hx, -hy, hy, p.SAFE_Z_TIP.v, p.SAFE_Z_TIP.v + 0.5)
+    L = p.layout(workflow)
+    x0, x1, y0, y1 = L["x_min"], L["x_max"], L["y_min"], L["y_max"]
+    z["tip_travel_envelope"] = box(x0, x1, y0, y1, Z_PICK - 3, Z_PICK - 3 + L["travel_z"])
+    z["safe_z_plane"] = box(x0, x1, y0, y1, p.SAFE_Z_TIP.v, p.SAFE_Z_TIP.v + 0.5)
     if condenser in p.CONDENSERS:
         zc = p.WELL_BOTTOM_Z.v + p.CONDENSERS[condenser]["WD"].v
         z["condenser_keepout"] = zcyl(0, 0, p.COND_D.v / 2 + 10, zc - 5, zc + 400)
-        # illumination cone (NA_c = 0.3) from focal point to condenser front
         na = min(0.3, p.CONDENSERS[condenser]["NA"])
         from build123d import Cone
         h = zc - p.WELL_BOTTOM_Z.v
@@ -338,61 +344,72 @@ def zones(condenser="IX-ULWCD"):
     return z
 
 
+SHARED_CATS = {"ix73", "plate", "table", "condenser"}
+EXPORT_SET = {"WA": list(VARIANTS), "WB": ["R08"]}
+
+
+def safe_key(k):
+    return k.replace(" ", "_").replace("(", "").replace(")", "")
+
+
 if __name__ == "__main__":
+    import glob
     os.makedirs(OUT, exist_ok=True)
     stl_dir = os.path.join(OUT, "stl")
     os.makedirs(stl_dir, exist_ok=True)
-    meta = {"variants": {}, "parts": {}, "Z_PICK": Z_PICK, "ARM_L": ARM_L,
-            "travel": [p.TRAVEL_X.v, p.TRAVEL_Y.v, p.TRAVEL_Z.v],
-            "safe_z": p.SAFE_Z_TIP.v, "condensers": {}}
+    for old in glob.glob(os.path.join(OUT, "*.step")) + glob.glob(os.path.join(stl_dir, "*.stl")):
+        os.remove(old)
+    meta = {"variants": VARIANTS, "parts": {}, "Z_PICK": Z_PICK, "safe_z": p.SAFE_Z_TIP.v,
+            "condensers": {}, "workflows": {}, "export_set": EXPORT_SET}
     for k, v in p.CONDENSERS.items():
-        meta["condensers"][k] = {"WD": v["WD"].v, "NA": v["NA"],
-                                 "z_bottom": p.WELL_BOTTOM_Z.v + v["WD"].v}
-    for var in VARIANTS:
-        m = build(var, "IX-ULWCD")
-        children = []
-        for q, s in posed(m):
-            s.label = q.name
-            children.append(s)
-        asm = Compound(children=children, label=f"IX73_picker_{var}_ULWCD")
-        export_step(asm, os.path.join(OUT, f"assembly_{var}_IX-ULWCD.step"))
-        meta["variants"][var] = VARIANTS[var]
-        # STL export of variant-specific (head) parts + all fixed parts once
-        for q in m.parts:
-            key = q.name if q.group != "Z" else f"{var}__{q.name}"
-            if var != "R08" and q.group != "Z":
-                continue
-            fn = os.path.join(stl_dir, key + ".stl")
-            export_stl(q.solid, fn, tolerance=0.05 if q.category in ("capillary", "tubing") else 0.2,
-                       angular_tolerance=0.3)
-            meta["parts"][key] = dict(file=f"stl/{key}.stl", category=q.category, status=q.status,
-                                      group=q.group, variant=(var if q.group == "Z" else "all"),
-                                      note=q.note)
-        print("built", var)
-    # condenser alternatives (fixed parts that differ)
+        meta["condensers"][k] = {"WD": v["WD"].v, "NA": v["NA"], "z_bottom": p.WELL_BOTTOM_Z.v + v["WD"].v}
+
+    def put(key, q_solid, **kw):
+        key = safe_key(key)
+        tol = 0.05 if kw.get("category") in ("capillary", "tubing") else 0.2
+        export_stl(q_solid, os.path.join(stl_dir, key + ".stl"), tolerance=tol, angular_tolerance=0.3)
+        meta["parts"][key] = dict(file=f"stl/{key}.stl", **kw)
+
+    for wf, variants in EXPORT_SET.items():
+        L = p.layout(wf)
+        meta["workflows"][wf] = dict(p.WORKFLOWS[wf], layout={k: v for k, v in L.items()})
+        for var in variants:
+            m = build(var, "IX-ULWCD", wf)
+            children = []
+            for q, s in posed(m):
+                s.label = q.name
+                children.append(s)
+            export_step(Compound(children=children, label=f"IX73_picker_{wf}_{var}_ULWCD"),
+                        os.path.join(OUT, f"assembly_{wf}_{var}_IX-ULWCD.step"))
+            for q in m.parts:
+                shared = q.category in SHARED_CATS or q.name.startswith("illum_arm")
+                if shared:
+                    continue  # exported once below
+                if q.group == "Z":
+                    put(f"{wf}__{var}__{q.name}", q.solid, category=q.category, status=q.status, group="Z",
+                        workflow=wf, variant=var, note=q.note)
+                elif var == variants[0]:
+                    put(f"{wf}__{q.name}", q.solid, category=q.category, status=q.status, group=q.group,
+                        workflow=wf, variant="all", note=q.note)
+            print("built", wf, var)
+    # shared microscope / plate parts, condenser alternatives
     for cond in CONDENSER_CHOICES:
         m = build("R08", cond)
         for q in m.parts:
             if q.category == "condenser" or q.name.startswith("illum_arm"):
-                key = f"COND[{cond}]__{q.name}"
-                safe = key.replace(" ", "_").replace("(", "").replace(")", "")
-                export_stl(q.solid, os.path.join(stl_dir, safe + ".stl"), tolerance=0.2)
-                meta["parts"][safe] = dict(file=f"stl/{safe}.stl", category=q.category, status=q.status,
-                                           group="fixed", variant="all", condenser=cond, note=q.note)
-    # drop generic condenser parts from the 'all' set (they are condenser-specific)
-    for k in list(meta["parts"]):
-        if not k.startswith("COND[") and (meta["parts"][k]["category"] == "condenser"
-                                          or k.startswith("illum_arm")):
-            del meta["parts"][k]
-    for cond in ["IX-ULWCD", "IX2-LWUCD"]:
-        for name, s in zones(cond).items():
-            key = f"ZONE[{cond}]__{name}"
-            export_stl(s, os.path.join(stl_dir, key + ".stl"), tolerance=0.3)
-            meta["parts"][key] = dict(file=f"stl/{key}.stl", category="zone", status="DER",
-                                      group="fixed", variant="all", condenser=cond, note=name)
-    zs = zones("IX-ULWCD")
-    zc = Compound(children=[s for s in zs.values()], label="zones")
-    export_step(zc, os.path.join(OUT, "zones_IX-ULWCD.step"))
+                put(f"COND[{cond}]__{q.name}", q.solid, category=q.category, status=q.status, group="fixed",
+                    workflow="all", variant="all", condenser=cond, note=q.note)
+            elif cond == CONDENSER_CHOICES[0] and q.category in SHARED_CATS:
+                put(q.name, q.solid, category=q.category, status=q.status, group=q.group, workflow="all",
+                    variant="all", note=q.note)
+    for wf in EXPORT_SET:
+        for cond in ["IX-ULWCD", "IX2-LWUCD"]:
+            for name, s in zones(cond, wf).items():
+                put(f"ZONE[{wf}][{cond}]__{name}", s, category="zone", status="DER", group="fixed",
+                    workflow=wf, variant="all", condenser=cond, note=name)
+        zs = zones("IX-ULWCD", wf)
+        export_step(Compound(children=list(zs.values()), label=f"zones_{wf}"),
+                    os.path.join(OUT, f"zones_{wf}_IX-ULWCD.step"))
     with open(os.path.join(OUT, "parts.json"), "w") as f:
         json.dump(meta, f, indent=1)
-    print("done")
+    print("done", len(meta["parts"]), "parts")

@@ -1,4 +1,3 @@
-<!-- GENERATED from README.src.md by cad/render_docs.py - edit the source, not this file -->
 # picker_: external XYZ capillary picker for an Evident/Olympus IX73
 
 Stage 1 is a **spatial and mechanical feasibility study**: architecture, placement, travel, actuator stacking, capillary approach, interference with the microscope, and 96-well compatibility. There is no control software and there are no manufacturing drawings yet.
@@ -11,19 +10,19 @@ Stage 1 is a **spatial and mechanical feasibility study**: architecture, placeme
 
 **Provisional baseline: workflow W-B plus a side-tower picker.**
 
-- **Workflow W-B.** The IX73 stage, motorised with ≥ 99 × 63 mm travel, brings each source and destination well to the optical axis, so **every pick and dispense is observed** (96/96). This is decision D1; see `docs/09_workflow_D1.md`.
-- **Picker.** A side tower bolted to the optical table on the right of the IX73. It is a local XYZ manipulator (100 × 30 × 50 mm, Z with a 1 mm-lead ball screw) whose Z carriage holds a **thin dog-leg arm (115 mm) that reaches under the condenser to a near-vertical (8°) glass capillary**.
+- **Workflow W-B.** The IX73 stage, motorised with ≥ 99 × 63 mm travel, brings each source and destination well to the optical axis, so **every pick and dispense is observed** ({{D1_WB_OBSERVED}}/96). This is decision D1; see `docs/09_workflow_D1.md`.
+- **Picker.** A side tower bolted to the optical table on the right of the IX73. It is a local XYZ manipulator ({{WB_TRAVEL_X}} × {{WB_TRAVEL_Y}} × {{WB_TRAVEL_Z}} mm, Z with a 1 mm-lead ball screw) whose Z carriage holds a **thin dog-leg arm ({{WB_ARM_L}} mm) that reaches under the condenser to a near-vertical (8°) glass capillary**.
 - **Independence from the microscope.** Nothing touches the microscope, and the frame unbolts without affecting IX73 alignment.
 
-The stage-fixed alternative **W-A** is kept in the same CAD. Its picker covers the whole plate (150 × 100 mm, arm 175 mm) but observes only 1 well per stage setting.
+The stage-fixed alternative **W-A** is kept in the same CAD. Its picker covers the whole plate ({{WA_TRAVEL_X}} × {{WA_TRAVEL_Y}} mm, arm {{WA_ARM_L}} mm) but observes only {{D1_WA_OBSERVED}} well per stage setting.
 
 The layout follows from three constraints found and quantified in this study:
 
-1. **The 96-well limits the angle.** A 1.0 mm capillary reaches the bottom centre of a Corning 7007 U-bottom well (rim Ø6.86 mm, depth 11.30 mm) only within **14.8° of vertical**. At 30° it stops 4.9 mm below the rim, and at 45° 2.7 mm. So 30° and 45° reach **0/96 wells**, whatever the condenser.
-2. **A near-vertical capillary must share the optical axis with the condenser.** That fits only under a long-working-distance condenser (**IX-ULWCD, WD 73 mm → 96/96 wells** in W-B, 96/96 in W-A) or with the illumination column tilted back. The IX2-LWUCD (WD 27 mm) and IX2-MLWCD (WD 45 mm) block most positions.
-3. **Only the well on the optical axis is seen.** Observed picking of all 96 wells therefore needs the stage to move them there. Evident's IX3-SSU (76 × 52 mm) reaches only 48/96. The manual IX3-SVR (114 × 75) and 120 × 80 motorised stages reach 96/96.
+1. **The 96-well limits the angle.** A 1.0 mm capillary reaches the bottom centre of a Corning 7007 U-bottom well (rim Ø6.86 mm, depth 11.30 mm) only within **{{MAX_ANGLE:.1f}}° of vertical**. At 30° it stops {{REACH_30:.1f}} mm below the rim, and at 45° {{REACH_45:.1f}} mm. So 30° and 45° reach **{{SW_WA_V30_ULWCD_PICK}}/96 wells**, whatever the condenser.
+2. **A near-vertical capillary must share the optical axis with the condenser.** That fits only under a long-working-distance condenser (**IX-ULWCD, WD 73 mm → {{SW_WB_R08_ULWCD_PICK}}/96 wells** in W-B, {{SW_WA_R08_ULWCD_PICK}}/96 in W-A) or with the illumination column tilted back. The IX2-LWUCD (WD 27 mm) and IX2-MLWCD (WD 45 mm) block most positions.
+3. **Only the well on the optical axis is seen.** Observed picking of all 96 wells therefore needs the stage to move them there. Evident's IX3-SSU (76 × 52 mm) reaches only {{D1_WB_SSU_WELLS}}/96. The manual IX3-SVR (114 × 75) and 120 × 80 motorised stages reach 96/96.
 
-**Freeze gate.** The condenser outline, stage height and eyepiece envelope are placeholders, because the IX73 drawing could not be obtained. The clearances near the condenser (4.83–5 mm) are **not design evidence yet**. Nothing is frozen until M1, M3, M4, M6, M7, M8, M10 and M15 are measured (`docs/05_measurement_checklist.md`).
+**Freeze gate.** The condenser outline, stage height and eyepiece envelope are placeholders, because the IX73 drawing could not be obtained. The clearances near the condenser ({{SW_WB_R08_ULWCD_SAFE_CLEAR}}–5 mm) are **not design evidence yet**. Nothing is frozen until M1, M3, M4, M6, M7, M8, M10 and M15 are measured (`docs/05_measurement_checklist.md`).
 
 ## Deliverables
 

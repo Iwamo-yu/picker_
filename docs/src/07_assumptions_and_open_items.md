@@ -1,4 +1,3 @@
-<!-- GENERATED from docs/src/07_assumptions_and_open_items.md by cad/render_docs.py - edit the source, not this file -->
 # Assumptions, open decisions and items NOT to finalise yet
 
 ## Assumptions made in this iteration
@@ -10,7 +9,7 @@
 5. The plate is Corning 7007 geometry (U-bottom ULA, rim Ø6.86, depth 11.30), with no lid during picking.
 6. Capillary: OD 1.0 / ID 0.6 / L 40, gripped 10 mm, 30 mm exposed. Tip stand-off 0.3 mm above the well bottom (model value; the process value is set experimentally).
 7. The IX73 stage is modelled as the manual IX3-SVR (114 × 75 mm). In W-B it is replaced by, or treated as, a motorised stage with ≥ 99 × 63 mm travel that carries only the plate. The picker never loads the stage.
-8. The table has free space to the right of the microscope to about +493 mm (W-A) / +443 mm (W-B) from the optical axis, plus the pump and controller beyond.
+8. The table has free space to the right of the microscope to about +{{WA_FOOT_X}} mm (W-A) / +{{WB_FOOT_X}} mm (W-B) from the optical axis, plus the pump and controller beyond.
 9. Actuator envelopes are width-26 class ball-screw stages; masses are ±30 % estimates.
 10. Deflections are hand estimates (aluminium, simple beams); no FEA.
 11. The pump, tubing and fluid volumes do not constrain the mechanics beyond a 1/16" tubing path with ≥25 mm bend radius.
@@ -35,7 +34,7 @@ Freeze gate: nothing below is frozen before M1, M3, M4, M6, M7, M8, M10 and M15 
 - Actuator part numbers, strokes rounded to catalogue steps, motor frame lengths.
 - Bracket geometry, fasteners, dowel positions, machining tolerances and drawings.
 - Frame section sizes (80 × 80 posts/beam, 40 × 80 X support) beyond the envelope level. They need the real height (M1) and a stiffness check.
-- Dog-leg arm length (115 mm in W-B, 175 mm in W-A) and thickness (12 × 12 mm). Both depend on the condenser diameter and height (M6–M8).
+- Dog-leg arm length ({{WB_ARM_L}} mm in W-B, {{WA_ARM_L}} mm in W-A) and thickness ({{ARM_T_TXT}}). Both depend on the condenser diameter and height (M6–M8).
 - Holder design (collet size, port type, kinematic mount).
 - Base-plate hole pattern (M16).
 - Tubing type, bore and length (pump choice M17, dead volume).

@@ -25,7 +25,7 @@ Maximum angle for reaching the bottom centre: **14.8°** (tip 0.3 mm above botto
 | S  (100-300 um) | 1.0 | 0.58 | 14.8° | 1.38 | WPI 1B100-4 (or tip cut/pulled to ID 0.2-0.35) | MFR |
 | M  (300-600 um) | 1.5 | 0.84 | 13.6° | 1.13 | WPI 1B150-4 / Sutter B150-86 (ID 0.86) | MFR |
 | L  (600-1000 um) | 2.0 | 1.12 | 12.3° | 0.87 | WPI 1B200-4 - only 1.12x a 1 mm object | MFR |
-| L' (800-1000 um) | 2.0 | 1.5 | 12.3° | 0.87 | thin-wall 2.0 mm OD, ID ~1.5 - verify catalogue | PH |
+| L' (800-1000 um) | 2.0 | 1.56 | 12.3° | 0.87 | WPI thin-wall 2.00/1.56 (no filament) | MFR |
 
 ## 2. Holder obstruction of transmitted light (holder Ø10 at the collet nose)
 
@@ -42,24 +42,47 @@ Maximum angle for reaching the bottom centre: **14.8°** (tip 0.3 mm above botto
 
 ## 3. Clearance sweep (OCC min distance; moving parts vs IX73/condenser/plate/pump envelopes)
 
-Poses: 96 wells at pick height, 96 wells at safe-Z (plate top + 5 mm), 35-point travel grid at safe-Z and at top of Z travel.
+W-A poses: 96 wells at pick height and at safe-Z (plate top + 5 mm), with the picker moving to each well.
+W-B poses: the IX73 stage brings each well to the optical axis (plate and stage translate), picker at the axis;
+plus the IX3-SVR stage-travel corners. Both: 35-point grid over the picker's own travel at safe-Z and at top-Z.
 PH = placeholder geometry is involved in every condenser/IX73 result; treat as provisional.
 
-| head | condenser | pick OK /96 | safe-Z OK /96 | grid safe-Z OK /35 | grid top-Z OK /35 | colliding obstacles (pose count) | min clearance at pick (mm) |
-|---|---|---|---|---|---|---|---|
-| V00 | IX2-LWUCD | 10 | 10 | 20 | 11 | condenser_IX2-LWUCD (587), condenser_carrier_arm (64) | 0.0 |
-| V00 | IX2-MLWCD | 10 | 10 | 20 | 19 | condenser_IX2-MLWCD (513), condenser_carrier_arm (4) | 0.0 |
-| V00 | IX-ULWCD | 96 | 96 | 35 | 20 | condenser_IX-ULWCD (43) | 3.35 |
-| V00 | NONE (pillar tilted back) | 96 | 96 | 35 | 35 | none | 3.35 |
-| R08 | IX2-LWUCD | 16 | 16 | 20 | 15 | condenser_IX2-LWUCD (593), condenser_carrier_arm (36) | 0.0 |
-| R08 | IX2-MLWCD | 18 | 16 | 20 | 20 | condenser_IX2-MLWCD (511) | 0.0 |
-| R08 | IX-ULWCD | 96 | 96 | 35 | 20 | condenser_IX-ULWCD (47) | 3.28 |
-| R08 | NONE (pillar tilted back) | 96 | 96 | 35 | 35 | none | 3.28 |
-| V30 | IX2-LWUCD | 0 | 22 | 20 | 20 | condenser_IX2-LWUCD (574), plate_96_SLAS (96) | 0.0 |
-| V30 | IX2-MLWCD | 0 | 26 | 22 | 20 | condenser_IX2-MLWCD (448), plate_96_SLAS (96) | 0.0 |
-| V30 | IX-ULWCD | 0 | 96 | 35 | 22 | plate_96_SLAS (96), condenser_IX-ULWCD (44) | 3.1 |
-| V30 | NONE (pillar tilted back) | 0 | 96 | 35 | 35 | plate_96_SLAS (96) | 3.1 |
-| V45 | IX2-LWUCD | 0 | 26 | 22 | 20 | condenser_IX2-LWUCD (524), plate_96_SLAS (96) | 0.0 |
-| V45 | IX2-MLWCD | 0 | 36 | 23 | 20 | condenser_IX2-MLWCD (253), plate_96_SLAS (96) | 3.0 |
-| V45 | IX-ULWCD | 0 | 96 | 35 | 23 | plate_96_SLAS (96), condenser_IX-ULWCD (47) | 3.0 |
-| V45 | NONE (pillar tilted back) | 0 | 96 | 35 | 35 | plate_96_SLAS (96) | 3.0 |
+| workflow | head | condenser | pick OK /96 | safe-Z OK /96 | grid safe-Z OK /35 | grid top-Z OK /35 | stage corners OK | colliding obstacles (pose count) | min clearance, safe-Z (mm) |
+|---|---|---|---|---|---|---|---|---|---|
+| WA | V00 | IX2-LWUCD | 10 | 10 | 20 | 11 | – | condenser_IX2-LWUCD (587), condenser_carrier_arm (64) | 0.0 |
+| WA | V00 | IX2-MLWCD | 10 | 10 | 20 | 19 | – | condenser_IX2-MLWCD (513), condenser_carrier_arm (4) | 0.0 |
+| WA | V00 | IX-ULWCD | 96 | 96 | 35 | 20 | – | condenser_IX-ULWCD (43) | 4.4 |
+| WA | V00 | NONE (pillar tilted back) | 96 | 96 | 35 | 35 | – | none | 5.8 |
+| WA | R08 | IX2-LWUCD | 16 | 16 | 20 | 15 | – | condenser_IX2-LWUCD (593), condenser_carrier_arm (36) | 0.0 |
+| WA | R08 | IX2-MLWCD | 18 | 16 | 20 | 20 | – | condenser_IX2-MLWCD (511) | 0.0 |
+| WA | R08 | IX-ULWCD | 96 | 96 | 35 | 20 | – | condenser_IX-ULWCD (47) | 4.83 |
+| WA | R08 | NONE (pillar tilted back) | 96 | 96 | 35 | 35 | – | none | 5.74 |
+| WA | V30 | IX2-LWUCD | 0 | 22 | 20 | 20 | – | condenser_IX2-LWUCD (574), plate_96_SLAS (96) | 0.0 |
+| WA | V30 | IX2-MLWCD | 0 | 26 | 22 | 20 | – | condenser_IX2-MLWCD (448), plate_96_SLAS (96) | 0.0 |
+| WA | V30 | IX-ULWCD | 0 | 96 | 35 | 22 | – | plate_96_SLAS (96), condenser_IX-ULWCD (44) | 5.0 |
+| WA | V30 | NONE (pillar tilted back) | 0 | 96 | 35 | 35 | – | plate_96_SLAS (96) | 5.62 |
+| WA | V45 | IX2-LWUCD | 0 | 26 | 22 | 20 | – | condenser_IX2-LWUCD (524), plate_96_SLAS (96) | 0.0 |
+| WA | V45 | IX2-MLWCD | 0 | 36 | 23 | 20 | – | condenser_IX2-MLWCD (253), plate_96_SLAS (96) | 0.0 |
+| WA | V45 | IX-ULWCD | 0 | 96 | 35 | 23 | – | plate_96_SLAS (96), condenser_IX-ULWCD (47) | 5.0 |
+| WA | V45 | NONE (pillar tilted back) | 0 | 96 | 35 | 35 | – | plate_96_SLAS (96) | 5.57 |
+| WB | R08 | IX2-LWUCD | 0 | 0 | 15 | 15 | 0/9 | condenser_IX2-LWUCD (709), condenser_carrier_arm (30) | 0.0 |
+| WB | R08 | IX2-MLWCD | 0 | 0 | 15 | 15 | 0/9 | condenser_IX2-MLWCD (612) | 0.0 |
+| WB | R08 | IX-ULWCD | 96 | 96 | 35 | 15 | 9/9 | condenser_IX-ULWCD (59) | 4.83 |
+| WB | R08 | NONE (pillar tilted back) | 96 | 96 | 35 | 35 | 9/9 | none | 5.74 |
+
+## 4. Workflow comparison (D1): wells that can be picked while observed through the IX73
+
+Field of view assumed 5.5 mm at 4x (APX). W-A: plate centred on the axis.
+
+| workflow | wells observed while picking | wells reachable by picker XY alone | picker travel X x Y x Z (mm) | arm length / thin section (mm) | tower axis x (mm) |
+|---|---|---|---|---|---|
+| W-A stage fixed: picker covers the plate | 1 (at a centred plate: 0) | 96 | 150 x 100 x 50 | 175 / 120 | 403 |
+| W-B stage moves wells to the optical axis: picker works locally | 96 (best stage) | 32 | 100 x 30 x 50 | 115 / 60 | 353 |
+
+W-B: wells the stage can bring to the optical axis, per stage (needs >= 99 x 63 mm travel):
+
+| stage | travel X x Y (mm) | motorised | wells reachable on the axis |
+|---|---|---|---|
+| IX3-SVR (manual) | 114 x 75 | no | 96/96 |
+| IX3-SSU (ultrasonic, motorised) | 76 x 52 | yes | 48/96 |
+| Maerzhaeuser SCAN IM for IX73 | 120 x 80 | yes | 96/96 |

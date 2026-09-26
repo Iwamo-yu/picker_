@@ -1,4 +1,3 @@
-<!-- GENERATED from docs/src/source_manifest.md by cad/render_docs.py - edit the source, not this file -->
 # Source manifest
 
 Retrieval date for everything below: **2026-09-25**.

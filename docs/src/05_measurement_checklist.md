@@ -1,4 +1,3 @@
-<!-- GENERATED from docs/src/05_measurement_checklist.md by cad/render_docs.py - edit the source, not this file -->
 # Measurement checklist for the real IX73 (do this before detailed CAD)
 
 Reference frame: origin at the optical axis on the stage-insert top surface; +X operator's right, +Y away from the operator, +Z up. Photograph each measurement with a ruler in view. Enter the values in `cad/params.py`, change their status from `PH` to `MEAS`, and re-run `python cad/model.py && python cad/analysis.py && python cad/views.py && python viewer/build_viewer.py`.

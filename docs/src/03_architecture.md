@@ -1,4 +1,3 @@
-<!-- GENERATED from docs/src/03_architecture.md by cad/render_docs.py - edit the source, not this file -->
 # Recommended overall architecture (stage 1, not frozen)
 
 ## 1. Recommendation
@@ -16,9 +15,9 @@ The same frame concept serves W-A (stage fixed) with longer travel and a longer 
 
 It is the cleanest robust layout for three reasons, each backed by the model:
 
-1. **Only one thin element enters the optical-axis zone.** The arm is 12 × 12 mm for its first 60 mm (W-A: 120 mm). The tall Z actuator stays outside the condenser keep-out in every position, and the moving system clears the IX-ULWCD at all 96 wells at pick height and at safe-Z in both workflows (`09_workflow_D1.md`, `generated_analysis_tables.md`).
-2. **The frame avoids every side of the IX73 that is used or unknown.** The operator side and eyepieces (front), the illumination pillar and lamp (rear) and the camera port (left, assumed) all stay clear. The tower axis is 192 mm clear of the body side (W-A: 242 mm), and nothing touches the microscope or its stage.
-3. **The stiff, fixed parts are the long ones.** The Y beam is supported at both ends. The cantilevers are the X support beam and the arm (115 mm in W-B, 175 mm in W-A). Both deflect repeatably, and the image calibration absorbs the static sag.
+1. **Only one thin element enters the optical-axis zone.** The arm is {{ARM_T_TXT}} for its first {{WB_THIN_L}} mm (W-A: {{WA_THIN_L}} mm). The tall Z actuator stays outside the condenser keep-out in every position, and the moving system clears the IX-ULWCD at all 96 wells at pick height and at safe-Z in both workflows (`09_workflow_D1.md`, `generated_analysis_tables.md`).
+2. **The frame avoids every side of the IX73 that is used or unknown.** The operator side and eyepieces (front), the illumination pillar and lamp (rear) and the camera port (left, assumed) all stay clear. The tower axis is {{WB_GAP:.0f}} mm clear of the body side (W-A: {{WA_GAP:.0f}} mm), and nothing touches the microscope or its stage.
+3. **The stiff, fixed parts are the long ones.** The Y beam is supported at both ends. The cantilevers are the X support beam and the arm ({{WB_ARM_L}} mm in W-B, {{WA_ARM_L}} mm in W-A). Both deflect repeatably, and the image calibration absorbs the static sag.
 
 **Nothing here is frozen** until M1, M6, M7 and M8 are measured (`09_workflow_D1.md`, freeze gate).
 
@@ -42,16 +41,16 @@ Order from the table up: **Y (fixed on beam) → X (cantilever towards the axis)
 
 | Axis | W-B stroke | W-A stroke | Why |
 |---|---|---|---|
-| X | **100 mm** (tip -15…+85) | 150 mm | W-B: local calibration ±15 mm plus park / capillary change outside the condenser keep-out. W-A: 99 mm well span + 25.5 mm per side |
-| Y | **30 mm** | 100 mm | W-B: local calibration. W-A: 63 mm span + 18.5 mm per side |
-| Z | **50 mm** | 50 mm | pick height 3.35 → safe-Z 19.35 → top: capillary change and calibration touch-off |
+| X | **{{WB_TRAVEL_X}} mm** (tip {{WB_X_MIN}}…+{{WB_X_MAX}}) | {{WA_TRAVEL_X}} mm | W-B: local calibration ±15 mm plus park / capillary change outside the condenser keep-out. W-A: 99 mm well span + 25.5 mm per side |
+| Y | **{{WB_TRAVEL_Y}} mm** | {{WA_TRAVEL_Y}} mm | W-B: local calibration. W-A: 63 mm span + 18.5 mm per side |
+| Z | **{{WB_TRAVEL_Z}} mm** | {{WA_TRAVEL_Z}} mm | pick height 3.35 → safe-Z {{SAFE_Z:.2f}} → top: capillary change and calibration touch-off |
 
 Why Y is the fixed axis and X the cantilever: the side tower gives a naturally long, twice-supported beam in Y. X must reach from the tower to the plate anyway. Swapping them would cantilever the *fixed* beam over the microscope.
 
 ## 4. Reaching all 96 wells
 
-- **W-B (baseline).** The stage brings each well to the axis. With the IX3-SVR or a 120 × 80 motorised stage, all 96 wells can be picked *and observed*. The sweep translates plate and stage for every well: 96/96 clear at pick height, 96/96 at safe-Z. The stage moves only with the tip at safe-Z. The IX3-SSU (76 × 52) reaches only 48/96.
-- **W-A.** Tip travel 150 × 100 covers the 99 × 63 mm well field (96/96 in the sweep), but only 1 well is observed per stage setting. The rest are picked or dispensed blind unless an overview camera is added.
+- **W-B (baseline).** The stage brings each well to the axis. With the IX3-SVR or a 120 × 80 motorised stage, all 96 wells can be picked *and observed*. The sweep translates plate and stage for every well: {{SW_WB_R08_ULWCD_PICK}}/96 clear at pick height, {{SW_WB_R08_ULWCD_SAFE}}/96 at safe-Z. The stage moves only with the tip at safe-Z. The IX3-SSU (76 × 52) reaches only {{D1_WB_SSU_WELLS}}/96.
+- **W-A.** Tip travel {{WA_TRAVEL_X}} × {{WA_TRAVEL_Y}} covers the 99 × 63 mm well field ({{SW_WA_R08_ULWCD_PICK}}/96 in the sweep), but only {{D1_WA_OBSERVED}} well is observed per stage setting. The rest are picked or dispensed blind unless an overview camera is added.
 
 ## 5. Z axis: low backlash and no drop on power loss
 
@@ -112,13 +111,13 @@ Each loop takes the full stroke with a bend radius of at least 25 mm (PTFE kink 
 
 | Question | Answer (model reference pose) |
 |---|---|
-| Where does the gantry sit relative to the IX73? | Right-hand side; tower axis at x = +353 mm (W-A: +403) from the optical axis; posts at y = -115 and +195 mm (W-A: -150 / +230); on its own base plate on the table. |
+| Where does the gantry sit relative to the IX73? | Right-hand side; tower axis at x = +{{WB_TOWER_X}} mm (W-A: +{{WA_TOWER_X}}) from the optical axis; posts at y = {{WB_POST_Y0}} and +{{WB_POST_Y1}} mm (W-A: {{WA_POST_Y0}} / +{{WA_POST_Y1}}); on its own base plate on the table. |
 | Which parts move / stay fixed? | §2 table. The plate and stage move in W-B, driven by the IX73 stage, not by the picker. |
 | Moving mass per axis? | Y ≈2.5–3.0 kg (W-B) / 3.0–3.5 kg (W-A), X ≈1.2–1.4 kg, Z ≈0.25–0.35 kg (estimates). |
-| How does it reach all 96 wells? | W-B: the stage brings each well to the axis (96/96 observed). W-A: picker travel 150 × 100 (1 observed). |
+| How does it reach all 96 wells? | W-B: the stage brings each well to the axis ({{D1_WB_OBSERVED}}/96 observed). W-A: picker travel {{WA_TRAVEL_X}} × {{WA_TRAVEL_Y}} ({{D1_WA_OBSERVED}} observed). |
 | Where does the capillary enter the plate? | Vertically from above with an 8° lean towards +X. The holder nose stays ≈19 mm above the plate top at pick height. |
-| Where does the tubing leave the head? | Holder top → side of the arm → clamp on the Z carriage (outboard, x ≈ tip + 115 mm). |
-| Likely collision regions? | Condenser front (arm and tubing, 4.83 mm at safe-Z with a placeholder condenser); condenser carrier arm vs X support beam (placeholder); well rims (angle); lid; in W-B, the plate moving under the tip if the stage moves below safe-Z. |
+| Where does the tubing leave the head? | Holder top → side of the arm → clamp on the Z carriage (outboard, x ≈ tip + {{WB_ARM_L}} mm). |
+| Likely collision regions? | Condenser front (arm and tubing, {{SW_WB_R08_ULWCD_SAFE_CLEAR}} mm at safe-Z with a placeholder condenser); condenser carrier arm vs X support beam (placeholder); well rims (angle); lid; in W-B, the plate moving under the tip if the stage moves below safe-Z. |
 | How does the condenser constrain the angle? | Indirectly: the wells force near-vertical, so the capillary must sit below the condenser. That needs WD ≥ about 65 mm (IX-ULWCD) or the column tilted back. |
-| Free space needed around the microscope? | Right side: from the body side (x = 161.5) to x ≈ +443 (W-B) / +493 (W-A) for the frame, plus the pump and controller beyond, if placed there. Nothing on the front, left or rear. |
+| Free space needed around the microscope? | Right side: from the body side (x = {{IX73_HALF_W}}) to x ≈ +{{WB_FOOT_X}} (W-B) / +{{WA_FOOT_X}} (W-A) for the frame, plus the pump and controller beyond, if placed there. Nothing on the front, left or rear. |
 | Which dimensions still need measuring? | Freeze gate: M1, M3, M4, M6, M7, M8, M10, M15 (`05_measurement_checklist.md`). |

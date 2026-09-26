@@ -23,15 +23,18 @@ for k, v in an["sweeps"].items():
         for o, n in s[kind]["collisions_by_obstacle"].items():
             obs[o] = obs.get(o, 0) + n
     sweep[k] = dict(wells=w, summary=dict(pick=s["pick"]["ok"], safe=s["safe"]["ok"], gsafe=s["grid_safe"]["ok"],
-                    gtop=s["grid_top"]["ok"], obst=", ".join(sorted(obs, key=lambda o: -obs[o]))))
+                    gtop=s["grid_top"]["ok"], corner=(f"{s['stage_corner']['ok']}/{s['stage_corner']['n']}" if "stage_corner" in s else "–"), obst=", ".join(sorted(obs, key=lambda o: -obs[o]))))
 theta = {k: v["theta"] for k, v in meta["variants"].items()}
+d1 = {k: dict(label=v["label"], observed=v["observed_pick"]) for k, v in an["d1"].items()}
 import analysis  # noqa
 access = {}
 for k, t in theta.items():
     a = analysis.well_access(t)
     access[k] = dict(ok=a["bottom_reachable_centre"], rim=a["rim_clearance_centre"], depth=a["max_centred_depth"])
 data = dict(parts=meta["parts"], variants=meta["variants"], condensers=meta["condensers"], condenser_choices=CONDENSER_CHOICES,
-            Z_PICK=meta["Z_PICK"], safe_z=meta["safe_z"], wells=wells, sweep=sweep, access=access)
+            Z_PICK=meta["Z_PICK"], safe_z=meta["safe_z"], wells=wells, sweep=sweep, access=access,
+            workflows={k: dict(label=v["label"], layout=v["layout"]) for k, v in meta["workflows"].items()},
+            export_set=meta["export_set"], d1=d1)
 html = open(os.path.join(HERE, "template.html")).read()
 html = html.replace("/*__DATA__*/null", json.dumps(data, separators=(",", ":"))).replace("/*__STL__*/null", json.dumps(stl, separators=(",", ":")))
 fn = os.path.join(HERE, "ix73_picker_viewer.html")
