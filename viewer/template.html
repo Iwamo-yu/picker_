@@ -109,7 +109,8 @@ td.ok{color:var(--ok);font-weight:600} td.bad{color:var(--bad);font-weight:600}
         <div class="lab">Colour by</div>
         <div class="seg" role="group" aria-label="Colour mode">
           <button class="btn" id="c-role" aria-pressed="true">ROLE</button>
-          <button class="btn" id="c-conf" aria-pressed="false">DATA CONFIDENCE</button>
+          <button class="btn" id="c-conf" aria-pressed="false">DATA ORIGIN</button>
+          <button class="btn" id="c-ver" aria-pressed="false">VERIFICATION</button>
         </div>
       </div>
       <div class="legend" id="legend"></div>
@@ -121,10 +122,10 @@ td.ok{color:var(--ok);font-weight:600} td.bad{color:var(--bad);font-weight:600}
   </div>
 
   <div class="notes">
-    <div class="note"><h2>Why the stage moves (D1)</h2><p>The IX73 only sees the well on the optical axis. In W-B the stage brings every source and destination well there, so all {{D1_WB_OBSERVED}} picks are observed, and the picker needs only {{WB_TRAVEL_X}} × {{WB_TRAVEL_Y}} × {{WB_TRAVEL_Z}} mm of travel. That takes a motorised stage with at least 99 × 63 mm travel; Evident's IX3-SSU (76 × 52) reaches {{D1_WB_SSU_WELLS}} wells. In W-A the picker reaches every well but sees one.</p></div>
+    <div class="note"><h2>Why the stage moves (D1)</h2><p>The IX73 only sees the well on the optical axis. In W-B the stage brings every source and destination well there, so all {{D1_WB_OBSERVED}} picks are observed, and the picker tip needs only {{WB_TRAVEL_X}} × {{WB_TRAVEL_Y}} × {{WB_TRAVEL_Z}} mm of travel (tip travel; the catalogue actuator strokes are longer, docs/03). That takes a motorised stage with at least 99 × 63 mm travel; Evident's IX3-SSU (76 × 52) reaches {{D1_WB_SSU_WELLS}} wells. In W-A the picker reaches every well but sees one.</p></div>
     <div class="note"><h2>Why near-vertical</h2><p>A Corning 7007 U-bottom well is Ø6.86 mm at the rim and 11.30 mm deep. A 1.0 mm capillary reaches the bottom centre only below about {{MAX_ANGLE:.1f}}° from vertical. At 30° it stops {{REACH_30:.1f}} mm below the rim, at 45° after {{REACH_45:.1f}} mm. The 8° block keeps {{RIM_8:.2f}} mm rim clearance; larger wells use the {{ANGLE_BLOCKS_TXT}} blocks (docs/10).</p></div>
     <div class="note"><h2>Why the dog-leg arm</h2><p>The condenser sits on the optical axis. The tall Z actuator therefore stays outboard of the tip (arm {{WB_ARM_L:.0f}} mm in W-B, {{WA_ARM_L:.0f}} mm in W-A), and only a thin 12 mm arm runs under the condenser. That fits under the IX-ULWCD (WD 73 mm). It does not fit under the IX2-LWUCD (WD 27 mm) or the IX2-MLWCD (WD 45 mm). The alternative is tilting the illumination column back.</p></div>
-    <div class="note"><h2>What is still a guess</h2><p>Stage height above the table, condenser outer diameter, pillar and arm position, and the eyepiece tube envelope are placeholders (red in confidence mode). Every clearance near the condenser depends on them. Measure these first; the model re-runs in about 10 minutes (python tools/build_all.py).</p></div>
+    <div class="note"><h2>What is still a guess</h2><p>Stage height above the table, condenser outer diameter, pillar and arm position, and the eyepiece tube envelope are placeholders (red in confidence mode). Every clearance near the condenser depends on them. The V1 plate is Corning 7007 only; other plates are experimental. Measure these first; the model re-runs in about 10 minutes (python tools/build_all.py).</p></div>
   </div>
 
   <div class="note">
@@ -146,9 +147,14 @@ const ROLE = {table:0x9aa5a8, ix73:0xb8c1c5, plate:0xdfe7ea, condenser:0x7d6aa8,
 const CONF = {STD:0x2f7d4f, MFR:0x2f7d4f, MEAS:0x2f7d4f, DER:0x3a64b0, DES:0x3a64b0, APX:0xd49a2a, PH:0xc0392f};
 const CONF_LABEL = [["STD / MFR · standard or manufacturer data","#2f7d4f"],["DER / DES · derived or design choice","#3a64b0"],
   ["APX · approximate catalogue envelope","#d49a2a"],["PH · placeholder, must be measured","#c0392f"]];
+const VER = {MEASURED:0x2f7d4f, DIRECT_OFFICIAL:0x2f7d4f, FILE_RETRIEVED:0x4f9d5f, SECONDARY_SOURCE:0x8aa83a,
+  SEARCH_EXCERPT:0xb88a2a, NOT_VERIFIED:0xd46a2a, PLACEHOLDER:0xc0392f, DESIGN:0x3a64b0};
+const VER_LABEL = [["measured / official file read","#2f7d4f"],["file retrieved · secondary source","#8aa83a"],
+  ["search excerpt only (not official)","#b88a2a"],["not verified / approximate","#d46a2a"],["placeholder, must be measured","#c0392f"],
+  ["design choice or derived","#3a64b0"]];
 const ROLE_LABEL = [["IX73 envelope","#b8c1c5"],["condenser (on optical axis)","#7d6aa8"],["fixed frame","#48657a"],
   ["actuators","#2f6f8a"],["moving head (Z group)","#2f9d74"],["glass capillary","#38c4d8"],["liquid-filled tubing","#f0c040"],
-  ["zones: tip travel, safe-Z, condenser keep-out, light cone","#3fb6c6"]];
+  ["zones: tip travel, safe-Z corridor, condenser keep-out, light cone","#3fb6c6"]];
 
 const state = {wf:"WB", variant:"R08", cond:"IX-ULWCD", well:"D6", z:"pick", colour:"role", zones:true, scope:true, view:"iso"};
 
@@ -192,10 +198,10 @@ groups.S.add(wm);
 function applyColours(){
   for (const m of meshes){
     const d = m.userData;
-    const c = d.category==="zone" ? ROLE.zone : (state.colour==="role" ? (ROLE[d.category]??0x999999) : (CONF[d.status]??0x999999));
+    const c = d.category==="zone" ? ROLE.zone : (state.colour==="role" ? (ROLE[d.category]??0x999999) : state.colour==="ver" ? (VER[d.ver]??0x999999) : (CONF[d.status]??0x999999));
     m.material.color.setHex(c);
   }
-  const L = state.colour==="role" ? ROLE_LABEL : CONF_LABEL;
+  const L = state.colour==="role" ? ROLE_LABEL : state.colour==="ver" ? VER_LABEL : CONF_LABEL;
   document.getElementById("legend").innerHTML = L.map(([t,c])=>`<span class="sw" style="background:${c}"></span><span>${t}</span>`).join("");
 }
 function applyVisibility(){
@@ -206,7 +212,7 @@ function applyVisibility(){
     if (v && d.condenser){
       const cz = d.category==="zone" ? (state.cond.startsWith("IX2-LWUCD")?"IX2-LWUCD":"IX-ULWCD") : state.cond;
       v = d.condenser===cz;
-      if (d.category==="zone" && state.cond.startsWith("NONE") && !/tip_travel|safe_z/.test(d.note)) v=false;
+      if (d.category==="zone" && state.cond.startsWith("NONE") && !/tip_travel|safe_z/.test(d.note+" "+d.key)) v=false;
     }
     if (d.category==="zone" && !state.zones) v = false;
     if (!state.scope && (d.category==="ix73" || d.category==="condenser" || d.category==="table")) v = false;
@@ -236,6 +242,8 @@ function applyPose(){
                             : `<span class="pill">${state.well} · tip x ${w.x.toFixed(1)} y ${w.y.toFixed(1)} z ${(DATA.Z_PICK+dz).toFixed(1)} mm</span>`);
   bits.push(seen ? `<span class="pill ok">observed through IX73</span>` : `<span class="pill bad">not observed (blind)</span>`);
   bits.push(hits.length ? `<span class="pill bad">collision: ${hits.join(", ")}</span>` : `<span class="pill ok">clear · min ${clr.toFixed(1)} mm to envelopes</span>`);
+  const cr = (DATA.corridor||{})[state.variant];
+  if (cr) bits.push(`<span class="pill ${cr.feasible?"ok":"bad"}">safe-Z corridor ${cr.lower.toFixed(1)}–${cr.upper.toFixed(1)} mm (${cr.width.toFixed(1)} mm) · stage moves only inside it</span>`);
   bits.push(acc.ok ? `<span class="pill ok">well bottom reachable · rim clearance ${acc.rim.toFixed(2)} mm</span>` : `<span class="pill bad">well bottom NOT reachable · stops ${acc.depth.toFixed(1)} mm below rim</span>`);
   st.innerHTML = bits.join("");
   // plate map
@@ -306,6 +314,7 @@ tog("z-pick", ()=>{state.z="pick"; syncButtons(); applyPose();});
 tog("z-safe", ()=>{state.z="safe"; syncButtons(); applyPose();});
 tog("c-role", ()=>{state.colour="role"; syncButtons(); applyColours();});
 tog("c-conf", ()=>{state.colour="conf"; syncButtons(); applyColours();});
+tog("c-ver", ()=>{state.colour="ver"; syncButtons(); applyColours();});
 tog("t-zones", ()=>{state.zones=!state.zones; syncButtons(); applyVisibility();});
 tog("t-scope", ()=>{state.scope=!state.scope; syncButtons(); applyVisibility();});
 ["iso","top","front","side","head"].forEach(v=>tog("v-"+v, ()=>setView(v)));
@@ -319,6 +328,7 @@ function syncButtons(){
   document.getElementById("z-safe").setAttribute("aria-pressed", state.z==="safe");
   document.getElementById("c-role").setAttribute("aria-pressed", state.colour==="role");
   document.getElementById("c-conf").setAttribute("aria-pressed", state.colour==="conf");
+  document.getElementById("c-ver").setAttribute("aria-pressed", state.colour==="ver");
   document.getElementById("t-zones").setAttribute("aria-pressed", state.zones);
   document.getElementById("t-scope").setAttribute("aria-pressed", state.scope);
 }

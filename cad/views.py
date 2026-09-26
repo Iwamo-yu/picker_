@@ -180,7 +180,7 @@ def front_view():
         ax.plot([80, 120, 128], [z, z, zt], color=SC[s], lw=0.8)
         label(ax, 131, zt, t, s, fs=7)
     dim(ax, (-230, T), (-230, 0), f"table -> stage top {p.STAGE_TOP_ABOVE_TABLE.v:.0f}\n{p.STAGE_TOP_ABOVE_TABLE.status} (M1)", p.STAGE_TOP_ABOVE_TABLE.status, rot=90)
-    dim(ax, (-200, T), (-200, T + p.IX73_H.v), "IX73 H 656 (MFR, incl. pillar)", "MFR", rot=90, off=(-12, 0))
+    dim(ax, (-200, T), (-200, T + p.IX73_H.v), f"IX73 H {p.IX73_H.v:.0f} ({p.IX73_H.status}, {int(p.IX73_DECKS.v)}-deck, incl. pillar)", p.IX73_H.status, rot=90, off=(-12, 0))
     zb = Z_PICK + 30
     dim(ax, (ARM_L + 45, zb + 60), (ARM_L + 45, zb + 60 + p.layout(WF)["travel_z"]), f"Z stroke {p.layout(WF)['travel_z']:.0f}", "DES", rot=90, off=(8, 0))
     label(ax, ARM_L + 50, zb + 200, "Z actuator lead 1 mm (self-holding\nvia detent / brake option)", "APX")
@@ -252,7 +252,7 @@ def angle_detail():
         col = "#1596a8" if a["bottom_reachable_centre"] else "#c0392f"
         ax.plot([tip[0], end[0]], [tip[1], end[1]], color=col, lw=2.2)
         # holder
-        h1 = (tip[0] + (L + p.HOLDER_L.v) * math.sin(t), tip[1] + (L + p.HOLDER_L.v) * math.cos(t))
+        h1 = (tip[0] + (L + p.HOLDER_AXIAL_LEN.v) * math.sin(t), tip[1] + (L + p.HOLDER_AXIAL_LEN.v) * math.cos(t))
         ax.plot([end[0], h1[0]], [end[1], h1[1]], color=FILL["holder"], lw=10, solid_capstyle="butt")
         # condenser fronts
         for name, c in p.CONDENSERS.items():
@@ -340,15 +340,22 @@ def electrical_diagram():
         "mx": (74, 48, 13, 7, "X NEMA17", D), "my": (74, 38, 13, 7, "Y NEMA17", D), "mz": (74, 28, 13, 7, "Z NEMA17\n(+ brake opt.)", D),
         "sw": (35, 8, 15, 11, "Inputs\nX/Y/Z home (NC)\nopt. far limits (NC)\nE-stop status", I),
         "il": (56, 8, 13, 11, "Optional\ninterlock\n(e.g. lid/door)", I),
+        "pump": (74, 15, 15, 9, "Syringe pump\nhardware STOP/INHIBIT in\n(interface: M17)", S),
+        "valve": (74, 4, 15, 7, "NC pinch valve\n(fallback: closes\nwhen de-energised)", S),
+        "stg": (1, 12, 12, 9, "Motorised stage\ncontroller (W-B)\nstop input", C),
     }
     arrows = [("mains", "psu", "", "-"), ("psu", "estop", "24 V", "-"), ("psu", "logic", "", "-"), ("logic", "ctl", "logic", "-"), ("estop", "dx", "", "-"), ("estop", "dy", "", "-"),
               ("estop", "dz", "", "-"), ("pc", "ctl", "", "-"), ("ctl", "dx", "", "-"), ("ctl", "dy", "", "-"), ("ctl", "dz", "SPI/step", "-"),
-              ("dx", "mx", "", "-"), ("dy", "my", "", "-"), ("dz", "mz", "", "-"), ("sw", "ctl", "", "-"), ("il", "ctl", "", "--")]
+              ("dx", "mx", "", "-"), ("dy", "my", "", "-"), ("dz", "mz", "", "-"), ("sw", "ctl", "", "-"), ("il", "ctl", "", "--"),
+              ("estop", "pump", "", "-"), ("ctl", "pump", "", "--"), ("estop", "valve", "", "-"), ("pc", "stg", "", "-"),
+              ("estop", "stg", "", "-")]
     boxes(ax, spec, arrows)
     ax.text(50, 62, "Preliminary electrical block diagram (stage 1, not frozen). Motor power is cut by the E-stop; "
             "logic stays up so the controller reports the stop.\nZ must not fall when motor power is removed "
-            "(1 mm lead + detent torque; add a brake if Z carries >0.5 kg).", ha="center", fontsize=8.5)
-    ax.set_xlim(0, 90); ax.set_ylim(5, 66); ax.axis("off")
+            "(1 mm lead + detent torque; add a brake if Z carries >0.5 kg). The E-stop also stops the PUMP and the STAGE:\n"
+            "pump hardware stop/inhibit input > dedicated input > controller command with the NC pinch valve as fallback.",
+            ha="center", fontsize=8.5)
+    ax.set_xlim(0, 91); ax.set_ylim(2, 68); ax.axis("off")
     fig.tight_layout(); fig.savefig(os.path.join(IMG, "electrical_block_diagram.png"), dpi=150)
     fig.savefig(os.path.join(IMG, "electrical_block_diagram.svg")); plt.close(fig)
 
@@ -424,7 +431,7 @@ def formats_angles():
             t = math.radians(r["theta"]); L = r["exposed"]
             tip = (0.0, r["tz"])
             nose = (L * math.sin(t), tip[1] + L * math.cos(t))
-            top = ((L + p.HOLDER_L.v) * math.sin(t), tip[1] + (L + p.HOLDER_L.v) * math.cos(t))
+            top = ((L + p.HOLDER_AXIAL_LEN.v) * math.sin(t), tip[1] + (L + p.HOLDER_AXIAL_LEN.v) * math.cos(t))
             ax.plot([tip[0], nose[0]], [tip[1], nose[1]], color="#1596a8", lw=2)
             ax.plot([nose[0], top[0]], [nose[1], top[1]], color=FILL["holder"], lw=9, solid_capstyle="butt")
             ax.plot([top[0] - 4, top[0] + 30], [top[1], top[1]], color=FILL["moving"], lw=5)

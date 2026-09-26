@@ -20,9 +20,11 @@ Values marked (S..) come from the source manifest. Values marked ~ are typical c
 
 ## Recommendation (to be frozen only after the geometry is validated)
 
-- **Z: architecture A, 1 mm lead ball screw** (THK KR20 class, stroke ≥ 50 mm; the next catalogue stroke up), or an Oriental DRS2 guide type with brake if a closed-loop absolute axis is preferred. Z sets landing accuracy and must not drop, so this is where the money should go.
-- **X: architecture A** (KR20/LX26 class, stroke ≥ 100 mm in W-B or 150 mm in W-A, lead 1–2 mm). It is the cantilevered axis, so body stiffness and low mass matter most.
-- **Y: A or B.** It is fixed on a supported beam, so a good integrated stage from B is acceptable. Choose A if one supplier and consistent documentation matter.
+"Tip travel" is what the capillary tip must cover; "actuator stroke" is the catalogue stroke bought, which is at least the tip travel (`03_architecture.md` §3).
+
+- **Z: architecture A, 1 mm lead ball screw** (THK KR20 class; tip travel 50 mm, catalogue actuator stroke 80 mm in the model), or an Oriental DRS2 guide type with brake if a closed-loop absolute axis is preferred. Z sets landing accuracy and must not drop, so this is where the money should go.
+- **X: architecture A** (KR20/LX26 class, lead 1–2 mm; tip travel 100 mm in W-B → actuator stroke 110 mm, tip travel 150 mm in W-A → 150 mm). It is the cantilevered axis, so body stiffness and low mass matter most.
+- **Y: A or B** (tip travel 30 mm in W-B → actuator stroke 50 mm). It is fixed on a supported beam, so a good integrated stage from B is acceptable, but its carriage carries the X and Z groups (≈4.0 kg, largest moment ≈7.0 N·m, `03_architecture.md` §5b): check the catalogue moment ratings. Choose A if one supplier and consistent documentation matter.
 - **Architecture C** is kept as a comparison and fallback. It is appropriate only if lead times block A/B. In that case, use a Tr8×2 single-start screw (2 mm lead, **not** Tr8×8), an anti-backlash nut, a fixed-floating bearing arrangement, and always approach from one direction.
 
 This mix fits the stated budget order (about JPY 200k, cost secondary) with A on X and Z. The exact part numbers are **not** frozen (see `07_…`).

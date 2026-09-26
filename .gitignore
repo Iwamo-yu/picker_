@@ -1,4 +1,5 @@
 references/*/
 !references/fetch_references.sh
-cad/__pycache__/
+**/__pycache__/
+*.pyc
 cad/out/stl/

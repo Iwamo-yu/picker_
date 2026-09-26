@@ -45,7 +45,7 @@ for k, t in theta.items():
     a = analysis.well_access(t)
     access[k] = dict(ok=a["bottom_reachable_centre"], rim=a["rim_clearance_centre"], depth=a["max_centred_depth"])
 data = dict(parts=meta["parts"], variants=meta["variants"], condensers=meta["condensers"], condenser_choices=CONDENSER_CHOICES,
-            Z_PICK=meta["Z_PICK"], safe_z=meta["safe_z"], wells=wells, sweep=sweep, access=access,
+            Z_PICK=meta["Z_PICK"], safe_z=meta["safe_z"], corridor=meta.get("corridor", {}), wells=wells, sweep=sweep, access=access,
             workflows={k: dict(label=v["label"], layout=v["layout"]) for k, v in meta["workflows"].items()},
             export_set=meta["export_set"], d1=d1, steps=STEPS)
 html = open(os.path.join(HERE, "template.html")).read()

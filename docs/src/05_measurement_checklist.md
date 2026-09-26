@@ -4,7 +4,7 @@ Reference frame: origin at the optical axis on the stage-insert top surface; +X 
 
 **Priority:** A = decides feasibility now; B = needed before brackets; C = nice to have.
 
-**Freeze gate:** {{FREEZE_GATE}} must be measured before any bracket or part number is frozen (`09_workflow_D1.md`). For W-B, also record the chosen motorised stage's envelope and travel.
+**Freeze gate ({{FREEZE_GATE_N}} items):** {{FREEZE_GATE}} must be measured before any bracket or part number is frozen (`09_workflow_D1.md`). For W-B, also record the chosen motorised stage's envelope and travel.
 
 | ID | Pri | Measurement | Currently in model | Why it matters |
 |---|---|---|---|---|
@@ -24,10 +24,10 @@ Reference frame: origin at the optical axis on the stage-insert top surface; +X 
 | M14 | B | Objective/turret: highest point below the stage at the largest objective used | PH | Z floor safety |
 | M15 | A | Free table space to the right: x from the body side to the table edge; y extent; other equipment (incubator, controller, PC) | assumes ≥ +500 mm | frame footprint |
 | M16 | B | Optical-table hole pattern (metric M6/25 or imperial ¼-20/1"), hole positions relative to the IX73 feet | – | base plate slots |
-| M17 | B | Pump model(s) available, footprint, tubing port, control interface (RS-232/USB) | PH box | placement, fluidic line length |
+| M17 | A | Pump model(s) available, footprint, tubing port, control interface (RS-232/USB), and **its stop / inhibit input** (hardware input, dedicated digital input, or command only) | PH box | placement, fluidic line length; how the E-stop stops the pump (`06_electrical.md`) |
 | M18 | A | **Illumination test**: hold a Ø10 mm rod 30–45 mm above focus, offset 0/4/8 mm from the axis, at 4× and 10×, condenser aperture open and closed; photograph the image | analytic estimate | confirms 8° vs 10–12° choice |
-| M19 | C | Plate types to support (U-bottom ULA, flat, spheroid microcavity); their well depth and rim Ø | Corning 7007 | angle margin |
+| M19 | A | **V1 plate lot check**: the plates actually bought are {{V1_PLATE_SKU}} (96-well U-bottom); measure well rim Ø, depth, plate height without lid, and A1 corner position in the holder. Other plate types are experimental and recorded only | {{V1_PLATE_SKU}} manufacturer drawing | V1 acceptance (target radius {{V1_TARGET_R:.1f}} mm), angle margin, safe-Z lower bound |
 | M20 | C | Vibration: table isolation on/off; bench vs floated table | – | settle time before pick |
 | M21 | B | Where the plate lid is placed during work | none | workflow |
 | M22 | C | Cable routes to the PC/controller location | – | cable lengths |
-| M23 | A | **Holder stack height**: with the real holder (collet, nut, depth stop, seal, side port) mounted on its angle block, the distance from the collet nose to the highest point of the head, including the tubing clip | `HOLDER_L` {{HOLDER_L:.0f}} mm + arm + {{HEAD_TOP_ALLOW}} mm tubing | condenser margin falls about 1 mm per mm; limit ≈ {{HOLDER_L_MAX_MIN:.1f}} mm (`10_…`) |
+| M23 | A | **Head height above the nose** (`HEAD_TOP_FROM_NOSE_MEAS`): with the real V1 holder (collet, nut, depth stop, seal, side port) mounted on the {{V1_THETA:.0f}}° block and the tubing clipped, the **vertical** distance from the collet nose to the highest point of the head | {{NOSE_TOP_V1:.1f}} mm = holder axial length {{HOLDER_AXIAL_LEN:.0f}} mm × cos θ + half the arm + {{TUBING_ABOVE_ARM}} mm tubing (APX) | condenser margin and the safe-Z corridor upper bound fall 1 mm per mm; limit over the recommended settings ≈ {{NOSE_TOP_MAX_MIN:.1f}} mm (`10_…`) |

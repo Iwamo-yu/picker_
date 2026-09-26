@@ -98,7 +98,7 @@ border:1px solid var(--line);border-radius:6px;padding:10px;overflow-x:auto} td,
 <tr>
 <td>3</td>
 <td>☐</td>
-<td>手元のポンプの型式、ポート、通信方式を確認する(I-3, M17)</td>
+<td>手元のポンプの型式、ポート、通信方式、<strong>外部停止(インヒビット)入力の有無</strong>を確認する(I-3, M17)</td>
 <td>シリンジ容量、チューブ、D6</td>
 <td><code>05</code> M17, <code>08</code></td>
 </tr>
@@ -119,8 +119,8 @@ border:1px solid var(--line);border-radius:6px;padding:10px;overflow-x:auto} td,
 <tr>
 <td>6</td>
 <td>☐</td>
-<td>IX-ULWCD を手元に用意する(所有品、借用、または購入)。そのうえで M6(外径・外形)と M8(ピント状態の前玉高さ)を測る。ホルダーの試作品か購入品で M23(積み上げ高さ)も測る</td>
-<td>凍結ゲートの残り 3 項目。アームの細い部分の長さ、コンデンサとの余裕</td>
+<td>IX-ULWCD を手元に用意する(所有品、借用、または購入)。そのうえで M6(外径・外形)と M8(ピント状態の前玉高さ)を測る。ホルダーの試作品か購入品で M23(コレット先端 → ヘッド最上点の鉛直距離)も測る。V1 プレート Corning 7007 の実物で M19 も測る</td>
+<td>凍結ゲートの残り項目。アームの細い部分の長さ、コンデンサとの余裕</td>
 <td><code>05</code> M6/M8</td>
 </tr>
 <tr>
@@ -142,8 +142,8 @@ border:1px solid var(--line);border-radius:6px;padding:10px;overflow-x:auto} td,
 <hr />
 <h2>凍結ゲート</h2>
 <blockquote>
-<p><strong>凍結ゲート: M1, M3, M4, M6, M7, M8, M10, M15, M23</strong></p>
-<p>この 8 項目を実測して <code>cad/params.py</code> に入れ、再計算するまで、ブラケット形状、部品型番、加工図を確定しません(<code>05_measurement_checklist.md</code>、<code>07_assumptions_and_open_items.md</code>)。W-B では、選んだ電動 XY ステージの外形と移動量もあわせて記録します(<code>05</code> 冒頭、<code>09</code> 凍結ゲート表)。</p>
+<p><strong>凍結ゲート(10 項目): M1, M3, M4, M6, M7, M8, M10, M15, M19, M23</strong></p>
+<p>この 10 項目を実測して <code>cad/params.py</code> に入れ、再計算するまで、ブラケット形状、部品型番、加工図を確定しません(<code>05_measurement_checklist.md</code>、<code>07_assumptions_and_open_items.md</code>)。W-B では、選んだ電動 XY ステージの外形と移動量もあわせて記録します(<code>05</code> 冒頭、<code>09</code> 凍結ゲート表)。</p>
 <p>現在のモデルのコンデンサ付近の余裕(安全高さで 4.83 mm)は、仮のコンデンサ外形(Ø80 mm)から出た値です。<strong>設計根拠ではありません。</strong></p>
 </blockquote>
 <p>注意:</p>
@@ -237,7 +237,7 @@ flowchart TD
 <tr>
 <td>☐</td>
 <td>I-4</td>
-<td>使うプレートの種類と型番をすべて挙げる(U 底 ULA、平底、マイクロキャビティ等)。蓋を置く場所(M21)</td>
+<td>V1 は Corning 7007 に固定。ほかに使いたいプレートがあれば種類と型番を挙げる(試験扱い)。蓋を置く場所(M21)</td>
 <td>M19, M21。角度ブロックの組合せ、安全高さ</td>
 <td>なし</td>
 <td>担当: ___ / 時期: ___</td>
@@ -470,8 +470,8 @@ flowchart TD
 <tr>
 <td>☐</td>
 <td>M17</td>
-<td>B</td>
-<td>ポンプの外形、チューブポート、制御方式</td>
+<td>A</td>
+<td>ポンプの外形、チューブポート、制御方式、外部停止(インヒビット)入力の有無</td>
 <td>I-3 と同時に。データシートも入手</td>
 <td>ポンプ位置、流路長、チューブ(O-6)</td>
 <td>I-3</td>
@@ -480,11 +480,11 @@ flowchart TD
 </tr>
 <tr>
 <td>☐</td>
-<td>M19</td>
-<td>C</td>
-<td>使うプレートの深さとウェル縁径</td>
-<td>メーカー図面を優先。なければノギスで</td>
-<td>角度の余裕、角度ブロックの組合せ</td>
+<td><strong>M19</strong></td>
+<td>A</td>
+<td>V1 プレート Corning 7007 の実物のウェル縁径、深さ、蓋なし高さ、A1 の位置(ほかのプレートは試験扱いで記録のみ)</td>
+<td>購入ロットをノギスとデプスゲージで。メーカー図面と比べる</td>
+<td>V1 の受け入れ条件(目標が底中心から 0.5 mm 以内)、安全高さの下限</td>
 <td>I-4</td>
 <td>担当: ___ / 時期: ___</td>
 <td><code>05</code>, <code>10</code></td>
@@ -896,7 +896,7 @@ flowchart TD
 <tr>
 <td>☐</td>
 <td>C-1</td>
-<td>凍結ゲートの 8 項目がすべて <code>MEAS</code> になっていることを確認し、<code>python tools/build_all.py</code> を <strong><code>--fast</code> なしで</strong>実行する(干渉スイープを含む)</td>
+<td>凍結ゲートの 10 項目がすべて <code>MEAS</code> になっていることを確認し、<code>python tools/build_all.py</code> を <strong><code>--fast</code> なしで</strong>実行する(干渉スイープを含む)</td>
 <td>実測値での干渉結果を得る</td>
 <td>凍結ゲートの実測</td>
 <td>担当: ___ / 時期: ___</td>
@@ -914,7 +914,7 @@ flowchart TD
 <tr>
 <td>☐</td>
 <td>C-3</td>
-<td>残っている仮値(<code>PH</code>)の一覧を見て、残してよいものか確認する。現在は 13 件(手順書の「まだ仮の値」一覧)</td>
+<td>残っている仮値(<code>PH</code>)の一覧を見て、残してよいものか確認する。現在は 19 件(手順書の「まだ仮の値」一覧)</td>
 <td>見落としの防止</td>
 <td>C-1</td>
 <td>担当: ___ / 時期: ___</td>
@@ -959,7 +959,7 @@ flowchart TD
 <tr>
 <td>☐</td>
 <td>C-8</td>
-<td>安全の準備: 非常停止の配線計画、Z 原点が上端であること、Z が電源断で落ちないことを組立時に確認する段取り</td>
+<td>安全の準備: 非常停止の配線計画、Z の原点がコンデンサ下の基準スイッチ(1 個)であること、非常停止でポンプと電動ステージも止まること、Z が電源断で落ちないことを組立時に確認する段取り</td>
 <td>手順書「安全の決まりごと」の前提</td>
 <td>O-7</td>
 <td>担当: ___ / 時期: ___</td>
@@ -1007,8 +1007,8 @@ flowchart TD
 <td><strong>M8</strong></td>
 </tr>
 <tr>
-<td><code>HOLDER_L</code>(ホルダーの積み上げ高さ)</td>
-<td>14 mm(APX)</td>
+<td><code>HEAD_TOP_FROM_NOSE_MEAS</code>(コレット先端 → ヘッド最上点の鉛直距離。未入力なら <code>HOLDER_AXIAL_LEN</code> などから計算)</td>
+<td>22.2 mm(計算値)</td>
 <td><strong>M23</strong></td>
 </tr>
 <tr>
@@ -1063,7 +1063,7 @@ flowchart TD
 </tr>
 </tbody>
 </table></div>
-<p>M8(コンデンサ前玉の実高さ)は、<code>params.py</code> ではメーカーの WD から計算しているため PH としては数えられていません。M10(支柱を倒した外形)と M17(ポンプ)に対応するパラメータは <code>params.py</code> にありません。どちらも凍結ゲートや発注に効くので、測った値はこの文書か <code>05</code> に記録してください。</p>
+<p>M8(コンデンサ前玉の実高さ)は、<code>params.py</code> ではメーカーの WD から計算しているため PH としては数えられていません。M10(支柱を倒した外形)と M17(ポンプとその停止入力)に対応するパラメータは <code>params.py</code> にありません。どちらも凍結ゲートや発注に効くので、測った値はこの文書か <code>05</code> に記録してください。</p>
 <hr />
 <p>自動集計した最新の仮値一覧は、組立手順書の「まだ決まっていないこと」にあります(<code>cad/keynums.py</code> の <code>placeholders()</code>)。</p>
 </main>

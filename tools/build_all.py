@@ -19,13 +19,30 @@ def run(*cmd):
     subprocess.run([sys.executable, *cmd], cwd=ROOT, check=True)
 
 
-if "--check" in sys.argv:
+def analysis_stale():
     sys.path.insert(0, os.path.join(ROOT, "cad"))
     import json
     import analysis
-    an = json.load(open(os.path.join(ROOT, "cad", "out", "analysis.json")))
+    fn = os.path.join(ROOT, "cad", "out", "analysis.json")
+    if not os.path.exists(fn):
+        return "cad/out/analysis.json missing"
+    an = json.load(open(fn))
     if an.get("params_hash") != analysis.params_hash():
-        sys.exit("analysis.json is stale (params/model/analysis changed): run tools/build_all.py")
+        return "analysis.json was made with different params/model/analysis code"
+    bad = [r["cfg"] for r in an.get("head_consistency", []) if not r["ok"]]
+    if bad:
+        return f"exported CAD head differs from the analytic head record: {bad}"
+    bad = [r["cfg"] for r in an.get("corridors", []) if r["scope"] in ("V1", "experimental")
+           and not (r["feasible"] and r["ref_ok"])]
+    if bad:
+        return f"no positive safe-Z corridor / reference outside corridor for: {bad}"
+    return None
+
+
+if "--check" in sys.argv:
+    why = analysis_stale()
+    if why:
+        sys.exit(f"stale or inconsistent analysis: {why}")
     sys.path.insert(0, os.path.join(ROOT, "docs", "parts"))
     import build_parts
     if open(os.path.join(ROOT, "docs", "12_parts_candidates.md"), encoding="utf-8").read() != build_parts.markdown():
@@ -34,7 +51,11 @@ if "--check" in sys.argv:
     print("analysis, parts list and rendered docs are up to date (guide/viewer: rebuild with build_all)")
     sys.exit(0)
 run("cad/model.py")
-if "--fast" not in sys.argv:
+if "--fast" in sys.argv:
+    why = analysis_stale()
+    if why:
+        sys.exit(f"--fast refused: {why}.  Run the full `python tools/build_all.py` (clearance sweep ~10 min).")
+else:
     run("cad/analysis.py")
 run("cad/views.py")
 run("docs/assembly_ja/figures.py")
