@@ -69,6 +69,7 @@ class Part:
     status: str
     group: str = "fixed"
     note: str = ""
+    src: str = ""
 
 
 @dataclass
@@ -88,13 +89,8 @@ class Model:
 # head variants (capillary angle from vertical, measured in the XZ plane; holder
 # leans outboard towards +X = towards the picker tower)
 # ----------------------------------------------------------------------------
-VARIANTS = {
-    "V00": dict(theta=0.0, label="0 deg (vertical)"),
-    "R08": dict(theta=8.0, label="8 deg near-vertical dog-leg (RECOMMENDED)"),
-    "V20": dict(theta=20.0, label="20 deg block (24/12-well)"),
-    "V30": dict(theta=30.0, label="30 deg block (12/6-well)"),
-    "V45": dict(theta=45.0, label="45 deg inclined"),
-}
+VARIANTS = {k: dict(theta=c["theta"], exposed=c["exposed"], od=c["od"], plate=c["plate"], scope=c["scope"],
+                   label=c["label"]) for k, c in p.HEAD_CONFIGS.items()}   # single source: params.HEAD_CONFIGS
 CONDENSER_CHOICES = ["IX2-LWUCD", "IX2-MLWCD", "IX-ULWCD", "NONE (pillar tilted back)"]
 
 Z_PICK = p.WELL_BOTTOM_Z.v + p.TIP_CLEAR_BOTTOM.v  # tip z at reference pose
@@ -117,24 +113,40 @@ POST_Y = _L0["post_y"]
 TABLE_Z = -p.STAGE_TOP_ABOVE_TABLE.v
 
 
-def head_geometry(theta_deg):
-    """Return key points of capillary/holder for a given angle (tip at origin xy, z=Z_PICK)."""
+def head_geometry(theta_deg, exposed=None):
+    """Key points of capillary / holder (tip at origin xy, z = Z_PICK).  exposed defaults to CAP_EXPOSED;
+    pass the head configuration's exposed length (head_geometry_cfg) for exported heads."""
+    L = p.CAP_EXPOSED.v if exposed is None else exposed
     t = math.radians(theta_deg)
     ux, uz = math.sin(t), math.cos(t)
     tip = (0.0, 0.0, Z_PICK)
-    cap_top = (p.CAP_L.v * ux, 0.0, Z_PICK + p.CAP_L.v * uz)
-    nose = (p.CAP_EXPOSED.v * ux, 0.0, Z_PICK + p.CAP_EXPOSED.v * uz)  # holder nose
-    hold_top = ((p.CAP_EXPOSED.v + p.HOLDER_L.v) * ux, 0.0,
-                Z_PICK + (p.CAP_EXPOSED.v + p.HOLDER_L.v) * uz)
-    return dict(tip=tip, cap_top=cap_top, nose=nose, hold_top=hold_top, u=(ux, 0, uz))
+    grip = p.CAP_L.v - L
+    cap_top = ((L + grip) * ux, 0.0, Z_PICK + (L + grip) * uz)
+    nose = (L * ux, 0.0, Z_PICK + L * uz)                                   # collet nose
+    hold_top = ((L + p.HOLDER_AXIAL_LEN.v) * ux, 0.0, Z_PICK + (L + p.HOLDER_AXIAL_LEN.v) * uz)
+    return dict(tip=tip, cap_top=cap_top, nose=nose, hold_top=hold_top, u=(ux, 0, uz), exposed=L)
 
 
-def z_ref_dz(variant="R08", exposed=None, cond="IX-ULWCD"):
-    """Z lift from pick height to the reference switch: head top (arm + tubing allowance) sits
-    Z_REF_MARGIN below the condenser front.  Depends on the carriage only (not on the plate)."""
-    hg = head_geometry(VARIANTS[variant]["theta"])
-    head_top = hg["hold_top"][2] + p.ARM_T.v / 2 + p.HEAD_TOP_ALLOW.v
-    return p.cond_front_z(cond) - p.Z_REF_MARGIN.v - head_top
+def head_geometry_cfg(variant):
+    c = p.HEAD_CONFIGS[variant]
+    return head_geometry(c["theta"], c["exposed"])
+
+
+def z_ref_dz(variant="R08", cond="IX-ULWCD"):
+    """Tip lift from pick height (V1 plate) to the ONE physical reference switch."""
+    return p.tip_at_ref(variant, cond) - Z_PICK
+
+
+def arm_bottom_at_pick(variant):
+    return head_geometry_cfg(variant)["hold_top"][2] - p.ARM_HALF_HEIGHT.v
+
+
+# Z body is fixed on the X carriage at ONE height for every head configuration: its bottom sits below
+# the lowest carriage position needed by the supported (V1 + experimental) configurations.
+Z_BODY_BOTTOM = min(arm_bottom_at_pick(k) for k, c in p.HEAD_CONFIGS.items()
+                    if c["scope"] in ("V1", "experimental")) - 10.0
+# arm bottom when the carriage is on the reference switch (absolute, same for all configurations)
+Z_REF_ARM_BOTTOM = p.z_ref_head_top() - p.TUBING_ABOVE_ARM.v - p.ARM_T.v
 
 
 def build(variant="R08", condenser="IX-ULWCD", workflow=p.DEFAULT_WORKFLOW) -> Model:
@@ -144,7 +156,7 @@ def build(variant="R08", condenser="IX-ULWCD", workflow=p.DEFAULT_WORKFLOW) -> M
     ARM_L, TOWER_X, POST_Y = LY["arm_l"], LY["tower_x"], LY["post_y"]
     X_BODY_L, Y_BODY_L, Z_BODY_L = LY["x_body"], LY["y_body"], LY["z_body"]
     th = VARIANTS[variant]["theta"]
-    hg = head_geometry(th)
+    hg = head_geometry_cfg(variant)
 
     # ------------------------------------------------------------------ IX73
     T = TABLE_Z
@@ -156,7 +168,7 @@ def build(variant="R08", condenser="IX-ULWCD", workflow=p.DEFAULT_WORKFLOW) -> M
     m.add("ix73_stage", box(-p.STAGE_X.v / 2, p.STAGE_X.v / 2,
                             p.STAGE_CENTER_Y.v - p.STAGE_Y.v / 2, p.STAGE_CENTER_Y.v + p.STAGE_Y.v / 2,
                             -p.STAGE_T.v, 0.0),
-          "ix73", "MFR", group="S", note="232 x 240 plain stage MFR; thickness & position PH; moves with stage")
+          "ix73", "MFR", group="S", note="232 x 240 plain stage MFR; thickness & position PH; moves with stage", src="S01")
     m.add("ix73_stage_support", box(-p.IX73_W.v / 2 + 20, p.IX73_W.v / 2 - 20, -120, 120,
                                     -p.STAGE_T.v - 25, -p.STAGE_T.v), "ix73", "PH")
     oz = p.OBJECTIVE_ZONE
@@ -175,11 +187,14 @@ def build(variant="R08", condenser="IX-ULWCD", workflow=p.DEFAULT_WORKFLOW) -> M
     # condenser + carrier arm
     if condenser in p.CONDENSERS:
         wd = p.CONDENSERS[condenser]["WD"].v
-        zc = p.WELL_BOTTOM_Z.v + wd
+        zc = p.cond_front_z(condenser)
         rc = p.COND_D.v / 2
-        m.add("condenser_" + condenser, zcyl(0, 0, rc, zc, zc + p.COND_BODY_H.v), "condenser", "PH",
-              note=f"WD {wd} mm MFR ({condenser}); diameter/height PH")
-        zc_top = zc + p.COND_BODY_H.v
+        zs = zc
+        for i, (dstep, hstep) in enumerate(p.COND_PROFILE.v):
+            m.add(f"condenser_{condenser}" + (f"_step{i}" if i else ""), zcyl(0, 0, dstep / 2, zs, zs + hstep),
+                  "condenser", "PH", note=f"WD {wd} mm MFR ({condenser}); stepped envelope PH (M6, M8)")
+            zs += hstep
+        zc_top = zs
         m.add("condenser_carrier_arm", box(-p.COND_ARM_W.v / 2, p.COND_ARM_W.v / 2, -rc,
                                            p.PILLAR_Y0.v, zc_top, zc_top + 60), "condenser", "PH")
         m.add("illum_arm_to_pillar", box(-p.COND_ARM_W.v / 2, p.COND_ARM_W.v / 2, -rc, p.PILLAR_Y0.v,
@@ -199,7 +214,8 @@ def build(variant="R08", condenser="IX-ULWCD", workflow=p.DEFAULT_WORKFLOW) -> M
             x, y = well_xy(r, c)
             wells.append(zcyl(x, y, p.WELL_D_TOP.v / 2, p.WELL_BOTTOM_Z.v, H + 1))
     plate = plate - Compound(wells)
-    m.add("plate_96_SLAS", plate, "plate", "STD", group="S", note="SLAS 1/2/4 + Corning 7007 wells")
+    m.add("plate_96_SLAS", plate, "plate", "STD", group="S", note=f"V1 plate {p.V1_PLATE}: SLAS 1/2/4 + well profile",
+          src="S10,S11,S12,S13")
 
     # ------------------------------------------------------------------ frame (fixed)
     bx0, bx1 = TOWER_X - 70, TOWER_X + 90
@@ -216,7 +232,7 @@ def build(variant="R08", condenser="IX-ULWCD", workflow=p.DEFAULT_WORKFLOW) -> M
     yc0 = sum(X_BAND) / 2
     y_lo = LY["y_lo"]
     m.add("Y_actuator_body", box(TOWER_X - 13, TOWER_X + 13, y_lo, y_lo + Y_BODY_L, *Y_ACT_Z),
-          "actuator", "APX", note="100 mm stroke, ball-screw, width-26 class")
+          "actuator", "APX", note=f"{LY['stroke_y']:.0f} mm catalogue stroke (tip travel {LY['travel_y']:.0f} mm), ball-screw, width-26 class")
     m.add("Y_motor", box(TOWER_X - 21, TOWER_X + 21, y_lo + Y_BODY_L, y_lo + Y_BODY_L + p.NEMA17_L.v,
                          Y_ACT_Z[0] - 6, Y_ACT_Z[0] + 36), "motor", "APX")
     m.add("Y_home_switch", box(TOWER_X + 14, TOWER_X + 24, y_lo + 2, y_lo + 14, Y_ACT_Z[0], Y_ACT_Z[0] + 10),
@@ -241,7 +257,7 @@ def build(variant="R08", condenser="IX-ULWCD", workflow=p.DEFAULT_WORKFLOW) -> M
     m.add("X_support_beam", box(x_lo - 5, TOWER_X + 25, XSB_BAND[0], XSB_BAND[1], *XSB_Z),
           "frame", "APX", group="Y", note="stiff box section carrying the X actuator")
     m.add("X_actuator_body", box(x_lo, x_hi, X_BAND[0], X_BAND[1], *X_Z), "actuator", "APX", group="Y",
-          note="150 mm stroke, ball-screw, width-26 class, table facing -Y")
+          note=f"{LY['stroke_x']:.0f} mm catalogue stroke (tip travel {LY['travel_x']:.0f} mm), ball-screw, width-26 class, table facing -Y")
     m.add("X_motor", box(x_hi, x_hi + p.NEMA17_L.v, X_BAND[0] - 8, X_BAND[1] + 8,
                          X_Z[0] - 6, X_Z[0] + 36), "motor", "APX", group="Y")
     m.add("X_home_switch", box(x_hi - 12, x_hi, X_BAND[1], X_BAND[1] + 8, X_Z[0], X_Z[0] + 10),
@@ -251,17 +267,17 @@ def build(variant="R08", condenser="IX-ULWCD", workflow=p.DEFAULT_WORKFLOW) -> M
 
     # ------------------------------------------------------------------ X group
     zx0 = ARM_L                     # Z actuator face towards the tip
-    z_lo = Z_PICK + 30.0            # Z body bottom at reference pose
+    z_lo = Z_BODY_BOTTOM            # fixed for all head configurations
     z_hi = z_lo + Z_BODY_L
     m.add("X_carriage_bracket", box(xcc - 25, xcc + 25, ZB_W / 2, X_BAND[0], X_Z[0], X_Z[1]),
           "actuator", "APX", group="X")
     m.add("Z_actuator_body", box(zx0, zx0 + ZB_D, -ZB_W / 2, ZB_W / 2, z_lo, z_hi),
-          "actuator", "APX", group="X", note="50 mm stroke, lead 1 mm ball screw or TR8x2")
+          "actuator", "APX", group="X", note=f"{LY['stroke_z']:.0f} mm catalogue stroke (tip travel {LY['travel_z']:.0f} mm), lead 1 mm ball screw or TR8x2")
     m.add("Z_motor", box(zx0 - 6, zx0 + 36, -21, 21, z_hi, z_hi + p.NEMA17_L.v), "motor", "APX", group="X")
     m.add("Z_home_switch_top", box(zx0 + ZB_D, zx0 + ZB_D + 8, -5, 5, z_hi - 14, z_hi - 2),
           "switch", "DES", group="X", note="top limit (not the homing reference)")
     # Z reference switch: carriage level where the head top is Z_REF_MARGIN below the condenser front
-    zref = z_ref_dz(variant) + (hg["hold_top"][2] - p.ARM_T.v / 2)   # arm bottom at reference
+    zref = Z_REF_ARM_BOTTOM          # ONE physical switch: carriage (arm bottom) level at reference
     m.add("Z_reference_switch", box(zx0 + ZB_D, zx0 + ZB_D + 8, 6, 16, zref - 6, zref + 6),
           "switch", "DES", group="X", note="homing reference: head clears the condenser at any XY")
     m.add("tubing_clamp_Zbody", box(zx0 + ZB_D, zx0 + ZB_D + 12, -ZB_W / 2 - 14, -ZB_W / 2,
@@ -275,7 +291,7 @@ def build(variant="R08", condenser="IX-ULWCD", workflow=p.DEFAULT_WORKFLOW) -> M
           "moving", "APX", group="Z")
     # kinematic magnetic break-away interface (concept)
     m.add("breakaway_kinematic_mount", box(zx0 - 22, zx0 - 10, -15, 15, arm_z0 - 5, arm_z0 + 30),
-          "moving", "DES", group="Z", note="3-ball kinematic + magnet preload: collision fuse")
+          "moving", "DES", group="Z", note="3-ball kinematic + magnet preload: kinematic repositioner after a crash; NOT a capillary force limiter (docs/06)")
     # dog-leg arm: thin section under condenser (first 120 mm), deep section outboard
     thin_end = ht[0] + LY["thin_l"]  # covers |tip_x min| + condenser radius + margin
     m.add("arm_thin", box(ht[0] - 6, thin_end, -ARM_T / 2, ARM_T / 2, arm_z0, arm_z0 + ARM_T),
@@ -289,8 +305,9 @@ def build(variant="R08", condenser="IX-ULWCD", workflow=p.DEFAULT_WORKFLOW) -> M
           group="Z", note="OD 1.0 / ID 0.6 / L 40")
     # tubing: leaves holder top, runs along arm (front face), up to Z-body clamp
     tz = ht[2] + 2
-    pts = [(ht[0], 0, tz), (ht[0] + 8, -ARM_T / 2 - 1.5, arm_z0 + ARM_T + 1.5),
-           (zx0 - 30, -ARM_T / 2 - 1.5, arm_z0 + ARM_T + 1.5),
+    tub_z = arm_z0 + ARM_T + p.TUBING_ABOVE_ARM.v - 0.8   # tube top = arm top + TUBING_ABOVE_ARM
+    pts = [(ht[0], 0, tz), (ht[0] + 8, -ARM_T / 2 - 1.5, tub_z),
+           (zx0 - 30, -ARM_T / 2 - 1.5, tub_z),
            (zx0 - 26, -ZB_W / 2 - 6, arm_z0 + 40)]
     for i, s in enumerate(polyline_tube(pts, 0.8)):
         m.add(f"tubing_head_{i}", s, "tubing", "DES", group="Z", note="PTFE/FEP 1/16in OD, liquid-filled")
@@ -345,9 +362,11 @@ def zones(condenser="IX-ULWCD", workflow=p.DEFAULT_WORKFLOW):
     L = p.layout(workflow)
     x0, x1, y0, y1 = L["x_min"], L["x_max"], L["y_min"], L["y_max"]
     z["tip_travel_envelope"] = box(x0, x1, y0, y1, Z_PICK - 3, Z_PICK - 3 + L["travel_z"])
-    z["safe_z_plane"] = box(x0, x1, y0, y1, p.SAFE_Z_TIP.v, p.SAFE_Z_TIP.v + 0.5)
+    # safe-Z corridor of the V1 head (issue #5): the stage moves only while the tip is inside it
+    cr = p.corridor(p.V1_HEAD)
+    z["safe_z_corridor"] = box(x0, x1, y0, y1, cr["lower"], max(cr["upper"], cr["lower"] + 0.5))
     if condenser in p.CONDENSERS:
-        zc = p.WELL_BOTTOM_Z.v + p.CONDENSERS[condenser]["WD"].v
+        zc = p.cond_front_z(condenser)
         z["condenser_keepout"] = zcyl(0, 0, p.COND_D.v / 2 + 10, zc - 5, zc + 400)
         na = min(0.3, p.CONDENSERS[condenser]["NA"])
         from build123d import Cone
@@ -358,7 +377,7 @@ def zones(condenser="IX-ULWCD", workflow=p.DEFAULT_WORKFLOW):
 
 
 SHARED_CATS = {"ix73", "plate", "table", "condenser"}
-EXPORT_SET = {"WA": list(VARIANTS), "WB": ["R08", "V20", "V30"]}
+EXPORT_SET = {"WA": ["R08", "V00", "V20", "V30", "V45"], "WB": ["R08", "V20", "V30"]}
 
 
 def safe_key(k):
@@ -373,6 +392,7 @@ if __name__ == "__main__":
     for old in glob.glob(os.path.join(OUT, "*.step")) + glob.glob(os.path.join(stl_dir, "*.stl")):
         os.remove(old)
     meta = {"variants": VARIANTS, "parts": {}, "Z_PICK": Z_PICK, "safe_z": p.SAFE_Z_TIP.v,
+            "corridor": {k: p.corridor(k) for k in p.HEAD_CONFIGS}, "head_configs": p.HEAD_CONFIGS,
             "condensers": {}, "workflows": {}, "export_set": EXPORT_SET}
     for k, v in p.CONDENSERS.items():
         meta["condensers"][k] = {"WD": v["WD"].v, "NA": v["NA"], "z_bottom": p.WELL_BOTTOM_Z.v + v["WD"].v}
@@ -381,6 +401,7 @@ if __name__ == "__main__":
         key = safe_key(key)
         tol = 0.05 if kw.get("category") in ("capillary", "tubing") else 0.2
         export_stl(q_solid, os.path.join(stl_dir, key + ".stl"), tolerance=tol, angular_tolerance=0.3)
+        kw.setdefault("ver", p.verification(kw.get("status", ""), kw.pop("src", "")))
         meta["parts"][key] = dict(file=f"stl/{key}.stl", **kw)
 
     for wf, variants in EXPORT_SET.items():
@@ -399,10 +420,10 @@ if __name__ == "__main__":
                 if shared:
                     continue  # exported once below
                 if q.group == "Z":
-                    put(f"{wf}__{var}__{q.name}", q.solid, category=q.category, status=q.status, group="Z",
+                    put(f"{wf}__{var}__{q.name}", q.solid, category=q.category, status=q.status, src=q.src, group="Z",
                         workflow=wf, variant=var, note=q.note)
                 elif var == variants[0]:
-                    put(f"{wf}__{q.name}", q.solid, category=q.category, status=q.status, group=q.group,
+                    put(f"{wf}__{q.name}", q.solid, category=q.category, status=q.status, src=q.src, group=q.group,
                         workflow=wf, variant="all", note=q.note)
             print("built", wf, var)
     # shared microscope / plate parts, condenser alternatives
@@ -413,7 +434,7 @@ if __name__ == "__main__":
                 put(f"COND[{cond}]__{q.name}", q.solid, category=q.category, status=q.status, group="fixed",
                     workflow="all", variant="all", condenser=cond, note=q.note)
             elif cond == CONDENSER_CHOICES[0] and q.category in SHARED_CATS:
-                put(q.name, q.solid, category=q.category, status=q.status, group=q.group, workflow="all",
+                put(q.name, q.solid, category=q.category, status=q.status, src=q.src, group=q.group, workflow="all",
                     variant="all", note=q.note)
     for wf in EXPORT_SET:
         for cond in ["IX-ULWCD", "IX2-LWUCD"]:

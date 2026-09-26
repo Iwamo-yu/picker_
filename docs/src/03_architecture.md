@@ -19,7 +19,9 @@ It is the cleanest robust layout for three reasons, each backed by the model:
 2. **The frame avoids every side of the IX73 that is used or unknown.** The operator side and eyepieces (front), the illumination pillar and lamp (rear) and the camera port (left, assumed) all stay clear. The tower axis is {{WB_GAP:.0f}} mm clear of the body side (W-A: {{WA_GAP:.0f}} mm), and nothing touches the microscope or its stage.
 3. **The stiff, fixed parts are the long ones.** The Y beam is supported at both ends. The cantilevers are the X support beam and the arm ({{WB_ARM_L}} mm in W-B, {{WA_ARM_L}} mm in W-A). Both deflect repeatably, and the image calibration absorbs the static sag.
 
-**Nothing here is frozen** until {{FREEZE_GATE}} are measured (`09_workflow_D1.md`, freeze gate).
+**V1 scope.** V1 supports one plate SKU, **{{V1_PLATE_SKU}}** (96-well U-bottom), with the {{V1_THETA:.0f}}° head ({{V1_HEAD}}). The other plates ({{EXPERIMENTAL_PLATES}}) and their angle blocks are **experimental** and are not part of the V1 acceptance (`09_workflow_D1.md`).
+
+**Nothing here is frozen** until the {{FREEZE_GATE_N}} freeze-gate items {{FREEZE_GATE}} are measured (`09_workflow_D1.md`, freeze gate).
 
 ## 2. What is fixed and what moves
 
@@ -28,28 +30,30 @@ It is the cleanest robust layout for three reasons, each backed by the model:
 | Optical table, IX73, stage, plate, condenser | fixed | – | – | – |
 | Base plate (15 mm Al), 2 posts (80 × 80), Y beam (80 × 80), diagonal braces | fixed | table | – | – |
 | Y actuator body + motor + home switch, Y cable chain, tubing fixed clamp | fixed | Y beam | – | – |
-| Y carriage, X support beam (40 × 80 min.), X actuator + motor + switch, X cable chain | **Y** | Y carriage | Y | **Y axis moves ≈2.5–3.0 kg (W-B), ≈3.0–3.5 kg (W-A)** |
-| X carriage bracket, Z actuator + motor + top home switch, tubing clamp #2 | **X** | X carriage | X, Y | **X axis moves ≈1.2–1.4 kg** |
-| Z carriage, kinematic break-away mount, dog-leg arm, collet holder, capillary, first 0.3 m of tubing | **Z** | Z carriage | X, Y, Z | **Z axis moves ≈0.25–0.35 kg** |
+| Y carriage, X support beam (40 × 80 min.), X actuator + motor + switch, X cable chain | **Y** | Y carriage | Y | **Y carriage carries ≈{{MASS_Y:.1f}} kg (W-B, incl. X and Z groups)** |
+| X carriage bracket, Z actuator + motor + Z reference switch, tubing clamp #2 | **X** | X carriage | X, Y | **X carriage carries ≈{{MASS_X:.1f}} kg** |
+| Z carriage, kinematic break-away mount, dog-leg arm, collet holder, capillary, first 0.3 m of tubing | **Z** | Z carriage | X, Y, Z | **Z carriage carries ≈{{MASS_Z:.2f}} kg** |
 | Syringe pump (Harvard/Tecan), controller, 24 V PSU | fixed, off-frame | table/shelf | – | – |
 
-The masses are estimates for width-20–26 class ball-screw stages with NEMA17 motors. They are not catalogue values and must be recomputed once part numbers are chosen.
+The masses come from `params.MASS_APX` (approximate per-part masses for width-20–26 class ball-screw stages with NEMA17 motors) summed over the CAD parts each carriage carries. They are not catalogue values and must be recomputed once part numbers are chosen.
 
 ## 3. Axis stacking and travel
 
 Order from the table up: **Y (fixed on beam) → X (cantilever towards the axis) → Z (vertical) → arm → holder → capillary.**
 
-| Axis | W-B stroke | W-A stroke | Why |
-|---|---|---|---|
-| X | **{{WB_TRAVEL_X}} mm** (tip {{WB_X_MIN}}…+{{WB_X_MAX}}) | {{WA_TRAVEL_X}} mm | W-B: local calibration ±15 mm plus park / capillary change outside the condenser keep-out. W-A: 99 mm well span + 25.5 mm per side |
-| Y | **{{WB_TRAVEL_Y}} mm** | {{WA_TRAVEL_Y}} mm | W-B: local calibration. W-A: 63 mm span + 18.5 mm per side |
-| Z | **{{WB_TRAVEL_Z}} mm** | {{WA_TRAVEL_Z}} mm | pick height {{Z_PICK:.2f}} → safe-Z {{SAFE_Z:.2f}} → top: capillary change and calibration touch-off |
+Two different lengths are used throughout, and they are not interchangeable. **Tip travel** is the range the capillary tip must cover. **Actuator stroke** is the catalogue stroke of the linear stage that is bought; it is at least the tip travel and is anchored at the inner (X), front (Y) and lower (Z) end, so the extra stroke grows away from the microscope.
+
+| Axis | W-B tip travel | W-B actuator stroke | W-A tip travel | W-A actuator stroke | Why |
+|---|---|---|---|---|---|
+| X | **{{WB_TRAVEL_X}} mm** (tip {{WB_X_MIN}}…+{{WB_X_MAX}}) | {{WB_STROKE_X:.0f}} mm | {{WA_TRAVEL_X}} mm | {{WA_STROKE_X:.0f}} mm | W-B: local calibration ±15 mm plus park / capillary change outside the condenser keep-out. W-A: 99 mm well span + 25.5 mm per side |
+| Y | **{{WB_TRAVEL_Y}} mm** | {{WB_STROKE_Y:.0f}} mm | {{WA_TRAVEL_Y}} mm | {{WA_STROKE_Y:.0f}} mm | W-B: local calibration. W-A: 63 mm span + 18.5 mm per side |
+| Z | **{{WB_TRAVEL_Z}} mm** | {{WB_STROKE_Z:.0f}} mm | {{WA_TRAVEL_Z}} mm | {{WA_STROKE_Z:.0f}} mm | pick height {{Z_PICK:.2f}} → safe-Z corridor → reference switch → park-only top (capillary change) |
 
 Why Y is the fixed axis and X the cantilever: the side tower gives a naturally long, twice-supported beam in Y. X must reach from the tower to the plate anyway. Swapping them would cantilever the *fixed* beam over the microscope.
 
 ## 4. Reaching all 96 wells
 
-- **W-B (baseline).** The stage brings each well to the axis. With the IX3-SVR or a 120 × 80 motorised stage, all 96 wells can be picked *and observed*. The sweep translates plate and stage for every well: {{SW_WB_R08_ULWCD_PICK}}/96 clear at pick height, {{SW_WB_R08_ULWCD_SAFE}}/96 at safe-Z. The stage moves only with the tip at safe-Z. The IX3-SSU (76 × 52) reaches only {{D1_WB_SSU_WELLS}}/96.
+- **W-B (baseline).** The stage brings each well to the axis. With the IX3-SVR or a 120 × 80 motorised stage, all 96 wells can be picked *and observed*. The sweep translates plate and stage for every well: {{SW_WB_R08_ULWCD_PICK}}/96 clear at pick height, {{SW_WB_R08_ULWCD_SAFE}}/96 at safe-Z. The stage moves only while the tip is inside the **safe-Z corridor** (§5). The IX3-SSU (76 × 52) reaches only {{D1_WB_SSU_WELLS}}/96.
 - **W-A.** Tip travel {{WA_TRAVEL_X}} × {{WA_TRAVEL_Y}} covers the 99 × 63 mm well field ({{SW_WA_R08_ULWCD_PICK}}/96 in the sweep), but only {{D1_WA_OBSERVED}} well is observed per stage setting. The rest are picked or dispensed blind unless an overview camera is added.
 
 ## 5. Z axis: low backlash and no drop on power loss
@@ -58,8 +62,25 @@ Why Y is the fixed axis and X the cantilever: the side tower gives a naturally l
 - **Holding without power.** Back-driving torque from the Z load is T = F·l·η/(2π). With F ≈ 3 N (0.3 kg), l = 1 mm and η ≈ 0.8, T ≈ 0.4 mN·m. A NEMA17's unpowered detent torque is typically about 10–20 mN·m (catalogue class, to be confirmed for the chosen motor), a margin of roughly 25–50×. With a TR8×2 bronze nut, the lead angle (≈5.2° at 7 mm pitch diameter) is below the friction angle (≈6–11° for μ = 0.1–0.2), so the screw is nominally self-locking. Vibration can still creep a marginal self-locking screw.
 - **Conclusion.** No brake and no counterbalance are needed at this Z load. Add a brake (for example the Oriental DRS2 brake option, S32) if the holding ratio (motor detent torque ÷ back-driving torque) falls below about 10×. That happens with a Z group above about 1 kg on a 2 mm lead, or with any lead ≥ 5 mm.
 - **Resolution.** 1 mm lead / 200 full steps = 5 µm per full step, and 16× microstepping gives 0.31 µm commanded increments. Microstep linearity limits real incremental accuracy to a fraction of a full step, which is sufficient for the ≤5 µm command and 10–20 µm repeatability targets.
-- **Homing.** Z to the **reference switch** (head clears the condenser at every XY), then X to park, then Z higher if needed (`06_electrical.md`). The top of the Z stroke is not a safe position near the optical axis.
+- **One physical Z reference.** There is exactly one Z reference switch, fixed on the Z body. It trips when the arm bottom reaches {{Z_REF_ARM_BOTTOM:.1f}} mm above the stage datum, i.e. with the head top {{Z_REF_MARGIN:.0f}} mm below the lowest condenser front over all supported plates ({{Z_REF_HEAD_TOP:.1f}} mm). Because the holder top sits at the same place on the arm for every angle block, the same switch serves every head; only the tip height at the reference changes (tip at {{ZREF_TIP_R08:.2f}} mm for {{V1_HEAD}}).
+- **Safe-Z corridor.** While the stage moves (W-B) or the picker moves in XY near the axis, the tip must lie in a corridor. Its **lower bound** is the highest moving plate or stage feature plus {{CORRIDOR_LOWER_MARGIN:.0f}} mm (plate top, or plate-holder clips `STAGE_CLIP_TOP`, M3). Its **upper bound** is the tip height at which the head top is {{MIN_MARGIN:.0f}} mm under the condenser front. If a configuration has no corridor (upper ≤ lower), it is rejected by the build (`tools/build_all.py --check`). Current values (`generated_analysis_tables.md` §5b):
+
+{{CORR_TABLE_MD}}
+
+- **Homing.** Z up to the reference switch (this position is inside the corridor), then X to park, then Y. Z goes above the reference only at park (capillary change). The top of the Z stroke is not a safe position near the optical axis.
 - **Approach.** Move fast to safe-Z ({{SAFE_Z:.2f}}), then to a pre-contact height about 0.5 mm above the stored well bottom, then land at about 10 µm/s (S23) over the last ~50 µm to the stand-off height (per plate × block × class, `10_…`). A 0.5 mm slow zone would take 50 s per landing, so the slow zone is kept short and the bottom height is calibrated per plate.
+
+## 5b. Stage centring and carriage moments
+
+**Stage centring (W-B).** Every well of the V1 plate reaches the optical axis only if the stage travel centre and the plate position in the holder are within these limits of the axis (`STAGE_AXIS_OFFSET` + `PLATE_HOLDER_OFFSET`, both placeholders until M4 is measured):
+
+{{CENTER_TABLE_MD}}
+
+**Carriage moments.** Rigid-body static moment plus the moment from {{ACCEL:.1f}} m/s² acceleration, about each carriage reference, with approximate masses (`params.MASS_APX`). Enter the catalogue allowable moments (`ALLOWABLE_MOMENTS`) once the actuators are chosen; until then the column reads "not entered".
+
+{{MOMENT_TABLE_MD}}
+
+The Y carriage carries the X beam and the cantilevered X/Z stack, so it sees the largest moment (≈{{MOM_Y:.1f}} N·m). A width-20 class guide may be marginal; compare with the catalogue MY/MP ratings before ordering.
 
 ## 6. Capillary holder concept
 

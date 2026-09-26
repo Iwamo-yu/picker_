@@ -6,7 +6,17 @@
 
 If the requirement is **"pick from any of the 96 wells while watching it through the IX73"**, then **W-B is the baseline**. The IX73 stage brings the source well to the optical axis, the picker picks at the axis, and the stage then brings the destination well to the axis for an observed dispense. W-A (stage fixed, picker reaches every well) can *reach* all 96 wells but can *see* only the well on the optical axis. It observes {{D1_WA_OBSERVED}} well per stage setting, and none at all with a centred plate. W-A stays valid only if the non-axis wells are served blind or by a separate overview camera.
 
-This is a provisional choice. **Nothing is frozen until {{FREEZE_GATE}} are measured** (see "Freeze gate" below).
+This is a provisional choice. **Nothing is frozen until the {{FREEZE_GATE_N}} freeze-gate items ({{FREEZE_GATE}}) are measured** (see "Freeze gate" below).
+
+## V1 scope and acceptance (issue #10)
+
+V1 is frozen to **one plate SKU: {{V1_PLATE_SKU}}** (96-well, round U-bottom, without lid during picking), with the {{V1_THETA:.0f}}° head ({{V1_HEAD}}). All 96-well geometry in the model (rim Ø, depth, plate height, well-bottom height, safe-Z) comes from this SKU's profile in `params.PLATE_PROFILES`. Other plates ({{EXPERIMENTAL_PLATES}}) are **experimental** and outside V1 acceptance.
+
+**Target location.** In a U-bottom well the object settles near the bottom centre. V1 accepts a target anywhere within **{{V1_TARGET_R:.1f}} mm of the well-bottom centre**, in any direction. The binding direction is towards the far (+X) wall, where the leaning shaft is closest to the rim. For each capillary class the largest offset that still keeps the {{RIM_MARGIN}} mm rim margin is:
+
+{{V1_TARGET_MD}}
+
+A class that fails (allowed radius below {{V1_TARGET_R:.1f}} mm) can still pick objects that sit close to the centre, but the operator must reject off-centre targets for it; this is a known V1 limitation, not a hidden one. The measured plate lot (M19) replaces the drawing values.
 
 ## Why (numbers from the same CAD and analysis)
 
@@ -37,7 +47,7 @@ Evident's own ultrasonic IX3-SSU stage **cannot** bring the outer columns and ro
 
 1. **The picker becomes a local manipulator.** Its travel falls to {{WB_TRAVEL_X}} × {{WB_TRAVEL_Y}} × {{WB_TRAVEL_Z}} mm, and the arm shortens from {{WA_ARM_L}} to {{WB_ARM_L}} mm. The frame, the Y beam and the X cantilever all get smaller, and moving mass drops, mostly on Y. The dog-leg under the IX-ULWCD is still needed, because the pick still happens on the optical axis.
 2. **Plate and stage load.** The picker never touches the stage. The motorised stage carries only the plate, well within its rating (IX3-SVR: max 1000 g, S02; check the chosen motorised stage).
-3. **Sequence.** Stage: source well → axis. Z: land at about 10 µm/s and pick. Z: rise to safe-Z ({{SAFE_Z:.2f}} mm). Stage: destination well → axis. Z: land and expel. Z: safe-Z. **The stage moves only with the tip at safe-Z**; the sweep confirms this is clear at all stage-travel corners. Moving it with the tip at pick height drags the capillary through the plate.
+3. **Sequence.** Stage: source well → axis. Z: land at about 10 µm/s and pick. Z: rise to safe-Z ({{SAFE_Z:.2f}} mm). Stage: destination well → axis. Z: land and expel. Z: safe-Z. **The stage moves only with the tip inside the safe-Z corridor** ({{CORR_R08_LO:.2f}}–{{CORR_R08_HI:.2f}} mm for the V1 head, `03_architecture.md` §5); the sweep confirms this is clear at all stage-travel corners. Moving it with the tip at pick height drags the capillary through the plate.
 4. **Calibration** simplifies. The pick point is always the optical axis, so image → picker mapping needs only a local 3-point calibration around the axis (SpheroidPicker method, S28). Well positions come from the stage coordinates.
 5. **Destination on another plate.** Two plates do not fit within the stage travel. Transfers between plates need either a plate change, or a hybrid (W-C, not modelled) where the picker carries the object at safe-Z to a fixed destination station beside the stage. W-C brings back W-A's long X travel for that one move.
 6. **Throughput.** Each transfer adds two stage moves (about 1–2 s each at typical 20–50 mm/s stage speeds; to be confirmed for the chosen stage). The landings take longer. At 10 µm/s, a 50 µm slow zone costs 5 s per landing, or about 10 s per transfer. The SpheroidPicker also dwells 7 s before its pick pulse (S28). One transfer therefore takes roughly 20–30 s, which is acceptable for spheroid picking. The landings, not the stage, set the pace.
@@ -58,6 +68,10 @@ The following must be measured and entered in `cad/params.py` before any part nu
 | M6 condenser model and diameter; M7 carrier arm; M8 real condenser front height | the thin-arm length, and every clearance currently at ~5 mm |
 | M10 tilted-column envelope | fallback without condenser |
 | M15 free table space right of the IX73 | tower placement |
-| (W-B) choice and envelope of the motorised stage | stage travel ≥ 99 × 63, clearance to the tower |
+| M19 V1 plate lot ({{V1_PLATE_SKU}}): rim Ø, depth, height, A1 position | V1 acceptance, safe-Z lower bound |
+| M23 head height above the collet nose (V1 holder, tubing clipped) | safe-Z corridor upper bound, condenser margin |
+| (W-B) choice and envelope of the motorised stage (SCANplus IM dimension sheet S37 not yet retrieved) | stage travel ≥ 99 × 63, frame height above the insert, clearance to the tower |
 
-The clearances of {{SW_WA_R08_ULWCD_SAFE_CLEAR}}–5 mm reported by the model involve placeholder condenser geometry. **They are not design evidence yet.**
+W-B also needs the stage travel centre within the centring allowance of `03_architecture.md` §5b (M4).
+
+The clearances of {{SW_WA_R08_ULWCD_SAFE_CLEAR}}–5 mm reported by the model involve placeholder condenser geometry (a conservative Ø{{COND_D:.0f}} cylinder, `COND_PROFILE`) and placeholder IX73 placement. **They are provisional and are not design evidence yet.** No official IX73 or condenser drawing could be retrieved (source manifest S05, S06, S37).

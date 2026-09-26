@@ -1,24 +1,44 @@
 {
  "variants": {
-  "V00": {
-   "theta": 0.0,
-   "label": "0 deg (vertical)"
-  },
   "R08": {
    "theta": 8.0,
-   "label": "8 deg near-vertical dog-leg (RECOMMENDED)"
+   "exposed": 30.0,
+   "od": 1.0,
+   "plate": "96 U-bottom (Corning 7007)",
+   "scope": "V1",
+   "label": "8\u00b0 block, 30 mm exposed (V1)"
   },
   "V20": {
    "theta": 20.0,
-   "label": "20 deg block (24/12-well)"
+   "exposed": 27.0,
+   "od": 1.0,
+   "plate": "12-well (Corning 3513)",
+   "scope": "experimental",
+   "label": "20\u00b0 block, 27 mm exposed (12-well)"
   },
   "V30": {
    "theta": 30.0,
-   "label": "30 deg block (12/6-well)"
+   "exposed": 30.0,
+   "od": 1.0,
+   "plate": "6-well (Corning 3516)",
+   "scope": "experimental",
+   "label": "30\u00b0 block, 30 mm exposed (6-well)"
+  },
+  "V00": {
+   "theta": 0.0,
+   "exposed": 30.0,
+   "od": 1.0,
+   "plate": "96 U-bottom (Corning 7007)",
+   "scope": "comparison",
+   "label": "0\u00b0 (vertical), comparison only"
   },
   "V45": {
    "theta": 45.0,
-   "label": "45 deg inclined"
+   "exposed": 30.0,
+   "od": 1.0,
+   "plate": "96 U-bottom (Corning 7007)",
+   "scope": "comparison",
+   "label": "45\u00b0, comparison only"
   }
  },
  "parts": {
@@ -29,7 +49,8 @@
    "group": "fixed",
    "workflow": "WA",
    "variant": "all",
-   "note": "15 mm Al plate bolted to table (M25 hole grid)"
+   "note": "15 mm Al plate bolted to table (M25 hole grid)",
+   "ver": "DESIGN"
   },
   "WA__post_0": {
    "file": "stl/WA__post_0.stl",
@@ -38,7 +59,8 @@
    "group": "fixed",
    "workflow": "WA",
    "variant": "all",
-   "note": "80x80 extrusion/column"
+   "note": "80x80 extrusion/column",
+   "ver": "NOT_VERIFIED"
   },
   "WA__post_brace_0": {
    "file": "stl/WA__post_brace_0.stl",
@@ -47,7 +69,8 @@
    "group": "fixed",
    "workflow": "WA",
    "variant": "all",
-   "note": ""
+   "note": "",
+   "ver": "NOT_VERIFIED"
   },
   "WA__post_1": {
    "file": "stl/WA__post_1.stl",
@@ -56,7 +79,8 @@
    "group": "fixed",
    "workflow": "WA",
    "variant": "all",
-   "note": "80x80 extrusion/column"
+   "note": "80x80 extrusion/column",
+   "ver": "NOT_VERIFIED"
   },
   "WA__post_brace_1": {
    "file": "stl/WA__post_brace_1.stl",
@@ -65,7 +89,8 @@
    "group": "fixed",
    "workflow": "WA",
    "variant": "all",
-   "note": ""
+   "note": "",
+   "ver": "NOT_VERIFIED"
   },
   "WA__y_beam": {
    "file": "stl/WA__y_beam.stl",
@@ -74,7 +99,8 @@
    "group": "fixed",
    "workflow": "WA",
    "variant": "all",
-   "note": ""
+   "note": "",
+   "ver": "NOT_VERIFIED"
   },
   "WA__Y_actuator_body": {
    "file": "stl/WA__Y_actuator_body.stl",
@@ -83,7 +109,8 @@
    "group": "fixed",
    "workflow": "WA",
    "variant": "all",
-   "note": "100 mm stroke, ball-screw, width-26 class"
+   "note": "100 mm catalogue stroke (tip travel 100 mm), ball-screw, width-26 class",
+   "ver": "NOT_VERIFIED"
   },
   "WA__Y_motor": {
    "file": "stl/WA__Y_motor.stl",
@@ -92,7 +119,8 @@
    "group": "fixed",
    "workflow": "WA",
    "variant": "all",
-   "note": ""
+   "note": "",
+   "ver": "NOT_VERIFIED"
   },
   "WA__Y_home_switch": {
    "file": "stl/WA__Y_home_switch.stl",
@@ -101,7 +129,8 @@
    "group": "fixed",
    "workflow": "WA",
    "variant": "all",
-   "note": ""
+   "note": "",
+   "ver": "DESIGN"
   },
   "WA__Y_cable_chain": {
    "file": "stl/WA__Y_cable_chain.stl",
@@ -110,7 +139,8 @@
    "group": "fixed",
    "workflow": "WA",
    "variant": "all",
-   "note": "motor/switch cables only; tubing is routed separately"
+   "note": "motor/switch cables only; tubing is routed separately",
+   "ver": "DESIGN"
   },
   "WA__tubing_fixed_clamp": {
    "file": "stl/WA__tubing_fixed_clamp.stl",
@@ -119,7 +149,8 @@
    "group": "fixed",
    "workflow": "WA",
    "variant": "all",
-   "note": "fixed strain relief on frame"
+   "note": "fixed strain relief on frame",
+   "ver": "DESIGN"
   },
   "WA__syringe_pump_existing": {
    "file": "stl/WA__syringe_pump_existing.stl",
@@ -128,7 +159,8 @@
    "group": "fixed",
    "workflow": "WA",
    "variant": "all",
-   "note": "existing Harvard/Tecan pump - footprint PH (M17)"
+   "note": "existing Harvard/Tecan pump - footprint PH (M17)",
+   "ver": "PLACEHOLDER"
   },
   "WA__motion_controller_24V": {
    "file": "stl/WA__motion_controller_24V.stl",
@@ -137,7 +169,8 @@
    "group": "fixed",
    "workflow": "WA",
    "variant": "all",
-   "note": ""
+   "note": "",
+   "ver": "DESIGN"
   },
   "WA__Y_carriage": {
    "file": "stl/WA__Y_carriage.stl",
@@ -146,7 +179,8 @@
    "group": "Y",
    "workflow": "WA",
    "variant": "all",
-   "note": ""
+   "note": "",
+   "ver": "NOT_VERIFIED"
   },
   "WA__X_support_beam": {
    "file": "stl/WA__X_support_beam.stl",
@@ -155,7 +189,8 @@
    "group": "Y",
    "workflow": "WA",
    "variant": "all",
-   "note": "stiff box section carrying the X actuator"
+   "note": "stiff box section carrying the X actuator",
+   "ver": "NOT_VERIFIED"
   },
   "WA__X_actuator_body": {
    "file": "stl/WA__X_actuator_body.stl",
@@ -164,7 +199,8 @@
    "group": "Y",
    "workflow": "WA",
    "variant": "all",
-   "note": "150 mm stroke, ball-screw, width-26 class, table facing -Y"
+   "note": "150 mm catalogue stroke (tip travel 150 mm), ball-screw, width-26 class, table facing -Y",
+   "ver": "NOT_VERIFIED"
   },
   "WA__X_motor": {
    "file": "stl/WA__X_motor.stl",
@@ -173,7 +209,8 @@
    "group": "Y",
    "workflow": "WA",
    "variant": "all",
-   "note": ""
+   "note": "",
+   "ver": "NOT_VERIFIED"
   },
   "WA__X_home_switch": {
    "file": "stl/WA__X_home_switch.stl",
@@ -182,7 +219,8 @@
    "group": "Y",
    "workflow": "WA",
    "variant": "all",
-   "note": ""
+   "note": "",
+   "ver": "DESIGN"
   },
   "WA__X_cable_chain": {
    "file": "stl/WA__X_cable_chain.stl",
@@ -191,7 +229,8 @@
    "group": "Y",
    "workflow": "WA",
    "variant": "all",
-   "note": ""
+   "note": "",
+   "ver": "DESIGN"
   },
   "WA__X_carriage_bracket": {
    "file": "stl/WA__X_carriage_bracket.stl",
@@ -200,7 +239,8 @@
    "group": "X",
    "workflow": "WA",
    "variant": "all",
-   "note": ""
+   "note": "",
+   "ver": "NOT_VERIFIED"
   },
   "WA__Z_actuator_body": {
    "file": "stl/WA__Z_actuator_body.stl",
@@ -209,7 +249,8 @@
    "group": "X",
    "workflow": "WA",
    "variant": "all",
-   "note": "50 mm stroke, lead 1 mm ball screw or TR8x2"
+   "note": "80 mm catalogue stroke (tip travel 50 mm), lead 1 mm ball screw or TR8x2",
+   "ver": "NOT_VERIFIED"
   },
   "WA__Z_motor": {
    "file": "stl/WA__Z_motor.stl",
@@ -218,7 +259,8 @@
    "group": "X",
    "workflow": "WA",
    "variant": "all",
-   "note": ""
+   "note": "",
+   "ver": "NOT_VERIFIED"
   },
   "WA__Z_home_switch_top": {
    "file": "stl/WA__Z_home_switch_top.stl",
@@ -227,7 +269,8 @@
    "group": "X",
    "workflow": "WA",
    "variant": "all",
-   "note": "top limit (not the homing reference)"
+   "note": "top limit (not the homing reference)",
+   "ver": "DESIGN"
   },
   "WA__Z_reference_switch": {
    "file": "stl/WA__Z_reference_switch.stl",
@@ -236,7 +279,8 @@
    "group": "X",
    "workflow": "WA",
    "variant": "all",
-   "note": "homing reference: head clears the condenser at any XY"
+   "note": "homing reference: head clears the condenser at any XY",
+   "ver": "DESIGN"
   },
   "WA__tubing_clamp_Zbody": {
    "file": "stl/WA__tubing_clamp_Zbody.stl",
@@ -245,241 +289,8 @@
    "group": "X",
    "workflow": "WA",
    "variant": "all",
-   "note": ""
-  },
-  "WA__V00__Z_carriage": {
-   "file": "stl/WA__V00__Z_carriage.stl",
-   "category": "moving",
-   "status": "APX",
-   "group": "Z",
-   "workflow": "WA",
-   "variant": "V00",
-   "note": ""
-  },
-  "WA__V00__breakaway_kinematic_mount": {
-   "file": "stl/WA__V00__breakaway_kinematic_mount.stl",
-   "category": "moving",
-   "status": "DES",
-   "group": "Z",
-   "workflow": "WA",
-   "variant": "V00",
-   "note": "3-ball kinematic + magnet preload: collision fuse"
-  },
-  "WA__V00__arm_thin": {
-   "file": "stl/WA__V00__arm_thin.stl",
-   "category": "moving",
-   "status": "DES",
-   "group": "Z",
-   "workflow": "WA",
-   "variant": "V00",
-   "note": ""
-  },
-  "WA__V00__arm_deep": {
-   "file": "stl/WA__V00__arm_deep.stl",
-   "category": "moving",
-   "status": "DES",
-   "group": "Z",
-   "workflow": "WA",
-   "variant": "V00",
-   "note": ""
-  },
-  "WA__V00__capillary_holder_collet": {
-   "file": "stl/WA__V00__capillary_holder_collet.stl",
-   "category": "holder",
-   "status": "APX",
-   "group": "Z",
-   "workflow": "WA",
-   "variant": "V00",
-   "note": "collet/split holder with depth stop, OD<=10"
-  },
-  "WA__V00__glass_capillary_OD1.0": {
-   "file": "stl/WA__V00__glass_capillary_OD1.0.stl",
-   "category": "capillary",
-   "status": "DES",
-   "group": "Z",
-   "workflow": "WA",
-   "variant": "V00",
-   "note": "OD 1.0 / ID 0.6 / L 40"
-  },
-  "WA__V00__tubing_head_0": {
-   "file": "stl/WA__V00__tubing_head_0.stl",
-   "category": "tubing",
-   "status": "DES",
-   "group": "Z",
-   "workflow": "WA",
-   "variant": "V00",
-   "note": "PTFE/FEP 1/16in OD, liquid-filled"
-  },
-  "WA__V00__tubing_head_1": {
-   "file": "stl/WA__V00__tubing_head_1.stl",
-   "category": "tubing",
-   "status": "DES",
-   "group": "Z",
-   "workflow": "WA",
-   "variant": "V00",
-   "note": "PTFE/FEP 1/16in OD, liquid-filled"
-  },
-  "WA__V00__tubing_head_2": {
-   "file": "stl/WA__V00__tubing_head_2.stl",
-   "category": "tubing",
-   "status": "DES",
-   "group": "Z",
-   "workflow": "WA",
-   "variant": "V00",
-   "note": "PTFE/FEP 1/16in OD, liquid-filled"
-  },
-  "WA__V00__tubing_head_3": {
-   "file": "stl/WA__V00__tubing_head_3.stl",
-   "category": "tubing",
-   "status": "DES",
-   "group": "Z",
-   "workflow": "WA",
-   "variant": "V00",
-   "note": "PTFE/FEP 1/16in OD, liquid-filled"
-  },
-  "WA__V00__tubing_head_4": {
-   "file": "stl/WA__V00__tubing_head_4.stl",
-   "category": "tubing",
-   "status": "DES",
-   "group": "Z",
-   "workflow": "WA",
-   "variant": "V00",
-   "note": "PTFE/FEP 1/16in OD, liquid-filled"
-  },
-  "WA__tubing_loopZ_0": {
-   "file": "stl/WA__tubing_loopZ_0.stl",
-   "category": "tubing",
-   "status": "DES",
-   "group": "X",
-   "workflow": "WA",
-   "variant": "all",
-   "note": ""
-  },
-  "WA__tubing_loopZ_1": {
-   "file": "stl/WA__tubing_loopZ_1.stl",
-   "category": "tubing",
-   "status": "DES",
-   "group": "X",
-   "workflow": "WA",
-   "variant": "all",
-   "note": ""
-  },
-  "WA__tubing_loopZ_2": {
-   "file": "stl/WA__tubing_loopZ_2.stl",
-   "category": "tubing",
-   "status": "DES",
-   "group": "X",
-   "workflow": "WA",
-   "variant": "all",
-   "note": ""
-  },
-  "WA__tubing_loopZ_3": {
-   "file": "stl/WA__tubing_loopZ_3.stl",
-   "category": "tubing",
-   "status": "DES",
-   "group": "X",
-   "workflow": "WA",
-   "variant": "all",
-   "note": ""
-  },
-  "WA__tubing_loopZ_4": {
-   "file": "stl/WA__tubing_loopZ_4.stl",
-   "category": "tubing",
-   "status": "DES",
-   "group": "X",
-   "workflow": "WA",
-   "variant": "all",
-   "note": ""
-  },
-  "WA__tubing_loopXY_0": {
-   "file": "stl/WA__tubing_loopXY_0.stl",
-   "category": "tubing",
-   "status": "DES",
-   "group": "Y",
-   "workflow": "WA",
-   "variant": "all",
-   "note": ""
-  },
-  "WA__tubing_loopXY_1": {
-   "file": "stl/WA__tubing_loopXY_1.stl",
-   "category": "tubing",
-   "status": "DES",
-   "group": "Y",
-   "workflow": "WA",
-   "variant": "all",
-   "note": ""
-  },
-  "WA__tubing_loopXY_2": {
-   "file": "stl/WA__tubing_loopXY_2.stl",
-   "category": "tubing",
-   "status": "DES",
-   "group": "Y",
-   "workflow": "WA",
-   "variant": "all",
-   "note": ""
-  },
-  "WA__tubing_loopXY_3": {
-   "file": "stl/WA__tubing_loopXY_3.stl",
-   "category": "tubing",
-   "status": "DES",
-   "group": "Y",
-   "workflow": "WA",
-   "variant": "all",
-   "note": ""
-  },
-  "WA__tubing_loopXY_4": {
-   "file": "stl/WA__tubing_loopXY_4.stl",
-   "category": "tubing",
-   "status": "DES",
-   "group": "Y",
-   "workflow": "WA",
-   "variant": "all",
-   "note": ""
-  },
-  "WA__tubing_to_pump_0": {
-   "file": "stl/WA__tubing_to_pump_0.stl",
-   "category": "tubing",
-   "status": "DES",
-   "group": "fixed",
-   "workflow": "WA",
-   "variant": "all",
-   "note": ""
-  },
-  "WA__tubing_to_pump_1": {
-   "file": "stl/WA__tubing_to_pump_1.stl",
-   "category": "tubing",
-   "status": "DES",
-   "group": "fixed",
-   "workflow": "WA",
-   "variant": "all",
-   "note": ""
-  },
-  "WA__tubing_to_pump_2": {
-   "file": "stl/WA__tubing_to_pump_2.stl",
-   "category": "tubing",
-   "status": "DES",
-   "group": "fixed",
-   "workflow": "WA",
-   "variant": "all",
-   "note": ""
-  },
-  "WA__tubing_to_pump_3": {
-   "file": "stl/WA__tubing_to_pump_3.stl",
-   "category": "tubing",
-   "status": "DES",
-   "group": "fixed",
-   "workflow": "WA",
-   "variant": "all",
-   "note": ""
-  },
-  "WA__tubing_to_pump_4": {
-   "file": "stl/WA__tubing_to_pump_4.stl",
-   "category": "tubing",
-   "status": "DES",
-   "group": "fixed",
-   "workflow": "WA",
-   "variant": "all",
-   "note": ""
+   "note": "",
+   "ver": "DESIGN"
   },
   "WA__R08__Z_carriage": {
    "file": "stl/WA__R08__Z_carriage.stl",
@@ -488,7 +299,8 @@
    "group": "Z",
    "workflow": "WA",
    "variant": "R08",
-   "note": ""
+   "note": "",
+   "ver": "NOT_VERIFIED"
   },
   "WA__R08__breakaway_kinematic_mount": {
    "file": "stl/WA__R08__breakaway_kinematic_mount.stl",
@@ -497,7 +309,8 @@
    "group": "Z",
    "workflow": "WA",
    "variant": "R08",
-   "note": "3-ball kinematic + magnet preload: collision fuse"
+   "note": "3-ball kinematic + magnet preload: kinematic repositioner after a crash; NOT a capillary force limiter (docs/06)",
+   "ver": "DESIGN"
   },
   "WA__R08__arm_thin": {
    "file": "stl/WA__R08__arm_thin.stl",
@@ -506,7 +319,8 @@
    "group": "Z",
    "workflow": "WA",
    "variant": "R08",
-   "note": ""
+   "note": "",
+   "ver": "DESIGN"
   },
   "WA__R08__arm_deep": {
    "file": "stl/WA__R08__arm_deep.stl",
@@ -515,7 +329,8 @@
    "group": "Z",
    "workflow": "WA",
    "variant": "R08",
-   "note": ""
+   "note": "",
+   "ver": "DESIGN"
   },
   "WA__R08__capillary_holder_collet": {
    "file": "stl/WA__R08__capillary_holder_collet.stl",
@@ -524,7 +339,8 @@
    "group": "Z",
    "workflow": "WA",
    "variant": "R08",
-   "note": "collet/split holder with depth stop, OD<=10"
+   "note": "collet/split holder with depth stop, OD<=10",
+   "ver": "NOT_VERIFIED"
   },
   "WA__R08__glass_capillary_OD1.0": {
    "file": "stl/WA__R08__glass_capillary_OD1.0.stl",
@@ -533,7 +349,8 @@
    "group": "Z",
    "workflow": "WA",
    "variant": "R08",
-   "note": "OD 1.0 / ID 0.6 / L 40"
+   "note": "OD 1.0 / ID 0.6 / L 40",
+   "ver": "DESIGN"
   },
   "WA__R08__tubing_head_0": {
    "file": "stl/WA__R08__tubing_head_0.stl",
@@ -542,7 +359,8 @@
    "group": "Z",
    "workflow": "WA",
    "variant": "R08",
-   "note": "PTFE/FEP 1/16in OD, liquid-filled"
+   "note": "PTFE/FEP 1/16in OD, liquid-filled",
+   "ver": "DESIGN"
   },
   "WA__R08__tubing_head_1": {
    "file": "stl/WA__R08__tubing_head_1.stl",
@@ -551,7 +369,8 @@
    "group": "Z",
    "workflow": "WA",
    "variant": "R08",
-   "note": "PTFE/FEP 1/16in OD, liquid-filled"
+   "note": "PTFE/FEP 1/16in OD, liquid-filled",
+   "ver": "DESIGN"
   },
   "WA__R08__tubing_head_2": {
    "file": "stl/WA__R08__tubing_head_2.stl",
@@ -560,7 +379,8 @@
    "group": "Z",
    "workflow": "WA",
    "variant": "R08",
-   "note": "PTFE/FEP 1/16in OD, liquid-filled"
+   "note": "PTFE/FEP 1/16in OD, liquid-filled",
+   "ver": "DESIGN"
   },
   "WA__R08__tubing_head_3": {
    "file": "stl/WA__R08__tubing_head_3.stl",
@@ -569,7 +389,8 @@
    "group": "Z",
    "workflow": "WA",
    "variant": "R08",
-   "note": "PTFE/FEP 1/16in OD, liquid-filled"
+   "note": "PTFE/FEP 1/16in OD, liquid-filled",
+   "ver": "DESIGN"
   },
   "WA__R08__tubing_head_4": {
    "file": "stl/WA__R08__tubing_head_4.stl",
@@ -578,7 +399,268 @@
    "group": "Z",
    "workflow": "WA",
    "variant": "R08",
-   "note": "PTFE/FEP 1/16in OD, liquid-filled"
+   "note": "PTFE/FEP 1/16in OD, liquid-filled",
+   "ver": "DESIGN"
+  },
+  "WA__tubing_loopZ_0": {
+   "file": "stl/WA__tubing_loopZ_0.stl",
+   "category": "tubing",
+   "status": "DES",
+   "group": "X",
+   "workflow": "WA",
+   "variant": "all",
+   "note": "",
+   "ver": "DESIGN"
+  },
+  "WA__tubing_loopZ_1": {
+   "file": "stl/WA__tubing_loopZ_1.stl",
+   "category": "tubing",
+   "status": "DES",
+   "group": "X",
+   "workflow": "WA",
+   "variant": "all",
+   "note": "",
+   "ver": "DESIGN"
+  },
+  "WA__tubing_loopZ_2": {
+   "file": "stl/WA__tubing_loopZ_2.stl",
+   "category": "tubing",
+   "status": "DES",
+   "group": "X",
+   "workflow": "WA",
+   "variant": "all",
+   "note": "",
+   "ver": "DESIGN"
+  },
+  "WA__tubing_loopZ_3": {
+   "file": "stl/WA__tubing_loopZ_3.stl",
+   "category": "tubing",
+   "status": "DES",
+   "group": "X",
+   "workflow": "WA",
+   "variant": "all",
+   "note": "",
+   "ver": "DESIGN"
+  },
+  "WA__tubing_loopZ_4": {
+   "file": "stl/WA__tubing_loopZ_4.stl",
+   "category": "tubing",
+   "status": "DES",
+   "group": "X",
+   "workflow": "WA",
+   "variant": "all",
+   "note": "",
+   "ver": "DESIGN"
+  },
+  "WA__tubing_loopXY_0": {
+   "file": "stl/WA__tubing_loopXY_0.stl",
+   "category": "tubing",
+   "status": "DES",
+   "group": "Y",
+   "workflow": "WA",
+   "variant": "all",
+   "note": "",
+   "ver": "DESIGN"
+  },
+  "WA__tubing_loopXY_1": {
+   "file": "stl/WA__tubing_loopXY_1.stl",
+   "category": "tubing",
+   "status": "DES",
+   "group": "Y",
+   "workflow": "WA",
+   "variant": "all",
+   "note": "",
+   "ver": "DESIGN"
+  },
+  "WA__tubing_loopXY_2": {
+   "file": "stl/WA__tubing_loopXY_2.stl",
+   "category": "tubing",
+   "status": "DES",
+   "group": "Y",
+   "workflow": "WA",
+   "variant": "all",
+   "note": "",
+   "ver": "DESIGN"
+  },
+  "WA__tubing_loopXY_3": {
+   "file": "stl/WA__tubing_loopXY_3.stl",
+   "category": "tubing",
+   "status": "DES",
+   "group": "Y",
+   "workflow": "WA",
+   "variant": "all",
+   "note": "",
+   "ver": "DESIGN"
+  },
+  "WA__tubing_loopXY_4": {
+   "file": "stl/WA__tubing_loopXY_4.stl",
+   "category": "tubing",
+   "status": "DES",
+   "group": "Y",
+   "workflow": "WA",
+   "variant": "all",
+   "note": "",
+   "ver": "DESIGN"
+  },
+  "WA__tubing_to_pump_0": {
+   "file": "stl/WA__tubing_to_pump_0.stl",
+   "category": "tubing",
+   "status": "DES",
+   "group": "fixed",
+   "workflow": "WA",
+   "variant": "all",
+   "note": "",
+   "ver": "DESIGN"
+  },
+  "WA__tubing_to_pump_1": {
+   "file": "stl/WA__tubing_to_pump_1.stl",
+   "category": "tubing",
+   "status": "DES",
+   "group": "fixed",
+   "workflow": "WA",
+   "variant": "all",
+   "note": "",
+   "ver": "DESIGN"
+  },
+  "WA__tubing_to_pump_2": {
+   "file": "stl/WA__tubing_to_pump_2.stl",
+   "category": "tubing",
+   "status": "DES",
+   "group": "fixed",
+   "workflow": "WA",
+   "variant": "all",
+   "note": "",
+   "ver": "DESIGN"
+  },
+  "WA__tubing_to_pump_3": {
+   "file": "stl/WA__tubing_to_pump_3.stl",
+   "category": "tubing",
+   "status": "DES",
+   "group": "fixed",
+   "workflow": "WA",
+   "variant": "all",
+   "note": "",
+   "ver": "DESIGN"
+  },
+  "WA__tubing_to_pump_4": {
+   "file": "stl/WA__tubing_to_pump_4.stl",
+   "category": "tubing",
+   "status": "DES",
+   "group": "fixed",
+   "workflow": "WA",
+   "variant": "all",
+   "note": "",
+   "ver": "DESIGN"
+  },
+  "WA__V00__Z_carriage": {
+   "file": "stl/WA__V00__Z_carriage.stl",
+   "category": "moving",
+   "status": "APX",
+   "group": "Z",
+   "workflow": "WA",
+   "variant": "V00",
+   "note": "",
+   "ver": "NOT_VERIFIED"
+  },
+  "WA__V00__breakaway_kinematic_mount": {
+   "file": "stl/WA__V00__breakaway_kinematic_mount.stl",
+   "category": "moving",
+   "status": "DES",
+   "group": "Z",
+   "workflow": "WA",
+   "variant": "V00",
+   "note": "3-ball kinematic + magnet preload: kinematic repositioner after a crash; NOT a capillary force limiter (docs/06)",
+   "ver": "DESIGN"
+  },
+  "WA__V00__arm_thin": {
+   "file": "stl/WA__V00__arm_thin.stl",
+   "category": "moving",
+   "status": "DES",
+   "group": "Z",
+   "workflow": "WA",
+   "variant": "V00",
+   "note": "",
+   "ver": "DESIGN"
+  },
+  "WA__V00__arm_deep": {
+   "file": "stl/WA__V00__arm_deep.stl",
+   "category": "moving",
+   "status": "DES",
+   "group": "Z",
+   "workflow": "WA",
+   "variant": "V00",
+   "note": "",
+   "ver": "DESIGN"
+  },
+  "WA__V00__capillary_holder_collet": {
+   "file": "stl/WA__V00__capillary_holder_collet.stl",
+   "category": "holder",
+   "status": "APX",
+   "group": "Z",
+   "workflow": "WA",
+   "variant": "V00",
+   "note": "collet/split holder with depth stop, OD<=10",
+   "ver": "NOT_VERIFIED"
+  },
+  "WA__V00__glass_capillary_OD1.0": {
+   "file": "stl/WA__V00__glass_capillary_OD1.0.stl",
+   "category": "capillary",
+   "status": "DES",
+   "group": "Z",
+   "workflow": "WA",
+   "variant": "V00",
+   "note": "OD 1.0 / ID 0.6 / L 40",
+   "ver": "DESIGN"
+  },
+  "WA__V00__tubing_head_0": {
+   "file": "stl/WA__V00__tubing_head_0.stl",
+   "category": "tubing",
+   "status": "DES",
+   "group": "Z",
+   "workflow": "WA",
+   "variant": "V00",
+   "note": "PTFE/FEP 1/16in OD, liquid-filled",
+   "ver": "DESIGN"
+  },
+  "WA__V00__tubing_head_1": {
+   "file": "stl/WA__V00__tubing_head_1.stl",
+   "category": "tubing",
+   "status": "DES",
+   "group": "Z",
+   "workflow": "WA",
+   "variant": "V00",
+   "note": "PTFE/FEP 1/16in OD, liquid-filled",
+   "ver": "DESIGN"
+  },
+  "WA__V00__tubing_head_2": {
+   "file": "stl/WA__V00__tubing_head_2.stl",
+   "category": "tubing",
+   "status": "DES",
+   "group": "Z",
+   "workflow": "WA",
+   "variant": "V00",
+   "note": "PTFE/FEP 1/16in OD, liquid-filled",
+   "ver": "DESIGN"
+  },
+  "WA__V00__tubing_head_3": {
+   "file": "stl/WA__V00__tubing_head_3.stl",
+   "category": "tubing",
+   "status": "DES",
+   "group": "Z",
+   "workflow": "WA",
+   "variant": "V00",
+   "note": "PTFE/FEP 1/16in OD, liquid-filled",
+   "ver": "DESIGN"
+  },
+  "WA__V00__tubing_head_4": {
+   "file": "stl/WA__V00__tubing_head_4.stl",
+   "category": "tubing",
+   "status": "DES",
+   "group": "Z",
+   "workflow": "WA",
+   "variant": "V00",
+   "note": "PTFE/FEP 1/16in OD, liquid-filled",
+   "ver": "DESIGN"
   },
   "WA__V20__Z_carriage": {
    "file": "stl/WA__V20__Z_carriage.stl",
@@ -587,7 +669,8 @@
    "group": "Z",
    "workflow": "WA",
    "variant": "V20",
-   "note": ""
+   "note": "",
+   "ver": "NOT_VERIFIED"
   },
   "WA__V20__breakaway_kinematic_mount": {
    "file": "stl/WA__V20__breakaway_kinematic_mount.stl",
@@ -596,7 +679,8 @@
    "group": "Z",
    "workflow": "WA",
    "variant": "V20",
-   "note": "3-ball kinematic + magnet preload: collision fuse"
+   "note": "3-ball kinematic + magnet preload: kinematic repositioner after a crash; NOT a capillary force limiter (docs/06)",
+   "ver": "DESIGN"
   },
   "WA__V20__arm_thin": {
    "file": "stl/WA__V20__arm_thin.stl",
@@ -605,7 +689,8 @@
    "group": "Z",
    "workflow": "WA",
    "variant": "V20",
-   "note": ""
+   "note": "",
+   "ver": "DESIGN"
   },
   "WA__V20__arm_deep": {
    "file": "stl/WA__V20__arm_deep.stl",
@@ -614,7 +699,8 @@
    "group": "Z",
    "workflow": "WA",
    "variant": "V20",
-   "note": ""
+   "note": "",
+   "ver": "DESIGN"
   },
   "WA__V20__capillary_holder_collet": {
    "file": "stl/WA__V20__capillary_holder_collet.stl",
@@ -623,7 +709,8 @@
    "group": "Z",
    "workflow": "WA",
    "variant": "V20",
-   "note": "collet/split holder with depth stop, OD<=10"
+   "note": "collet/split holder with depth stop, OD<=10",
+   "ver": "NOT_VERIFIED"
   },
   "WA__V20__glass_capillary_OD1.0": {
    "file": "stl/WA__V20__glass_capillary_OD1.0.stl",
@@ -632,7 +719,8 @@
    "group": "Z",
    "workflow": "WA",
    "variant": "V20",
-   "note": "OD 1.0 / ID 0.6 / L 40"
+   "note": "OD 1.0 / ID 0.6 / L 40",
+   "ver": "DESIGN"
   },
   "WA__V20__tubing_head_0": {
    "file": "stl/WA__V20__tubing_head_0.stl",
@@ -641,7 +729,8 @@
    "group": "Z",
    "workflow": "WA",
    "variant": "V20",
-   "note": "PTFE/FEP 1/16in OD, liquid-filled"
+   "note": "PTFE/FEP 1/16in OD, liquid-filled",
+   "ver": "DESIGN"
   },
   "WA__V20__tubing_head_1": {
    "file": "stl/WA__V20__tubing_head_1.stl",
@@ -650,7 +739,8 @@
    "group": "Z",
    "workflow": "WA",
    "variant": "V20",
-   "note": "PTFE/FEP 1/16in OD, liquid-filled"
+   "note": "PTFE/FEP 1/16in OD, liquid-filled",
+   "ver": "DESIGN"
   },
   "WA__V20__tubing_head_2": {
    "file": "stl/WA__V20__tubing_head_2.stl",
@@ -659,7 +749,8 @@
    "group": "Z",
    "workflow": "WA",
    "variant": "V20",
-   "note": "PTFE/FEP 1/16in OD, liquid-filled"
+   "note": "PTFE/FEP 1/16in OD, liquid-filled",
+   "ver": "DESIGN"
   },
   "WA__V20__tubing_head_3": {
    "file": "stl/WA__V20__tubing_head_3.stl",
@@ -668,7 +759,8 @@
    "group": "Z",
    "workflow": "WA",
    "variant": "V20",
-   "note": "PTFE/FEP 1/16in OD, liquid-filled"
+   "note": "PTFE/FEP 1/16in OD, liquid-filled",
+   "ver": "DESIGN"
   },
   "WA__V20__tubing_head_4": {
    "file": "stl/WA__V20__tubing_head_4.stl",
@@ -677,7 +769,8 @@
    "group": "Z",
    "workflow": "WA",
    "variant": "V20",
-   "note": "PTFE/FEP 1/16in OD, liquid-filled"
+   "note": "PTFE/FEP 1/16in OD, liquid-filled",
+   "ver": "DESIGN"
   },
   "WA__V30__Z_carriage": {
    "file": "stl/WA__V30__Z_carriage.stl",
@@ -686,7 +779,8 @@
    "group": "Z",
    "workflow": "WA",
    "variant": "V30",
-   "note": ""
+   "note": "",
+   "ver": "NOT_VERIFIED"
   },
   "WA__V30__breakaway_kinematic_mount": {
    "file": "stl/WA__V30__breakaway_kinematic_mount.stl",
@@ -695,7 +789,8 @@
    "group": "Z",
    "workflow": "WA",
    "variant": "V30",
-   "note": "3-ball kinematic + magnet preload: collision fuse"
+   "note": "3-ball kinematic + magnet preload: kinematic repositioner after a crash; NOT a capillary force limiter (docs/06)",
+   "ver": "DESIGN"
   },
   "WA__V30__arm_thin": {
    "file": "stl/WA__V30__arm_thin.stl",
@@ -704,7 +799,8 @@
    "group": "Z",
    "workflow": "WA",
    "variant": "V30",
-   "note": ""
+   "note": "",
+   "ver": "DESIGN"
   },
   "WA__V30__arm_deep": {
    "file": "stl/WA__V30__arm_deep.stl",
@@ -713,7 +809,8 @@
    "group": "Z",
    "workflow": "WA",
    "variant": "V30",
-   "note": ""
+   "note": "",
+   "ver": "DESIGN"
   },
   "WA__V30__capillary_holder_collet": {
    "file": "stl/WA__V30__capillary_holder_collet.stl",
@@ -722,7 +819,8 @@
    "group": "Z",
    "workflow": "WA",
    "variant": "V30",
-   "note": "collet/split holder with depth stop, OD<=10"
+   "note": "collet/split holder with depth stop, OD<=10",
+   "ver": "NOT_VERIFIED"
   },
   "WA__V30__glass_capillary_OD1.0": {
    "file": "stl/WA__V30__glass_capillary_OD1.0.stl",
@@ -731,7 +829,8 @@
    "group": "Z",
    "workflow": "WA",
    "variant": "V30",
-   "note": "OD 1.0 / ID 0.6 / L 40"
+   "note": "OD 1.0 / ID 0.6 / L 40",
+   "ver": "DESIGN"
   },
   "WA__V30__tubing_head_0": {
    "file": "stl/WA__V30__tubing_head_0.stl",
@@ -740,7 +839,8 @@
    "group": "Z",
    "workflow": "WA",
    "variant": "V30",
-   "note": "PTFE/FEP 1/16in OD, liquid-filled"
+   "note": "PTFE/FEP 1/16in OD, liquid-filled",
+   "ver": "DESIGN"
   },
   "WA__V30__tubing_head_1": {
    "file": "stl/WA__V30__tubing_head_1.stl",
@@ -749,7 +849,8 @@
    "group": "Z",
    "workflow": "WA",
    "variant": "V30",
-   "note": "PTFE/FEP 1/16in OD, liquid-filled"
+   "note": "PTFE/FEP 1/16in OD, liquid-filled",
+   "ver": "DESIGN"
   },
   "WA__V30__tubing_head_2": {
    "file": "stl/WA__V30__tubing_head_2.stl",
@@ -758,7 +859,8 @@
    "group": "Z",
    "workflow": "WA",
    "variant": "V30",
-   "note": "PTFE/FEP 1/16in OD, liquid-filled"
+   "note": "PTFE/FEP 1/16in OD, liquid-filled",
+   "ver": "DESIGN"
   },
   "WA__V30__tubing_head_3": {
    "file": "stl/WA__V30__tubing_head_3.stl",
@@ -767,7 +869,8 @@
    "group": "Z",
    "workflow": "WA",
    "variant": "V30",
-   "note": "PTFE/FEP 1/16in OD, liquid-filled"
+   "note": "PTFE/FEP 1/16in OD, liquid-filled",
+   "ver": "DESIGN"
   },
   "WA__V30__tubing_head_4": {
    "file": "stl/WA__V30__tubing_head_4.stl",
@@ -776,7 +879,8 @@
    "group": "Z",
    "workflow": "WA",
    "variant": "V30",
-   "note": "PTFE/FEP 1/16in OD, liquid-filled"
+   "note": "PTFE/FEP 1/16in OD, liquid-filled",
+   "ver": "DESIGN"
   },
   "WA__V45__Z_carriage": {
    "file": "stl/WA__V45__Z_carriage.stl",
@@ -785,7 +889,8 @@
    "group": "Z",
    "workflow": "WA",
    "variant": "V45",
-   "note": ""
+   "note": "",
+   "ver": "NOT_VERIFIED"
   },
   "WA__V45__breakaway_kinematic_mount": {
    "file": "stl/WA__V45__breakaway_kinematic_mount.stl",
@@ -794,7 +899,8 @@
    "group": "Z",
    "workflow": "WA",
    "variant": "V45",
-   "note": "3-ball kinematic + magnet preload: collision fuse"
+   "note": "3-ball kinematic + magnet preload: kinematic repositioner after a crash; NOT a capillary force limiter (docs/06)",
+   "ver": "DESIGN"
   },
   "WA__V45__arm_thin": {
    "file": "stl/WA__V45__arm_thin.stl",
@@ -803,7 +909,8 @@
    "group": "Z",
    "workflow": "WA",
    "variant": "V45",
-   "note": ""
+   "note": "",
+   "ver": "DESIGN"
   },
   "WA__V45__arm_deep": {
    "file": "stl/WA__V45__arm_deep.stl",
@@ -812,7 +919,8 @@
    "group": "Z",
    "workflow": "WA",
    "variant": "V45",
-   "note": ""
+   "note": "",
+   "ver": "DESIGN"
   },
   "WA__V45__capillary_holder_collet": {
    "file": "stl/WA__V45__capillary_holder_collet.stl",
@@ -821,7 +929,8 @@
    "group": "Z",
    "workflow": "WA",
    "variant": "V45",
-   "note": "collet/split holder with depth stop, OD<=10"
+   "note": "collet/split holder with depth stop, OD<=10",
+   "ver": "NOT_VERIFIED"
   },
   "WA__V45__glass_capillary_OD1.0": {
    "file": "stl/WA__V45__glass_capillary_OD1.0.stl",
@@ -830,7 +939,8 @@
    "group": "Z",
    "workflow": "WA",
    "variant": "V45",
-   "note": "OD 1.0 / ID 0.6 / L 40"
+   "note": "OD 1.0 / ID 0.6 / L 40",
+   "ver": "DESIGN"
   },
   "WA__V45__tubing_head_0": {
    "file": "stl/WA__V45__tubing_head_0.stl",
@@ -839,7 +949,8 @@
    "group": "Z",
    "workflow": "WA",
    "variant": "V45",
-   "note": "PTFE/FEP 1/16in OD, liquid-filled"
+   "note": "PTFE/FEP 1/16in OD, liquid-filled",
+   "ver": "DESIGN"
   },
   "WA__V45__tubing_head_1": {
    "file": "stl/WA__V45__tubing_head_1.stl",
@@ -848,7 +959,8 @@
    "group": "Z",
    "workflow": "WA",
    "variant": "V45",
-   "note": "PTFE/FEP 1/16in OD, liquid-filled"
+   "note": "PTFE/FEP 1/16in OD, liquid-filled",
+   "ver": "DESIGN"
   },
   "WA__V45__tubing_head_2": {
    "file": "stl/WA__V45__tubing_head_2.stl",
@@ -857,7 +969,8 @@
    "group": "Z",
    "workflow": "WA",
    "variant": "V45",
-   "note": "PTFE/FEP 1/16in OD, liquid-filled"
+   "note": "PTFE/FEP 1/16in OD, liquid-filled",
+   "ver": "DESIGN"
   },
   "WA__V45__tubing_head_3": {
    "file": "stl/WA__V45__tubing_head_3.stl",
@@ -866,7 +979,8 @@
    "group": "Z",
    "workflow": "WA",
    "variant": "V45",
-   "note": "PTFE/FEP 1/16in OD, liquid-filled"
+   "note": "PTFE/FEP 1/16in OD, liquid-filled",
+   "ver": "DESIGN"
   },
   "WA__V45__tubing_head_4": {
    "file": "stl/WA__V45__tubing_head_4.stl",
@@ -875,7 +989,8 @@
    "group": "Z",
    "workflow": "WA",
    "variant": "V45",
-   "note": "PTFE/FEP 1/16in OD, liquid-filled"
+   "note": "PTFE/FEP 1/16in OD, liquid-filled",
+   "ver": "DESIGN"
   },
   "WB__base_plate": {
    "file": "stl/WB__base_plate.stl",
@@ -884,7 +999,8 @@
    "group": "fixed",
    "workflow": "WB",
    "variant": "all",
-   "note": "15 mm Al plate bolted to table (M25 hole grid)"
+   "note": "15 mm Al plate bolted to table (M25 hole grid)",
+   "ver": "DESIGN"
   },
   "WB__post_0": {
    "file": "stl/WB__post_0.stl",
@@ -893,7 +1009,8 @@
    "group": "fixed",
    "workflow": "WB",
    "variant": "all",
-   "note": "80x80 extrusion/column"
+   "note": "80x80 extrusion/column",
+   "ver": "NOT_VERIFIED"
   },
   "WB__post_brace_0": {
    "file": "stl/WB__post_brace_0.stl",
@@ -902,7 +1019,8 @@
    "group": "fixed",
    "workflow": "WB",
    "variant": "all",
-   "note": ""
+   "note": "",
+   "ver": "NOT_VERIFIED"
   },
   "WB__post_1": {
    "file": "stl/WB__post_1.stl",
@@ -911,7 +1029,8 @@
    "group": "fixed",
    "workflow": "WB",
    "variant": "all",
-   "note": "80x80 extrusion/column"
+   "note": "80x80 extrusion/column",
+   "ver": "NOT_VERIFIED"
   },
   "WB__post_brace_1": {
    "file": "stl/WB__post_brace_1.stl",
@@ -920,7 +1039,8 @@
    "group": "fixed",
    "workflow": "WB",
    "variant": "all",
-   "note": ""
+   "note": "",
+   "ver": "NOT_VERIFIED"
   },
   "WB__y_beam": {
    "file": "stl/WB__y_beam.stl",
@@ -929,7 +1049,8 @@
    "group": "fixed",
    "workflow": "WB",
    "variant": "all",
-   "note": ""
+   "note": "",
+   "ver": "NOT_VERIFIED"
   },
   "WB__Y_actuator_body": {
    "file": "stl/WB__Y_actuator_body.stl",
@@ -938,7 +1059,8 @@
    "group": "fixed",
    "workflow": "WB",
    "variant": "all",
-   "note": "100 mm stroke, ball-screw, width-26 class"
+   "note": "50 mm catalogue stroke (tip travel 30 mm), ball-screw, width-26 class",
+   "ver": "NOT_VERIFIED"
   },
   "WB__Y_motor": {
    "file": "stl/WB__Y_motor.stl",
@@ -947,7 +1069,8 @@
    "group": "fixed",
    "workflow": "WB",
    "variant": "all",
-   "note": ""
+   "note": "",
+   "ver": "NOT_VERIFIED"
   },
   "WB__Y_home_switch": {
    "file": "stl/WB__Y_home_switch.stl",
@@ -956,7 +1079,8 @@
    "group": "fixed",
    "workflow": "WB",
    "variant": "all",
-   "note": ""
+   "note": "",
+   "ver": "DESIGN"
   },
   "WB__Y_cable_chain": {
    "file": "stl/WB__Y_cable_chain.stl",
@@ -965,7 +1089,8 @@
    "group": "fixed",
    "workflow": "WB",
    "variant": "all",
-   "note": "motor/switch cables only; tubing is routed separately"
+   "note": "motor/switch cables only; tubing is routed separately",
+   "ver": "DESIGN"
   },
   "WB__tubing_fixed_clamp": {
    "file": "stl/WB__tubing_fixed_clamp.stl",
@@ -974,7 +1099,8 @@
    "group": "fixed",
    "workflow": "WB",
    "variant": "all",
-   "note": "fixed strain relief on frame"
+   "note": "fixed strain relief on frame",
+   "ver": "DESIGN"
   },
   "WB__syringe_pump_existing": {
    "file": "stl/WB__syringe_pump_existing.stl",
@@ -983,7 +1109,8 @@
    "group": "fixed",
    "workflow": "WB",
    "variant": "all",
-   "note": "existing Harvard/Tecan pump - footprint PH (M17)"
+   "note": "existing Harvard/Tecan pump - footprint PH (M17)",
+   "ver": "PLACEHOLDER"
   },
   "WB__motion_controller_24V": {
    "file": "stl/WB__motion_controller_24V.stl",
@@ -992,7 +1119,8 @@
    "group": "fixed",
    "workflow": "WB",
    "variant": "all",
-   "note": ""
+   "note": "",
+   "ver": "DESIGN"
   },
   "WB__Y_carriage": {
    "file": "stl/WB__Y_carriage.stl",
@@ -1001,7 +1129,8 @@
    "group": "Y",
    "workflow": "WB",
    "variant": "all",
-   "note": ""
+   "note": "",
+   "ver": "NOT_VERIFIED"
   },
   "WB__X_support_beam": {
    "file": "stl/WB__X_support_beam.stl",
@@ -1010,7 +1139,8 @@
    "group": "Y",
    "workflow": "WB",
    "variant": "all",
-   "note": "stiff box section carrying the X actuator"
+   "note": "stiff box section carrying the X actuator",
+   "ver": "NOT_VERIFIED"
   },
   "WB__X_actuator_body": {
    "file": "stl/WB__X_actuator_body.stl",
@@ -1019,7 +1149,8 @@
    "group": "Y",
    "workflow": "WB",
    "variant": "all",
-   "note": "150 mm stroke, ball-screw, width-26 class, table facing -Y"
+   "note": "110 mm catalogue stroke (tip travel 100 mm), ball-screw, width-26 class, table facing -Y",
+   "ver": "NOT_VERIFIED"
   },
   "WB__X_motor": {
    "file": "stl/WB__X_motor.stl",
@@ -1028,7 +1159,8 @@
    "group": "Y",
    "workflow": "WB",
    "variant": "all",
-   "note": ""
+   "note": "",
+   "ver": "NOT_VERIFIED"
   },
   "WB__X_home_switch": {
    "file": "stl/WB__X_home_switch.stl",
@@ -1037,7 +1169,8 @@
    "group": "Y",
    "workflow": "WB",
    "variant": "all",
-   "note": ""
+   "note": "",
+   "ver": "DESIGN"
   },
   "WB__X_cable_chain": {
    "file": "stl/WB__X_cable_chain.stl",
@@ -1046,7 +1179,8 @@
    "group": "Y",
    "workflow": "WB",
    "variant": "all",
-   "note": ""
+   "note": "",
+   "ver": "DESIGN"
   },
   "WB__X_carriage_bracket": {
    "file": "stl/WB__X_carriage_bracket.stl",
@@ -1055,7 +1189,8 @@
    "group": "X",
    "workflow": "WB",
    "variant": "all",
-   "note": ""
+   "note": "",
+   "ver": "NOT_VERIFIED"
   },
   "WB__Z_actuator_body": {
    "file": "stl/WB__Z_actuator_body.stl",
@@ -1064,7 +1199,8 @@
    "group": "X",
    "workflow": "WB",
    "variant": "all",
-   "note": "50 mm stroke, lead 1 mm ball screw or TR8x2"
+   "note": "80 mm catalogue stroke (tip travel 50 mm), lead 1 mm ball screw or TR8x2",
+   "ver": "NOT_VERIFIED"
   },
   "WB__Z_motor": {
    "file": "stl/WB__Z_motor.stl",
@@ -1073,7 +1209,8 @@
    "group": "X",
    "workflow": "WB",
    "variant": "all",
-   "note": ""
+   "note": "",
+   "ver": "NOT_VERIFIED"
   },
   "WB__Z_home_switch_top": {
    "file": "stl/WB__Z_home_switch_top.stl",
@@ -1082,7 +1219,8 @@
    "group": "X",
    "workflow": "WB",
    "variant": "all",
-   "note": "top limit (not the homing reference)"
+   "note": "top limit (not the homing reference)",
+   "ver": "DESIGN"
   },
   "WB__Z_reference_switch": {
    "file": "stl/WB__Z_reference_switch.stl",
@@ -1091,7 +1229,8 @@
    "group": "X",
    "workflow": "WB",
    "variant": "all",
-   "note": "homing reference: head clears the condenser at any XY"
+   "note": "homing reference: head clears the condenser at any XY",
+   "ver": "DESIGN"
   },
   "WB__tubing_clamp_Zbody": {
    "file": "stl/WB__tubing_clamp_Zbody.stl",
@@ -1100,7 +1239,8 @@
    "group": "X",
    "workflow": "WB",
    "variant": "all",
-   "note": ""
+   "note": "",
+   "ver": "DESIGN"
   },
   "WB__R08__Z_carriage": {
    "file": "stl/WB__R08__Z_carriage.stl",
@@ -1109,7 +1249,8 @@
    "group": "Z",
    "workflow": "WB",
    "variant": "R08",
-   "note": ""
+   "note": "",
+   "ver": "NOT_VERIFIED"
   },
   "WB__R08__breakaway_kinematic_mount": {
    "file": "stl/WB__R08__breakaway_kinematic_mount.stl",
@@ -1118,7 +1259,8 @@
    "group": "Z",
    "workflow": "WB",
    "variant": "R08",
-   "note": "3-ball kinematic + magnet preload: collision fuse"
+   "note": "3-ball kinematic + magnet preload: kinematic repositioner after a crash; NOT a capillary force limiter (docs/06)",
+   "ver": "DESIGN"
   },
   "WB__R08__arm_thin": {
    "file": "stl/WB__R08__arm_thin.stl",
@@ -1127,7 +1269,8 @@
    "group": "Z",
    "workflow": "WB",
    "variant": "R08",
-   "note": ""
+   "note": "",
+   "ver": "DESIGN"
   },
   "WB__R08__arm_deep": {
    "file": "stl/WB__R08__arm_deep.stl",
@@ -1136,7 +1279,8 @@
    "group": "Z",
    "workflow": "WB",
    "variant": "R08",
-   "note": ""
+   "note": "",
+   "ver": "DESIGN"
   },
   "WB__R08__capillary_holder_collet": {
    "file": "stl/WB__R08__capillary_holder_collet.stl",
@@ -1145,7 +1289,8 @@
    "group": "Z",
    "workflow": "WB",
    "variant": "R08",
-   "note": "collet/split holder with depth stop, OD<=10"
+   "note": "collet/split holder with depth stop, OD<=10",
+   "ver": "NOT_VERIFIED"
   },
   "WB__R08__glass_capillary_OD1.0": {
    "file": "stl/WB__R08__glass_capillary_OD1.0.stl",
@@ -1154,7 +1299,8 @@
    "group": "Z",
    "workflow": "WB",
    "variant": "R08",
-   "note": "OD 1.0 / ID 0.6 / L 40"
+   "note": "OD 1.0 / ID 0.6 / L 40",
+   "ver": "DESIGN"
   },
   "WB__R08__tubing_head_0": {
    "file": "stl/WB__R08__tubing_head_0.stl",
@@ -1163,7 +1309,8 @@
    "group": "Z",
    "workflow": "WB",
    "variant": "R08",
-   "note": "PTFE/FEP 1/16in OD, liquid-filled"
+   "note": "PTFE/FEP 1/16in OD, liquid-filled",
+   "ver": "DESIGN"
   },
   "WB__R08__tubing_head_1": {
    "file": "stl/WB__R08__tubing_head_1.stl",
@@ -1172,7 +1319,8 @@
    "group": "Z",
    "workflow": "WB",
    "variant": "R08",
-   "note": "PTFE/FEP 1/16in OD, liquid-filled"
+   "note": "PTFE/FEP 1/16in OD, liquid-filled",
+   "ver": "DESIGN"
   },
   "WB__R08__tubing_head_2": {
    "file": "stl/WB__R08__tubing_head_2.stl",
@@ -1181,7 +1329,8 @@
    "group": "Z",
    "workflow": "WB",
    "variant": "R08",
-   "note": "PTFE/FEP 1/16in OD, liquid-filled"
+   "note": "PTFE/FEP 1/16in OD, liquid-filled",
+   "ver": "DESIGN"
   },
   "WB__R08__tubing_head_3": {
    "file": "stl/WB__R08__tubing_head_3.stl",
@@ -1190,7 +1339,8 @@
    "group": "Z",
    "workflow": "WB",
    "variant": "R08",
-   "note": "PTFE/FEP 1/16in OD, liquid-filled"
+   "note": "PTFE/FEP 1/16in OD, liquid-filled",
+   "ver": "DESIGN"
   },
   "WB__R08__tubing_head_4": {
    "file": "stl/WB__R08__tubing_head_4.stl",
@@ -1199,7 +1349,8 @@
    "group": "Z",
    "workflow": "WB",
    "variant": "R08",
-   "note": "PTFE/FEP 1/16in OD, liquid-filled"
+   "note": "PTFE/FEP 1/16in OD, liquid-filled",
+   "ver": "DESIGN"
   },
   "WB__tubing_loopZ_0": {
    "file": "stl/WB__tubing_loopZ_0.stl",
@@ -1208,7 +1359,8 @@
    "group": "X",
    "workflow": "WB",
    "variant": "all",
-   "note": ""
+   "note": "",
+   "ver": "DESIGN"
   },
   "WB__tubing_loopZ_1": {
    "file": "stl/WB__tubing_loopZ_1.stl",
@@ -1217,7 +1369,8 @@
    "group": "X",
    "workflow": "WB",
    "variant": "all",
-   "note": ""
+   "note": "",
+   "ver": "DESIGN"
   },
   "WB__tubing_loopZ_2": {
    "file": "stl/WB__tubing_loopZ_2.stl",
@@ -1226,7 +1379,8 @@
    "group": "X",
    "workflow": "WB",
    "variant": "all",
-   "note": ""
+   "note": "",
+   "ver": "DESIGN"
   },
   "WB__tubing_loopZ_3": {
    "file": "stl/WB__tubing_loopZ_3.stl",
@@ -1235,7 +1389,8 @@
    "group": "X",
    "workflow": "WB",
    "variant": "all",
-   "note": ""
+   "note": "",
+   "ver": "DESIGN"
   },
   "WB__tubing_loopZ_4": {
    "file": "stl/WB__tubing_loopZ_4.stl",
@@ -1244,7 +1399,8 @@
    "group": "X",
    "workflow": "WB",
    "variant": "all",
-   "note": ""
+   "note": "",
+   "ver": "DESIGN"
   },
   "WB__tubing_loopXY_0": {
    "file": "stl/WB__tubing_loopXY_0.stl",
@@ -1253,7 +1409,8 @@
    "group": "Y",
    "workflow": "WB",
    "variant": "all",
-   "note": ""
+   "note": "",
+   "ver": "DESIGN"
   },
   "WB__tubing_loopXY_1": {
    "file": "stl/WB__tubing_loopXY_1.stl",
@@ -1262,7 +1419,8 @@
    "group": "Y",
    "workflow": "WB",
    "variant": "all",
-   "note": ""
+   "note": "",
+   "ver": "DESIGN"
   },
   "WB__tubing_loopXY_2": {
    "file": "stl/WB__tubing_loopXY_2.stl",
@@ -1271,7 +1429,8 @@
    "group": "Y",
    "workflow": "WB",
    "variant": "all",
-   "note": ""
+   "note": "",
+   "ver": "DESIGN"
   },
   "WB__tubing_loopXY_3": {
    "file": "stl/WB__tubing_loopXY_3.stl",
@@ -1280,7 +1439,8 @@
    "group": "Y",
    "workflow": "WB",
    "variant": "all",
-   "note": ""
+   "note": "",
+   "ver": "DESIGN"
   },
   "WB__tubing_loopXY_4": {
    "file": "stl/WB__tubing_loopXY_4.stl",
@@ -1289,7 +1449,8 @@
    "group": "Y",
    "workflow": "WB",
    "variant": "all",
-   "note": ""
+   "note": "",
+   "ver": "DESIGN"
   },
   "WB__tubing_to_pump_0": {
    "file": "stl/WB__tubing_to_pump_0.stl",
@@ -1298,7 +1459,8 @@
    "group": "fixed",
    "workflow": "WB",
    "variant": "all",
-   "note": ""
+   "note": "",
+   "ver": "DESIGN"
   },
   "WB__tubing_to_pump_1": {
    "file": "stl/WB__tubing_to_pump_1.stl",
@@ -1307,7 +1469,8 @@
    "group": "fixed",
    "workflow": "WB",
    "variant": "all",
-   "note": ""
+   "note": "",
+   "ver": "DESIGN"
   },
   "WB__tubing_to_pump_2": {
    "file": "stl/WB__tubing_to_pump_2.stl",
@@ -1316,7 +1479,8 @@
    "group": "fixed",
    "workflow": "WB",
    "variant": "all",
-   "note": ""
+   "note": "",
+   "ver": "DESIGN"
   },
   "WB__tubing_to_pump_3": {
    "file": "stl/WB__tubing_to_pump_3.stl",
@@ -1325,7 +1489,8 @@
    "group": "fixed",
    "workflow": "WB",
    "variant": "all",
-   "note": ""
+   "note": "",
+   "ver": "DESIGN"
   },
   "WB__tubing_to_pump_4": {
    "file": "stl/WB__tubing_to_pump_4.stl",
@@ -1334,7 +1499,8 @@
    "group": "fixed",
    "workflow": "WB",
    "variant": "all",
-   "note": ""
+   "note": "",
+   "ver": "DESIGN"
   },
   "WB__V20__Z_carriage": {
    "file": "stl/WB__V20__Z_carriage.stl",
@@ -1343,7 +1509,8 @@
    "group": "Z",
    "workflow": "WB",
    "variant": "V20",
-   "note": ""
+   "note": "",
+   "ver": "NOT_VERIFIED"
   },
   "WB__V20__breakaway_kinematic_mount": {
    "file": "stl/WB__V20__breakaway_kinematic_mount.stl",
@@ -1352,7 +1519,8 @@
    "group": "Z",
    "workflow": "WB",
    "variant": "V20",
-   "note": "3-ball kinematic + magnet preload: collision fuse"
+   "note": "3-ball kinematic + magnet preload: kinematic repositioner after a crash; NOT a capillary force limiter (docs/06)",
+   "ver": "DESIGN"
   },
   "WB__V20__arm_thin": {
    "file": "stl/WB__V20__arm_thin.stl",
@@ -1361,7 +1529,8 @@
    "group": "Z",
    "workflow": "WB",
    "variant": "V20",
-   "note": ""
+   "note": "",
+   "ver": "DESIGN"
   },
   "WB__V20__arm_deep": {
    "file": "stl/WB__V20__arm_deep.stl",
@@ -1370,7 +1539,8 @@
    "group": "Z",
    "workflow": "WB",
    "variant": "V20",
-   "note": ""
+   "note": "",
+   "ver": "DESIGN"
   },
   "WB__V20__capillary_holder_collet": {
    "file": "stl/WB__V20__capillary_holder_collet.stl",
@@ -1379,7 +1549,8 @@
    "group": "Z",
    "workflow": "WB",
    "variant": "V20",
-   "note": "collet/split holder with depth stop, OD<=10"
+   "note": "collet/split holder with depth stop, OD<=10",
+   "ver": "NOT_VERIFIED"
   },
   "WB__V20__glass_capillary_OD1.0": {
    "file": "stl/WB__V20__glass_capillary_OD1.0.stl",
@@ -1388,7 +1559,8 @@
    "group": "Z",
    "workflow": "WB",
    "variant": "V20",
-   "note": "OD 1.0 / ID 0.6 / L 40"
+   "note": "OD 1.0 / ID 0.6 / L 40",
+   "ver": "DESIGN"
   },
   "WB__V20__tubing_head_0": {
    "file": "stl/WB__V20__tubing_head_0.stl",
@@ -1397,7 +1569,8 @@
    "group": "Z",
    "workflow": "WB",
    "variant": "V20",
-   "note": "PTFE/FEP 1/16in OD, liquid-filled"
+   "note": "PTFE/FEP 1/16in OD, liquid-filled",
+   "ver": "DESIGN"
   },
   "WB__V20__tubing_head_1": {
    "file": "stl/WB__V20__tubing_head_1.stl",
@@ -1406,7 +1579,8 @@
    "group": "Z",
    "workflow": "WB",
    "variant": "V20",
-   "note": "PTFE/FEP 1/16in OD, liquid-filled"
+   "note": "PTFE/FEP 1/16in OD, liquid-filled",
+   "ver": "DESIGN"
   },
   "WB__V20__tubing_head_2": {
    "file": "stl/WB__V20__tubing_head_2.stl",
@@ -1415,7 +1589,8 @@
    "group": "Z",
    "workflow": "WB",
    "variant": "V20",
-   "note": "PTFE/FEP 1/16in OD, liquid-filled"
+   "note": "PTFE/FEP 1/16in OD, liquid-filled",
+   "ver": "DESIGN"
   },
   "WB__V20__tubing_head_3": {
    "file": "stl/WB__V20__tubing_head_3.stl",
@@ -1424,7 +1599,8 @@
    "group": "Z",
    "workflow": "WB",
    "variant": "V20",
-   "note": "PTFE/FEP 1/16in OD, liquid-filled"
+   "note": "PTFE/FEP 1/16in OD, liquid-filled",
+   "ver": "DESIGN"
   },
   "WB__V20__tubing_head_4": {
    "file": "stl/WB__V20__tubing_head_4.stl",
@@ -1433,7 +1609,8 @@
    "group": "Z",
    "workflow": "WB",
    "variant": "V20",
-   "note": "PTFE/FEP 1/16in OD, liquid-filled"
+   "note": "PTFE/FEP 1/16in OD, liquid-filled",
+   "ver": "DESIGN"
   },
   "WB__V30__Z_carriage": {
    "file": "stl/WB__V30__Z_carriage.stl",
@@ -1442,7 +1619,8 @@
    "group": "Z",
    "workflow": "WB",
    "variant": "V30",
-   "note": ""
+   "note": "",
+   "ver": "NOT_VERIFIED"
   },
   "WB__V30__breakaway_kinematic_mount": {
    "file": "stl/WB__V30__breakaway_kinematic_mount.stl",
@@ -1451,7 +1629,8 @@
    "group": "Z",
    "workflow": "WB",
    "variant": "V30",
-   "note": "3-ball kinematic + magnet preload: collision fuse"
+   "note": "3-ball kinematic + magnet preload: kinematic repositioner after a crash; NOT a capillary force limiter (docs/06)",
+   "ver": "DESIGN"
   },
   "WB__V30__arm_thin": {
    "file": "stl/WB__V30__arm_thin.stl",
@@ -1460,7 +1639,8 @@
    "group": "Z",
    "workflow": "WB",
    "variant": "V30",
-   "note": ""
+   "note": "",
+   "ver": "DESIGN"
   },
   "WB__V30__arm_deep": {
    "file": "stl/WB__V30__arm_deep.stl",
@@ -1469,7 +1649,8 @@
    "group": "Z",
    "workflow": "WB",
    "variant": "V30",
-   "note": ""
+   "note": "",
+   "ver": "DESIGN"
   },
   "WB__V30__capillary_holder_collet": {
    "file": "stl/WB__V30__capillary_holder_collet.stl",
@@ -1478,7 +1659,8 @@
    "group": "Z",
    "workflow": "WB",
    "variant": "V30",
-   "note": "collet/split holder with depth stop, OD<=10"
+   "note": "collet/split holder with depth stop, OD<=10",
+   "ver": "NOT_VERIFIED"
   },
   "WB__V30__glass_capillary_OD1.0": {
    "file": "stl/WB__V30__glass_capillary_OD1.0.stl",
@@ -1487,7 +1669,8 @@
    "group": "Z",
    "workflow": "WB",
    "variant": "V30",
-   "note": "OD 1.0 / ID 0.6 / L 40"
+   "note": "OD 1.0 / ID 0.6 / L 40",
+   "ver": "DESIGN"
   },
   "WB__V30__tubing_head_0": {
    "file": "stl/WB__V30__tubing_head_0.stl",
@@ -1496,7 +1679,8 @@
    "group": "Z",
    "workflow": "WB",
    "variant": "V30",
-   "note": "PTFE/FEP 1/16in OD, liquid-filled"
+   "note": "PTFE/FEP 1/16in OD, liquid-filled",
+   "ver": "DESIGN"
   },
   "WB__V30__tubing_head_1": {
    "file": "stl/WB__V30__tubing_head_1.stl",
@@ -1505,7 +1689,8 @@
    "group": "Z",
    "workflow": "WB",
    "variant": "V30",
-   "note": "PTFE/FEP 1/16in OD, liquid-filled"
+   "note": "PTFE/FEP 1/16in OD, liquid-filled",
+   "ver": "DESIGN"
   },
   "WB__V30__tubing_head_2": {
    "file": "stl/WB__V30__tubing_head_2.stl",
@@ -1514,7 +1699,8 @@
    "group": "Z",
    "workflow": "WB",
    "variant": "V30",
-   "note": "PTFE/FEP 1/16in OD, liquid-filled"
+   "note": "PTFE/FEP 1/16in OD, liquid-filled",
+   "ver": "DESIGN"
   },
   "WB__V30__tubing_head_3": {
    "file": "stl/WB__V30__tubing_head_3.stl",
@@ -1523,7 +1709,8 @@
    "group": "Z",
    "workflow": "WB",
    "variant": "V30",
-   "note": "PTFE/FEP 1/16in OD, liquid-filled"
+   "note": "PTFE/FEP 1/16in OD, liquid-filled",
+   "ver": "DESIGN"
   },
   "WB__V30__tubing_head_4": {
    "file": "stl/WB__V30__tubing_head_4.stl",
@@ -1532,7 +1719,8 @@
    "group": "Z",
    "workflow": "WB",
    "variant": "V30",
-   "note": "PTFE/FEP 1/16in OD, liquid-filled"
+   "note": "PTFE/FEP 1/16in OD, liquid-filled",
+   "ver": "DESIGN"
   },
   "optical_table_patch": {
    "file": "stl/optical_table_patch.stl",
@@ -1541,7 +1729,8 @@
    "group": "fixed",
    "workflow": "all",
    "variant": "all",
-   "note": "optical table / breadboard surface, level = M1"
+   "note": "optical table / breadboard surface, level = M1",
+   "ver": "PLACEHOLDER"
   },
   "ix73_body_lower": {
    "file": "stl/ix73_body_lower.stl",
@@ -1550,7 +1739,8 @@
    "group": "fixed",
    "workflow": "all",
    "variant": "all",
-   "note": "W x D = 323 x 475 MFR; placement & height PH"
+   "note": "W x D = 323 x 475 MFR; placement & height PH",
+   "ver": "PLACEHOLDER"
   },
   "ix73_stage": {
    "file": "stl/ix73_stage.stl",
@@ -1559,7 +1749,8 @@
    "group": "S",
    "workflow": "all",
    "variant": "all",
-   "note": "232 x 240 plain stage MFR; thickness & position PH; moves with stage"
+   "note": "232 x 240 plain stage MFR; thickness & position PH; moves with stage",
+   "ver": "SEARCH_EXCERPT"
   },
   "ix73_stage_support": {
    "file": "stl/ix73_stage_support.stl",
@@ -1568,7 +1759,8 @@
    "group": "fixed",
    "workflow": "all",
    "variant": "all",
-   "note": ""
+   "note": "",
+   "ver": "PLACEHOLDER"
   },
   "ix73_objective_zone": {
    "file": "stl/ix73_objective_zone.stl",
@@ -1577,7 +1769,8 @@
    "group": "fixed",
    "workflow": "all",
    "variant": "all",
-   "note": "nosepiece/objectives under stage (M14)"
+   "note": "nosepiece/objectives under stage (M14)",
+   "ver": "PLACEHOLDER"
   },
   "ix73_obs_tube_eyepieces": {
    "file": "stl/ix73_obs_tube_eyepieces.stl",
@@ -1586,7 +1779,8 @@
    "group": "fixed",
    "workflow": "all",
    "variant": "all",
-   "note": "observation tube + eyepieces envelope (M12)"
+   "note": "observation tube + eyepieces envelope (M12)",
+   "ver": "PLACEHOLDER"
   },
   "ix73_stage_handle": {
    "file": "stl/ix73_stage_handle.stl",
@@ -1595,7 +1789,8 @@
    "group": "fixed",
    "workflow": "all",
    "variant": "all",
-   "note": "IX3-SVR right-hand coaxial handle (M13)"
+   "note": "IX3-SVR right-hand coaxial handle (M13)",
+   "ver": "PLACEHOLDER"
   },
   "ix73_illum_pillar": {
    "file": "stl/ix73_illum_pillar.stl",
@@ -1604,7 +1799,8 @@
    "group": "fixed",
    "workflow": "all",
    "variant": "all",
-   "note": "pillar height from MFR total H 656; x/y/section PH"
+   "note": "pillar height from MFR total H 656; x/y/section PH",
+   "ver": "PLACEHOLDER"
   },
   "ix73_lamp_house": {
    "file": "stl/ix73_lamp_house.stl",
@@ -1613,7 +1809,8 @@
    "group": "fixed",
    "workflow": "all",
    "variant": "all",
-   "note": ""
+   "note": "",
+   "ver": "PLACEHOLDER"
   },
   "COND[IX2-LWUCD]__condenser_IX2-LWUCD": {
    "file": "stl/COND[IX2-LWUCD]__condenser_IX2-LWUCD.stl",
@@ -1623,7 +1820,8 @@
    "workflow": "all",
    "variant": "all",
    "condenser": "IX2-LWUCD",
-   "note": "WD 27.0 mm MFR (IX2-LWUCD); diameter/height PH"
+   "note": "WD 27.0 mm MFR (IX2-LWUCD); stepped envelope PH (M6, M8)",
+   "ver": "PLACEHOLDER"
   },
   "COND[IX2-LWUCD]__condenser_carrier_arm": {
    "file": "stl/COND[IX2-LWUCD]__condenser_carrier_arm.stl",
@@ -1633,7 +1831,8 @@
    "workflow": "all",
    "variant": "all",
    "condenser": "IX2-LWUCD",
-   "note": ""
+   "note": "",
+   "ver": "PLACEHOLDER"
   },
   "COND[IX2-LWUCD]__illum_arm_to_pillar": {
    "file": "stl/COND[IX2-LWUCD]__illum_arm_to_pillar.stl",
@@ -1643,7 +1842,8 @@
    "workflow": "all",
    "variant": "all",
    "condenser": "IX2-LWUCD",
-   "note": ""
+   "note": "",
+   "ver": "PLACEHOLDER"
   },
   "plate_96_SLAS": {
    "file": "stl/plate_96_SLAS.stl",
@@ -1652,7 +1852,8 @@
    "group": "S",
    "workflow": "all",
    "variant": "all",
-   "note": "SLAS 1/2/4 + Corning 7007 wells"
+   "note": "V1 plate 96 U-bottom (Corning 7007): SLAS 1/2/4 + well profile",
+   "ver": "SEARCH_EXCERPT"
   },
   "COND[IX2-MLWCD]__condenser_IX2-MLWCD": {
    "file": "stl/COND[IX2-MLWCD]__condenser_IX2-MLWCD.stl",
@@ -1662,7 +1863,8 @@
    "workflow": "all",
    "variant": "all",
    "condenser": "IX2-MLWCD",
-   "note": "WD 45.0 mm MFR (IX2-MLWCD); diameter/height PH"
+   "note": "WD 45.0 mm MFR (IX2-MLWCD); stepped envelope PH (M6, M8)",
+   "ver": "PLACEHOLDER"
   },
   "COND[IX2-MLWCD]__condenser_carrier_arm": {
    "file": "stl/COND[IX2-MLWCD]__condenser_carrier_arm.stl",
@@ -1672,7 +1874,8 @@
    "workflow": "all",
    "variant": "all",
    "condenser": "IX2-MLWCD",
-   "note": ""
+   "note": "",
+   "ver": "PLACEHOLDER"
   },
   "COND[IX2-MLWCD]__illum_arm_to_pillar": {
    "file": "stl/COND[IX2-MLWCD]__illum_arm_to_pillar.stl",
@@ -1682,7 +1885,8 @@
    "workflow": "all",
    "variant": "all",
    "condenser": "IX2-MLWCD",
-   "note": ""
+   "note": "",
+   "ver": "PLACEHOLDER"
   },
   "COND[IX-ULWCD]__condenser_IX-ULWCD": {
    "file": "stl/COND[IX-ULWCD]__condenser_IX-ULWCD.stl",
@@ -1692,7 +1896,8 @@
    "workflow": "all",
    "variant": "all",
    "condenser": "IX-ULWCD",
-   "note": "WD 73.0 mm MFR (IX-ULWCD); diameter/height PH"
+   "note": "WD 73.0 mm MFR (IX-ULWCD); stepped envelope PH (M6, M8)",
+   "ver": "PLACEHOLDER"
   },
   "COND[IX-ULWCD]__condenser_carrier_arm": {
    "file": "stl/COND[IX-ULWCD]__condenser_carrier_arm.stl",
@@ -1702,7 +1907,8 @@
    "workflow": "all",
    "variant": "all",
    "condenser": "IX-ULWCD",
-   "note": ""
+   "note": "",
+   "ver": "PLACEHOLDER"
   },
   "COND[IX-ULWCD]__illum_arm_to_pillar": {
    "file": "stl/COND[IX-ULWCD]__illum_arm_to_pillar.stl",
@@ -1712,7 +1918,8 @@
    "workflow": "all",
    "variant": "all",
    "condenser": "IX-ULWCD",
-   "note": ""
+   "note": "",
+   "ver": "PLACEHOLDER"
   },
   "COND[NONE_pillar_tilted_back]__illum_arm_tilted_back": {
    "file": "stl/COND[NONE_pillar_tilted_back]__illum_arm_tilted_back.stl",
@@ -1722,7 +1929,8 @@
    "workflow": "all",
    "variant": "all",
    "condenser": "NONE (pillar tilted back)",
-   "note": "tilted-back illumination column; geometry PH (M10)"
+   "note": "tilted-back illumination column; geometry PH (M10)",
+   "ver": "PLACEHOLDER"
   },
   "ZONE[WA][IX-ULWCD]__tip_travel_envelope": {
    "file": "stl/ZONE[WA][IX-ULWCD]__tip_travel_envelope.stl",
@@ -1732,17 +1940,19 @@
    "workflow": "WA",
    "variant": "all",
    "condenser": "IX-ULWCD",
-   "note": "tip_travel_envelope"
+   "note": "tip_travel_envelope",
+   "ver": "DESIGN"
   },
-  "ZONE[WA][IX-ULWCD]__safe_z_plane": {
-   "file": "stl/ZONE[WA][IX-ULWCD]__safe_z_plane.stl",
+  "ZONE[WA][IX-ULWCD]__safe_z_corridor": {
+   "file": "stl/ZONE[WA][IX-ULWCD]__safe_z_corridor.stl",
    "category": "zone",
    "status": "DER",
    "group": "fixed",
    "workflow": "WA",
    "variant": "all",
    "condenser": "IX-ULWCD",
-   "note": "safe_z_plane"
+   "note": "safe_z_corridor",
+   "ver": "DESIGN"
   },
   "ZONE[WA][IX-ULWCD]__condenser_keepout": {
    "file": "stl/ZONE[WA][IX-ULWCD]__condenser_keepout.stl",
@@ -1752,7 +1962,8 @@
    "workflow": "WA",
    "variant": "all",
    "condenser": "IX-ULWCD",
-   "note": "condenser_keepout"
+   "note": "condenser_keepout",
+   "ver": "DESIGN"
   },
   "ZONE[WA][IX-ULWCD]__illumination_cone_NA0.3": {
    "file": "stl/ZONE[WA][IX-ULWCD]__illumination_cone_NA0.3.stl",
@@ -1762,7 +1973,8 @@
    "workflow": "WA",
    "variant": "all",
    "condenser": "IX-ULWCD",
-   "note": "illumination_cone_NA0.3"
+   "note": "illumination_cone_NA0.3",
+   "ver": "DESIGN"
   },
   "ZONE[WA][IX2-LWUCD]__tip_travel_envelope": {
    "file": "stl/ZONE[WA][IX2-LWUCD]__tip_travel_envelope.stl",
@@ -1772,17 +1984,19 @@
    "workflow": "WA",
    "variant": "all",
    "condenser": "IX2-LWUCD",
-   "note": "tip_travel_envelope"
+   "note": "tip_travel_envelope",
+   "ver": "DESIGN"
   },
-  "ZONE[WA][IX2-LWUCD]__safe_z_plane": {
-   "file": "stl/ZONE[WA][IX2-LWUCD]__safe_z_plane.stl",
+  "ZONE[WA][IX2-LWUCD]__safe_z_corridor": {
+   "file": "stl/ZONE[WA][IX2-LWUCD]__safe_z_corridor.stl",
    "category": "zone",
    "status": "DER",
    "group": "fixed",
    "workflow": "WA",
    "variant": "all",
    "condenser": "IX2-LWUCD",
-   "note": "safe_z_plane"
+   "note": "safe_z_corridor",
+   "ver": "DESIGN"
   },
   "ZONE[WA][IX2-LWUCD]__condenser_keepout": {
    "file": "stl/ZONE[WA][IX2-LWUCD]__condenser_keepout.stl",
@@ -1792,7 +2006,8 @@
    "workflow": "WA",
    "variant": "all",
    "condenser": "IX2-LWUCD",
-   "note": "condenser_keepout"
+   "note": "condenser_keepout",
+   "ver": "DESIGN"
   },
   "ZONE[WA][IX2-LWUCD]__illumination_cone_NA0.3": {
    "file": "stl/ZONE[WA][IX2-LWUCD]__illumination_cone_NA0.3.stl",
@@ -1802,7 +2017,8 @@
    "workflow": "WA",
    "variant": "all",
    "condenser": "IX2-LWUCD",
-   "note": "illumination_cone_NA0.3"
+   "note": "illumination_cone_NA0.3",
+   "ver": "DESIGN"
   },
   "ZONE[WB][IX-ULWCD]__tip_travel_envelope": {
    "file": "stl/ZONE[WB][IX-ULWCD]__tip_travel_envelope.stl",
@@ -1812,17 +2028,19 @@
    "workflow": "WB",
    "variant": "all",
    "condenser": "IX-ULWCD",
-   "note": "tip_travel_envelope"
+   "note": "tip_travel_envelope",
+   "ver": "DESIGN"
   },
-  "ZONE[WB][IX-ULWCD]__safe_z_plane": {
-   "file": "stl/ZONE[WB][IX-ULWCD]__safe_z_plane.stl",
+  "ZONE[WB][IX-ULWCD]__safe_z_corridor": {
+   "file": "stl/ZONE[WB][IX-ULWCD]__safe_z_corridor.stl",
    "category": "zone",
    "status": "DER",
    "group": "fixed",
    "workflow": "WB",
    "variant": "all",
    "condenser": "IX-ULWCD",
-   "note": "safe_z_plane"
+   "note": "safe_z_corridor",
+   "ver": "DESIGN"
   },
   "ZONE[WB][IX-ULWCD]__condenser_keepout": {
    "file": "stl/ZONE[WB][IX-ULWCD]__condenser_keepout.stl",
@@ -1832,7 +2050,8 @@
    "workflow": "WB",
    "variant": "all",
    "condenser": "IX-ULWCD",
-   "note": "condenser_keepout"
+   "note": "condenser_keepout",
+   "ver": "DESIGN"
   },
   "ZONE[WB][IX-ULWCD]__illumination_cone_NA0.3": {
    "file": "stl/ZONE[WB][IX-ULWCD]__illumination_cone_NA0.3.stl",
@@ -1842,7 +2061,8 @@
    "workflow": "WB",
    "variant": "all",
    "condenser": "IX-ULWCD",
-   "note": "illumination_cone_NA0.3"
+   "note": "illumination_cone_NA0.3",
+   "ver": "DESIGN"
   },
   "ZONE[WB][IX2-LWUCD]__tip_travel_envelope": {
    "file": "stl/ZONE[WB][IX2-LWUCD]__tip_travel_envelope.stl",
@@ -1852,17 +2072,19 @@
    "workflow": "WB",
    "variant": "all",
    "condenser": "IX2-LWUCD",
-   "note": "tip_travel_envelope"
+   "note": "tip_travel_envelope",
+   "ver": "DESIGN"
   },
-  "ZONE[WB][IX2-LWUCD]__safe_z_plane": {
-   "file": "stl/ZONE[WB][IX2-LWUCD]__safe_z_plane.stl",
+  "ZONE[WB][IX2-LWUCD]__safe_z_corridor": {
+   "file": "stl/ZONE[WB][IX2-LWUCD]__safe_z_corridor.stl",
    "category": "zone",
    "status": "DER",
    "group": "fixed",
    "workflow": "WB",
    "variant": "all",
    "condenser": "IX2-LWUCD",
-   "note": "safe_z_plane"
+   "note": "safe_z_corridor",
+   "ver": "DESIGN"
   },
   "ZONE[WB][IX2-LWUCD]__condenser_keepout": {
    "file": "stl/ZONE[WB][IX2-LWUCD]__condenser_keepout.stl",
@@ -1872,7 +2094,8 @@
    "workflow": "WB",
    "variant": "all",
    "condenser": "IX2-LWUCD",
-   "note": "condenser_keepout"
+   "note": "condenser_keepout",
+   "ver": "DESIGN"
   },
   "ZONE[WB][IX2-LWUCD]__illumination_cone_NA0.3": {
    "file": "stl/ZONE[WB][IX2-LWUCD]__illumination_cone_NA0.3.stl",
@@ -1882,11 +2105,101 @@
    "workflow": "WB",
    "variant": "all",
    "condenser": "IX2-LWUCD",
-   "note": "illumination_cone_NA0.3"
+   "note": "illumination_cone_NA0.3",
+   "ver": "DESIGN"
   }
  },
  "Z_PICK": 3.3499999999999988,
  "safe_z": 19.35,
+ "corridor": {
+  "R08": {
+   "cfg": "R08",
+   "plate": "96 U-bottom (Corning 7007)",
+   "lower": 19.35,
+   "upper": 22.178204975370903,
+   "width": 2.8282049753709018,
+   "feasible": true,
+   "preferred": true
+  },
+  "V20": {
+   "cfg": "V20",
+   "plate": "12-well (Corning 3513)",
+   "lower": 25.5,
+   "upper": 27.172602547777757,
+   "width": 1.6726025477777569,
+   "feasible": true,
+   "preferred": false
+  },
+  "V30": {
+   "cfg": "V30",
+   "plate": "6-well (Corning 3516)",
+   "lower": 25.4,
+   "upper": 27.594882233484697,
+   "width": 2.194882233484698,
+   "feasible": true,
+   "preferred": true
+  },
+  "V00": {
+   "cfg": "V00",
+   "plate": "96 U-bottom (Corning 7007)",
+   "lower": 19.35,
+   "upper": 21.75,
+   "width": 2.3999999999999986,
+   "feasible": true,
+   "preferred": true
+  },
+  "V45": {
+   "cfg": "V45",
+   "plate": "96 U-bottom (Corning 7007)",
+   "lower": 19.35,
+   "upper": 34.637301627791906,
+   "width": 15.287301627791905,
+   "feasible": true,
+   "preferred": true
+  }
+ },
+ "head_configs": {
+  "R08": {
+   "theta": 8.0,
+   "exposed": 30.0,
+   "od": 1.0,
+   "plate": "96 U-bottom (Corning 7007)",
+   "scope": "V1",
+   "label": "8\u00b0 block, 30 mm exposed (V1)"
+  },
+  "V20": {
+   "theta": 20.0,
+   "exposed": 27.0,
+   "od": 1.0,
+   "plate": "12-well (Corning 3513)",
+   "scope": "experimental",
+   "label": "20\u00b0 block, 27 mm exposed (12-well)"
+  },
+  "V30": {
+   "theta": 30.0,
+   "exposed": 30.0,
+   "od": 1.0,
+   "plate": "6-well (Corning 3516)",
+   "scope": "experimental",
+   "label": "30\u00b0 block, 30 mm exposed (6-well)"
+  },
+  "V00": {
+   "theta": 0.0,
+   "exposed": 30.0,
+   "od": 1.0,
+   "plate": "96 U-bottom (Corning 7007)",
+   "scope": "comparison",
+   "label": "0\u00b0 (vertical), comparison only"
+  },
+  "V45": {
+   "theta": 45.0,
+   "exposed": 30.0,
+   "od": 1.0,
+   "plate": "96 U-bottom (Corning 7007)",
+   "scope": "comparison",
+   "label": "45\u00b0, comparison only"
+  }
+ },
  "condensers": {
   "IX2-LWUCD": {
    "WD": 27.0,
@@ -2014,8 +2327,8 @@
  },
  "export_set": {
   "WA": [
-   "V00",
    "R08",
+   "V00",
    "V20",
    "V30",
    "V45"

@@ -59,25 +59,25 @@ OK = rim >= 0.5 mm, holder over plate and head top (arm + tubing) under the cond
 | 6-well (Corning 3516) | 30° | 0.35 | 6.98 | 6.4 | 4.2 | 57% | 0% | yes |
 | 6-well (Corning 3516) | 45° | 0.45 | -0.25 | 0.7 | 11.2 | 34% | 0% | no |
 
-Recommended angle block and exposed length per plate and capillary class (max holder stack = longest HOLDER_L that keeps 2.0 mm under the condenser):
+Recommended angle block and exposed length per plate and capillary class (max nose-to-head-top = largest M23 value that keeps 2.0 mm under the condenser; model value 22.2 mm at 8°):
 
-| plate | class | block | exposed | tz (mm) | rim | condenser at safe-Z | reachable | light blocked | max holder stack (mm) | note |
+| plate | class | block | exposed | tz (mm) | rim | condenser at safe-Z | reachable | light blocked | max nose-to-head-top (mm) | note |
 |---|---|---|---|---|---|---|---|---|---|---|
-| 96 U-bottom (Corning 7007) | S (OD 1.0) | 8° | 30 mm | 0.30 | 1.38 | 4.8 | centre (U) | 33% | 16.9 |  |
-| 96 U-bottom (Corning 7007) | M (OD 1.5) | 8° | 30 mm | 0.30 | 1.13 | 4.8 | centre (U) | 33% | 16.9 |  |
-| 96 U-bottom (Corning 7007) | L (OD 2.0) | 8° | 30 mm | 0.30 | 0.87 | 4.8 | centre (U) | 33% | 16.9 |  |
-| 48-well (Corning 3548) | S (OD 1.0) | 8° | 24 mm | 0.30 | 2.87 | 4.7 | 54% | 43% | 16.7 |  |
-| 48-well (Corning 3548) | M (OD 1.5) | 8° | 24 mm | 0.30 | 2.62 | 4.7 | 48% | 43% | 16.7 | reach 48% < 50%; a 0° block would reach 67% but blocks 62% of the light (D8) |
-| 48-well (Corning 3548) | L (OD 2.0) | 8° | 24 mm | 0.30 | 2.37 | 4.7 | 42% | 43% | 16.7 | reach 42% < 50%; a 0° block would reach 60% but blocks 62% of the light (D8) |
-| 24-well (Corning 3524) | S (OD 1.0) | 8° | 24 mm | 0.30 | 5.22 | 4.7 | 67% | 43% | 16.7 |  |
-| 24-well (Corning 3524) | M (OD 1.5) | 8° | 24 mm | 0.30 | 4.97 | 4.7 | 62% | 43% | 16.7 |  |
-| 24-well (Corning 3524) | L (OD 2.0) | 8° | 24 mm | 0.30 | 4.72 | 4.7 | 57% | 43% | 16.7 |  |
-| 12-well (Corning 3513) | S (OD 1.0) | 20° | 27 mm | 0.30 | 4.57 | 3.7 | 56% | 14% | 15.8 |  |
-| 12-well (Corning 3513) | M (OD 1.5) | 20° | 27 mm | 0.36 | 4.33 | 3.7 | 52% | 14% | 15.8 |  |
-| 12-well (Corning 3513) | L (OD 2.0) | 8° | 24 mm | 0.30 | 7.94 | 4.6 | 69% | 43% | 16.6 |  |
-| 6-well (Corning 3516) | S (OD 1.0) | 30° | 30 mm | 0.35 | 6.98 | 4.2 | 57% | 0% | 16.5 |  |
-| 6-well (Corning 3516) | M (OD 1.5) | 30° | 30 mm | 0.47 | 6.76 | 4.2 | 55% | 0% | 16.5 |  |
-| 6-well (Corning 3516) | L (OD 2.0) | 30° | 30 mm | 0.60 | 6.55 | 4.2 | 53% | 0% | 16.5 |  |
+| 96 U-bottom (Corning 7007) | S (OD 1.0) | 8° | 30 mm | 0.30 | 1.38 | 4.8 | centre (U) | 33% | 25.0 |  |
+| 96 U-bottom (Corning 7007) | M (OD 1.5) | 8° | 30 mm | 0.30 | 1.13 | 4.8 | centre (U) | 33% | 25.0 |  |
+| 96 U-bottom (Corning 7007) | L (OD 2.0) | 8° | 30 mm | 0.30 | 0.87 | 4.8 | centre (U) | 33% | 25.0 |  |
+| 48-well (Corning 3548) | S (OD 1.0) | 8° | 24 mm | 0.30 | 2.87 | 4.7 | 54% | 43% | 24.8 |  |
+| 48-well (Corning 3548) | M (OD 1.5) | 8° | 24 mm | 0.30 | 2.62 | 4.7 | 48% | 43% | 24.8 | reach 48% < 50%; a 0° block would reach 67% but blocks 62% of the light (D8) |
+| 48-well (Corning 3548) | L (OD 2.0) | 8° | 24 mm | 0.30 | 2.37 | 4.7 | 42% | 43% | 24.8 | reach 42% < 50%; a 0° block would reach 60% but blocks 62% of the light (D8) |
+| 24-well (Corning 3524) | S (OD 1.0) | 8° | 24 mm | 0.30 | 5.22 | 4.7 | 67% | 43% | 24.8 |  |
+| 24-well (Corning 3524) | M (OD 1.5) | 8° | 24 mm | 0.30 | 4.97 | 4.7 | 62% | 43% | 24.8 |  |
+| 24-well (Corning 3524) | L (OD 2.0) | 8° | 24 mm | 0.30 | 4.72 | 4.7 | 57% | 43% | 24.8 |  |
+| 12-well (Corning 3513) | S (OD 1.0) | 20° | 27 mm | 0.30 | 4.57 | 3.7 | 56% | 14% | 23.1 |  |
+| 12-well (Corning 3513) | M (OD 1.5) | 20° | 27 mm | 0.36 | 4.33 | 3.7 | 52% | 14% | 23.1 |  |
+| 12-well (Corning 3513) | L (OD 2.0) | 8° | 24 mm | 0.30 | 7.94 | 4.6 | 69% | 43% | 24.7 |  |
+| 6-well (Corning 3516) | S (OD 1.0) | 30° | 30 mm | 0.35 | 6.98 | 4.2 | 57% | 0% | 22.6 |  |
+| 6-well (Corning 3516) | M (OD 1.5) | 30° | 30 mm | 0.47 | 6.76 | 4.2 | 55% | 0% | 22.6 |  |
+| 6-well (Corning 3516) | L (OD 2.0) | 30° | 30 mm | 0.60 | 6.55 | 4.2 | 53% | 0% | 22.6 |  |
 
 ## 2. Transmitted light blocked by the head (holder Ø10 + 12 mm arm, ray test; capillary ignored)
 
@@ -101,17 +101,17 @@ PH = placeholder geometry is involved in every condenser/IX73 result; treat as p
 
 | workflow | head | condenser | pick OK /96 | safe-Z OK /96 | grid safe-Z OK /35 | grid top-Z OK /35 | stage corners OK | colliding obstacles (pose count) | min clearance, safe-Z (mm) |
 |---|---|---|---|---|---|---|---|---|---|
-| WA | V00 | IX2-LWUCD | 10 | 10 | 20 | 11 | – | condenser_IX2-LWUCD (587), condenser_carrier_arm (64) | 0.0 |
-| WA | V00 | IX2-MLWCD | 10 | 10 | 20 | 19 | – | condenser_IX2-MLWCD (513), condenser_carrier_arm (4) | 0.0 |
-| WA | V00 | IX-ULWCD | 96 | 96 | 35 | 20 | – | condenser_IX-ULWCD (43) | 4.4 |
-| WA | V00 | NONE (pillar tilted back) | 96 | 96 | 35 | 35 | – | none | 5.8 |
 | WA | R08 | IX2-LWUCD | 16 | 16 | 20 | 15 | – | condenser_IX2-LWUCD (593), condenser_carrier_arm (36) | 0.0 |
 | WA | R08 | IX2-MLWCD | 18 | 16 | 20 | 20 | – | condenser_IX2-MLWCD (511) | 0.0 |
 | WA | R08 | IX-ULWCD | 96 | 96 | 35 | 20 | – | condenser_IX-ULWCD (47) | 4.83 |
 | WA | R08 | NONE (pillar tilted back) | 96 | 96 | 35 | 35 | – | none | 5.74 |
-| WA | V20 | IX2-LWUCD | 0 | 22 | 20 | 20 | – | condenser_IX2-LWUCD (617), plate_96_SLAS (96) | 0.0 |
-| WA | V20 | IX2-MLWCD | 0 | 22 | 20 | 20 | – | condenser_IX2-MLWCD (571), plate_96_SLAS (96) | 0.0 |
-| WA | V20 | IX-ULWCD | 0 | 96 | 35 | 20 | – | plate_96_SLAS (96), condenser_IX-ULWCD (45) | 5.66 |
+| WA | V00 | IX2-LWUCD | 10 | 10 | 20 | 11 | – | condenser_IX2-LWUCD (587), condenser_carrier_arm (64) | 0.0 |
+| WA | V00 | IX2-MLWCD | 10 | 10 | 20 | 19 | – | condenser_IX2-MLWCD (513), condenser_carrier_arm (4) | 0.0 |
+| WA | V00 | IX-ULWCD | 96 | 96 | 35 | 20 | – | condenser_IX-ULWCD (43) | 4.4 |
+| WA | V00 | NONE (pillar tilted back) | 96 | 96 | 35 | 35 | – | none | 5.8 |
+| WA | V20 | IX2-LWUCD | 0 | 20 | 20 | 20 | – | condenser_IX2-LWUCD (623), plate_96_SLAS (96) | 0.0 |
+| WA | V20 | IX2-MLWCD | 0 | 20 | 20 | 20 | – | condenser_IX2-MLWCD (496), plate_96_SLAS (96) | 0.0 |
+| WA | V20 | IX-ULWCD | 0 | 96 | 35 | 20 | – | plate_96_SLAS (96), condenser_IX-ULWCD (50) | 5.66 |
 | WA | V20 | NONE (pillar tilted back) | 0 | 96 | 35 | 35 | – | plate_96_SLAS (96) | 5.66 |
 | WA | V30 | IX2-LWUCD | 0 | 22 | 20 | 20 | – | condenser_IX2-LWUCD (574), plate_96_SLAS (96) | 0.0 |
 | WA | V30 | IX2-MLWCD | 0 | 26 | 22 | 20 | – | condenser_IX2-MLWCD (448), plate_96_SLAS (96) | 0.0 |
@@ -125,9 +125,9 @@ PH = placeholder geometry is involved in every condenser/IX73 result; treat as p
 | WB | R08 | IX2-MLWCD | 0 | 0 | 15 | 15 | 0/9 | condenser_IX2-MLWCD (612) | 0.0 |
 | WB | R08 | IX-ULWCD | 96 | 96 | 35 | 15 | 9/9 | condenser_IX-ULWCD (59) | 4.83 |
 | WB | R08 | NONE (pillar tilted back) | 96 | 96 | 35 | 35 | 9/9 | none | 5.74 |
-| WB | V20 | IX2-LWUCD | 0 | 0 | 17 | 15 | 0/9 | condenser_IX2-LWUCD (786), plate_96_SLAS (96) | 0.0 |
-| WB | V20 | IX2-MLWCD | 0 | 0 | 20 | 15 | 0/9 | condenser_IX2-MLWCD (805), plate_96_SLAS (96) | 0.0 |
-| WB | V20 | IX-ULWCD | 0 | 96 | 35 | 20 | 9/9 | plate_96_SLAS (96), condenser_IX-ULWCD (47) | 5.66 |
+| WB | V20 | IX2-LWUCD | 0 | 0 | 17 | 15 | 0/9 | condenser_IX2-LWUCD (790), plate_96_SLAS (96) | 0.0 |
+| WB | V20 | IX2-MLWCD | 0 | 0 | 20 | 15 | 0/9 | condenser_IX2-MLWCD (712), plate_96_SLAS (96) | 0.0 |
+| WB | V20 | IX-ULWCD | 0 | 96 | 35 | 19 | 9/9 | plate_96_SLAS (96), condenser_IX-ULWCD (62) | 5.66 |
 | WB | V20 | NONE (pillar tilted back) | 0 | 96 | 35 | 35 | 9/9 | plate_96_SLAS (96) | 5.66 |
 | WB | V30 | IX2-LWUCD | 0 | 0 | 20 | 15 | 0/9 | condenser_IX2-LWUCD (783), plate_96_SLAS (96) | 0.0 |
 | WB | V30 | IX2-MLWCD | 0 | 0 | 20 | 15 | 0/9 | condenser_IX2-MLWCD (706), plate_96_SLAS (96) | 0.0 |
@@ -150,3 +150,58 @@ W-B: wells the stage can bring to the optical axis, per stage (needs >= 99 x 63 
 | IX3-SVR (manual) | 114 x 75 | no | 96/96 |
 | IX3-SSU (ultrasonic, motorised) | 76 x 52 | yes | 48/96 |
 | Maerzhaeuser SCAN IM for IX73 | 120 x 80 | yes | 96/96 |
+
+## 5. Safety, acceptance and load checks (issues #5-#8, #10)
+
+### 5a. Safe-Z corridor per head configuration (tip height above the stage datum)
+
+Lower = highest moving plate/stage feature + margin (stage moves only at or above it). Upper = condenser front - head top - margin. The ONE physical Z reference switch puts the tip at 'tip at ref'.
+
+| config | scope | plate | lower | upper | width | tip at reference | feasible | >= preferred width | ref inside corridor |
+|---|---|---|---|---|---|---|---|---|---|
+| R08 | V1 | 96 U-bottom (Corning 7007) | 19.35 | 22.18 | 2.83 | 22.13 | yes | yes | yes |
+| V20 | experimental | 12-well (Corning 3513) | 25.50 | 27.17 | 1.67 | 27.17 | yes | no | yes |
+| V30 | experimental | 6-well (Corning 3516) | 25.40 | 27.59 | 2.19 | 27.59 | yes | yes | yes |
+| V00 | comparison | 96 U-bottom (Corning 7007) | 19.35 | 21.75 | 2.40 | 21.70 | yes | yes | yes |
+| V45 | comparison | 96 U-bottom (Corning 7007) | 19.35 | 34.64 | 15.29 | 34.59 | yes | yes | yes |
+
+### 5b. V1 acceptance: target offset from the U-bottom centre (required <= 0.5 mm)
+
+| capillary class | largest allowed offset towards +X (mm) | meets requirement |
+|---|---|---|
+| S (OD 1.0) | 0.88 | yes |
+| M (OD 1.5) | 0.63 | yes |
+| L (OD 2.0) | 0.37 | NO |
+
+### 5c. Exported CAD head vs analytic head record (head top above tip, under the condenser)
+
+| config | CAD | analytic | difference | consistent |
+|---|---|---|---|---|
+| R08 | 51.872 | 51.872 | +0.000 | yes |
+| V20 | 46.827 | 46.827 | +0.000 | yes |
+| V30 | 46.405 | 46.405 | +0.000 | yes |
+
+### 5d. W-B stage centring tolerance (V1 plate, 99 x 63 mm well span)
+
+| stage | travel | allowed combined offset X | allowed Y | current offset (PH) | OK |
+|---|---|---|---|---|---|
+| IX3-SVR (manual) | 114 x 75 | ±7.5 | ±6.0 | 0.0, 0.0 | yes |
+| IX3-SSU (ultrasonic, motorised) | 76 x 52 | ±-11.5 | ±-5.5 | 0.0, 0.0 | NO |
+| Maerzhaeuser SCAN IM for IX73 | 120 x 80 | ±10.5 | ±8.5 | 0.0, 0.0 | yes |
+
+### 5e. Carriage moment loads (rigid body, W-B reference pose, masses APX, acceleration 0.5 m/s²)
+
+| axis | moving mass (kg) | COM offset from carriage x,y,z (mm) | static |M| x,y,z (N·m) | static + accel |M| x,y,z (N·m) | allowable (catalogue) |
+|---|---|---|---|---|---|---|
+| Z | 0.31 | -38, -0, -7 | 0.00, 0.12, 0.00 | 0.00, 0.12, 0.00 | to enter |
+| X | 1.34 | -13, -23, -20 | 0.30, 0.17, 0.00 | 0.30, 0.19, 0.02 | to enter |
+| Y | 3.95 | -180, -9, 3 | 0.35, 6.97, 0.00 | 0.36, 6.97, 0.36 | to enter |
+
+### 5f. Break-away mount vs capillary (release force at the tip: 16 N x 12.5 mm / arm)
+
+| capillary | break force at 30 mm (N) | mount release at tip (N) | protects capillary | protects plate (limit PH) |
+|---|---|---|---|---|
+| S  (100-300 um) | 0.15 | 1.67 | no | yes |
+| M  (300-600 um) | 0.50 | 1.67 | no | yes |
+| L  (600-800 um) | 1.18 | 1.67 | no | yes |
+| L' (800-1000 um) | 0.82 | 1.67 | no | yes |

@@ -23,7 +23,11 @@ The layout follows from three constraints found and quantified in this study:
 2. **A near-vertical capillary must share the optical axis with the condenser.** That fits only under a long-working-distance condenser (**IX-ULWCD, WD 73 mm → 96/96 wells** in W-B, 96/96 in W-A) or with the illumination column tilted back. The IX2-LWUCD (WD 27 mm) and IX2-MLWCD (WD 45 mm) block most positions.
 3. **Only the well on the optical axis is seen.** Observed picking of all 96 wells therefore needs the stage to move them there. Evident's IX3-SSU (76 × 52 mm) reaches only 48/96. The manual IX3-SVR (114 × 75) and 120 × 80 motorised stages reach 96/96.
 
-**Freeze gate.** The condenser outline, stage height and eyepiece envelope are placeholders, because the IX73 drawing could not be obtained. The clearances near the condenser (4.83–5 mm) are **not design evidence yet**. Nothing is frozen until M1, M3, M4, M6, M7, M8, M10, M15, M23 are measured (`docs/05_measurement_checklist.md`).
+**V1 scope.** V1 supports one plate SKU, **Corning 7007** (96-well U-bottom, no lid during picking), with the 8° head. A target is accepted within 0.5 mm of the well-bottom centre (`docs/09_workflow_D1.md`). Other plates (48-well (Corning 3548), 24-well (Corning 3524), 12-well (Corning 3513), 6-well (Corning 3516)) and their angle blocks are experimental.
+
+**Safe-Z corridor and one Z reference.** The stage moves only while the tip is inside a corridor between the moving plate/stage features and the condenser (19.35–22.18 mm for V1). One physical Z reference switch serves every head (`docs/03_architecture.md` §5).
+
+**Freeze gate.** The condenser outline, stage height and eyepiece envelope are placeholders, because no IX73, condenser or motorised-stage drawing could be retrieved. The clearances near the condenser (4.83–5 mm) are **provisional, not design evidence**. Nothing is frozen until the 10 items M1, M3, M4, M6, M7, M8, M10, M15, M19, M23 are measured (`docs/05_measurement_checklist.md`).
 
 ## Deliverables
 
@@ -53,7 +57,7 @@ The layout follows from three constraints found and quantified in this study:
 
 ## Data confidence
 
-Every dimension in `cad/params.py` carries a status. The viewer's DATA CONFIDENCE mode and the dimensioned drawings use the same colour code:
+Every dimension in `cad/params.py` carries a status (its origin) and, separately, a verification level (`params.verification()`: measured / official file / file retrieved / secondary source / search excerpt / not verified / placeholder / design). The viewer has a DATA ORIGIN mode and a VERIFICATION mode; the dimensioned drawings use the origin colour code:
 
 - **STD / MFR** (green): ANSI/SLAS standards, Evident / Corning / THK / MISUMI / Oriental data.
 - **DER / DES** (blue): derived or chosen in this study.
@@ -65,7 +69,8 @@ The network policy of the authoring session blocked Zenodo, the publishers, Evid
 ## Rebuild
 
 ```bash
-pip install build123d matplotlib
+pip install build123d matplotlib numpy markdown pytest
+python -m pytest tests     # light geometry tests (also run in CI, .github/workflows/check.yml)
 python cad/model.py        # STEP + STL + parts.json          (~10 s)
 python cad/analysis.py     # well access, light obstruction, clearance sweeps (~10 min)
 python cad/views.py        # dimensioned views + diagrams

@@ -45,11 +45,32 @@ As a consequence, every row is marked with one of these retrieval states:
 | S33 | – | FUYU FSL30: position accuracy 0.05 mm, stroke 50–300, ball screw 08xx, NEMA11/14 | https://www.directindustry.com/prod/fuyu-technology/product-197091-2126301.html | FUYU | – | distributor | EXCERPT | distributor | – | Arch. B reference | – |
 | S34 | – | NEMA 17 frame (42.3 mm flange class); HIWIN MGN12H (rail 12 mm, block W 27 mm) | https://hiwin.co.uk/wp-content/uploads/2017/05/CRD-Hiwin-Linear-guides-MG-series.pdf | NEMA / HIWIN | – | catalogue | EXCERPT for MGN12 W 27; block height **not verified** in session | yes | envelope approx | motor boxes, Arch. C | – |
 | S35 | – | T8 lead-screw conventions: Tr8×2 single-start = 2 mm lead; Tr8×8(P2) 4-start = 8 mm lead; back-drive of 4-start under load | https://reprap.org/forum/read.php?1%2C871879= ; https://www.zyltech.com/8mm-lead-screw-trapezoidal-acme-brass-anti-backlash-nut-t8x8-or-t8x2/ | community / vendor | – | forum / vendor | EXCERPT | no (community) | – | Arch. C screw spec | vendor listing agrees |
+| S36 | – | IX73P2F two-deck frame height 721 mm (vs 656 mm 1-deck, S01) | search excerpt of the IX73 specification page (manualslib p. 55 / distributor brochures); re-query on 2026-09-26 returned the 2-deck description but **not** the number | Evident (via third parties) | – | spec | EXCERPT, **unconfirmed** | would be | `IX73_H_BY_DECKS[2]` (APX) | pillar/lamp height when `IX73_DECKS = 2` | none |
+| S37 | – | Märzhäuser SCANplus IM 120 × 80 for IX53/IX73/IX83, dimension sheet (order no. 48-24-581-0000; SCAN IM 48-24-580-0000) | https://products.marzhauser.com/Datenblaetter/EN/48-24-581-0000_SCAN_IM_120_80_DICTA_EN.pdf ; https://www.highlightoptics.com/editor/file/20210415/20210415142634_7198.pdf | Märzhäuser Wetzlar | – | dimension drawing | **NOT RETRIEVED** (proxy 403, 2026-09-26) | yes | `MOTOR_STAGE_ENVELOPE` (PH) | W-B stage frame height, plan size | – |
+| S38 | – | IX bayonet (condenser/illuminator mount): about 38.8 / 47.0 mm, 7.9 mm | photomacrography forum thread (search excerpt) | community measurement | – | forum | EXCERPT | no | comment only; condenser stays a conservative Ø80 cylinder (`COND_PROFILE`) | expected narrower front nose of IX-ULWCD | – |
+
+## Origin vs verification (issue #9)
+
+Every parameter in `cad/params.py` carries two separate labels. The **status** says where the value comes from (STD standard, MFR manufacturer, DER derived, APX approximate, PH placeholder, DES design choice, MEAS measured). The **verification** says how well that origin was checked, and is computed by `params.verification()` from the retrieval state of the cited source IDs above:
+
+| Verification | Meaning |
+|---|---|
+| MEASURED | measured on the lab's instrument (`MEAS`) |
+| DIRECT_OFFICIAL | official file opened and read (none yet) |
+| FILE_RETRIEVED | file downloaded and inspected (S27, S28) |
+| SECONDARY_SOURCE | reseller or distributor page (S04) |
+| SEARCH_EXCERPT | number read from a search-engine excerpt only |
+| NOT_VERIFIED | approximate, or the cited source was not retrieved |
+| PLACEHOLDER | `PH`; must be measured |
+| DESIGN | our own design choice or a derived value |
+
+An MFR value read from a search excerpt is therefore **MFR / SEARCH_EXCERPT**, not "verified manufacturer data". The viewer colours parts by status and shows the verification level in the part tooltip.
 
 ## Not found / still to obtain (priority order)
 
 1. **IX73 dimensional drawing or STEP** (Evident; request via local Evident sales). This is the largest single uncertainty: it would replace most PH values.
 2. IX73 instruction manual AX8157 (S05). It gives the tilt-back geometry and the condenser holder range.
-3. Zenodo 14679243 STL/Inventor files (S25). They give the SpheroidPicker capillary holder and plate holder geometry.
-4. THK KR20/KR26 and MISUMI LX26 repeatability grade tables and STEP models (S30, S31). THK and MISUMI offer STEP downloads after login.
-5. Datasheet of the actual pump in the lab (Harvard Pump 11 Elite? PHD ULTRA? Tecan Cavro Centris/XLP?). It gives the footprint and the serial protocol.
+3. Märzhäuser SCANplus IM dimension sheet (S37). It gives the W-B stage frame height and plan envelope (`MOTOR_STAGE_ENVELOPE`).
+4. Zenodo 14679243 STL/Inventor files (S25). They give the SpheroidPicker capillary holder and plate holder geometry.
+5. THK KR20/KR26 and MISUMI LX26 repeatability grade tables and STEP models (S30, S31). THK and MISUMI offer STEP downloads after login.
+6. Datasheet of the actual pump in the lab (Harvard Pump 11 Elite? PHD ULTRA? Tecan Cavro Centris/XLP?). It gives the footprint and the serial protocol.

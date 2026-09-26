@@ -18,7 +18,7 @@ import time
 
 sys.path.insert(0, os.path.dirname(__file__))
 import params as p  # noqa: E402
-from model import (CONDENSER_CHOICES, VARIANTS, Z_PICK, build, head_geometry,  # noqa: E402
+from model import (CONDENSER_CHOICES, VARIANTS, Z_PICK, build, head_geometry, head_geometry_cfg,  # noqa: E402
                    posed, well_name, well_xy)
 from build123d import Compound  # noqa: E402
 
@@ -102,19 +102,21 @@ def format_angle_check(fmt, theta, exposed=None, r_cap=None, cond="IX-ULWCD", li
     hr = p.HOLDER_D.v / 2
     nose_low = nose_z - hr * math.sin(t) - h
     nose = nose_low if nose_x + hr * math.cos(t) > r_top else float("inf")
-    head_top = (L + p.HOLDER_L.v) * math.cos(t) + p.ARM_T.v / 2 + p.HEAD_TOP_ALLOW.v   # above the tip
-    lift = h + 5.0                                           # pick -> safe-Z
-    cond_front = p.cond_front_z(cond) - p.WELL_BOTTOM_Z.v    # above the focal plane (well bottom)
+    head_top = p.head_top_from_tip(theta, L)                 # tip -> highest head point (params, one definition)
+    wb = p.well_bottom_z(fmt)
+    lift = p.safe_z_lower(fmt) - wb - tz                     # pick -> corridor lower bound (stage-move height)
+    cond_front = p.cond_front_z(cond, fmt) - wb              # above the focal plane (well bottom)
     cond_clear = cond_front - (tz + lift + head_top)
     flat = "U-bottom" not in fmt
     reach = reachable_fraction(f, theta, rc_, tz) if flat else None
     blk = head_obstruction(theta, 0.3, L, tz, n=1500) if light else None
     ok = (rim >= p.RIM_MARGIN.v and nose >= p.MIN_MARGIN.v and cond_clear >= p.MIN_MARGIN.v
           and (reach is None or reach >= p.MIN_REACH.v))
-    # longest holder stack (HOLDER_L) that still keeps MIN_MARGIN under the condenser
-    hl_max = p.HOLDER_L.v + (cond_clear - p.MIN_MARGIN.v) / max(math.cos(t), 1e-6)
+    # largest nose -> head-top height (M23 quantity) that still keeps MIN_MARGIN under the condenser
+    nose_top_max = p.head_top_from_nose(theta) + (cond_clear - p.MIN_MARGIN.v)
     return dict(fmt=fmt, theta=theta, exposed=L, r_cap=rc_, tz=tz, rim=rim, nose=nose, cond=cond_clear,
-                reach=reach, block=blk, ok=ok, holder_l_max=hl_max)
+                reach=reach, block=blk, ok=ok, nose_top_max=nose_top_max,
+                nose_top=p.head_top_from_nose(theta))
 
 
 def format_angle_matrix():
@@ -182,7 +184,7 @@ def head_obstruction(theta_deg, na_c, exposed=None, tz=None, n=3000, seed=1):
     tz = p.TIP_CLEAR_BOTTOM.v if tz is None else tz
     u = np.array([math.sin(t), 0.0, math.cos(t)])
     nose = np.array([0.0, 0.0, tz]) + L * u
-    top = nose + p.HOLDER_L.v * u
+    top = nose + p.HOLDER_AXIAL_LEN.v * u
     hr = p.HOLDER_D.v / 2
     H = p.cond_front_z() - p.WELL_BOTTOM_Z.v                 # condenser front above the focal plane
     R = H * math.tan(math.asin(na_c))
@@ -192,7 +194,7 @@ def head_obstruction(theta_deg, na_c, exposed=None, tz=None, n=3000, seed=1):
     pts = s_ * ends[None, :, :]                              # (steps, rays, 3)
     # holder: distance to the axis segment nose->top
     v = pts - nose
-    proj = np.clip((v @ u), 0.0, p.HOLDER_L.v)
+    proj = np.clip((v @ u), 0.0, p.HOLDER_AXIAL_LEN.v)
     d = np.linalg.norm(v - proj[..., None] * u, axis=-1)
     hit_h = (d <= hr).any(axis=0)
     # arm: box from the holder top outboard (+X), 12 x 12 section around the holder top
@@ -295,6 +297,126 @@ def sweep(variant, condenser, workflow="WA"):
     return res
 
 
+def v1_target_check():
+    """V1 acceptance (issue #10): largest offset of the target from the U-bottom centre, towards the far
+    (+X) wall where the leaning shaft is tightest, that keeps RIM_MARGIN, per capillary class, V1 head."""
+    c = p.HEAD_CONFIGS[p.V1_HEAD]
+    f = p.PLATE_PROFILES[p.V1_PLATE]
+    t = math.radians(c["theta"])
+    out = []
+    for cls, rcap in CAP_CLASSES.items():
+        tz = max(p.TIP_CLEAR_BOTTOM.v, EDGE_MIN + rcap * math.sin(t))
+        h = f["depth"] - tz
+        r_allow = f["d_top"] / 2 - p.RIM_MARGIN.v - (h * math.tan(t) + rcap / math.cos(t))
+        out.append(dict(cls=cls, allowed_radius=r_allow, required=p.V1_TARGET_RADIUS.v,
+                        ok=r_allow >= p.V1_TARGET_RADIUS.v))
+    return out
+
+
+def head_consistency(workflow="WB"):
+    """Issue #6: exported CAD head vs the analytic head record.  Head top (max z of the head parts at
+    pick height) minus tip z must equal params.head_top_from_tip for the same configuration."""
+    from model import EXPORT_SET
+    rows = []
+    for var in EXPORT_SET[workflow]:
+        from build123d import Box, Pos
+        m = build(var, "IX-ULWCD", workflow)
+        Lw = p.layout(workflow)
+        hg = head_geometry_cfg(var)
+        # region under the condenser: from the tip to the end of the thin arm section
+        clip = Pos((hg["hold_top"][0] + Lw["thin_l"] - 60) / 2, 0, 100) * Box(hg["hold_top"][0] + Lw["thin_l"] + 60, 80, 200)
+        zmax = -1e9
+        for q in m.parts:
+            if q.group == "Z" and q.category in ("moving", "holder", "tubing", "capillary"):
+                cut = q.solid & clip
+                if cut is not None and cut.volume > 1e-6:
+                    zmax = max(zmax, cut.bounding_box().max.Z)
+        c = p.HEAD_CONFIGS[var]
+        cad = zmax - Z_PICK
+        ana = p.head_top_from_tip(c["theta"], c["exposed"])
+        rows.append(dict(cfg=var, cad=cad, analytic=ana, diff=cad - ana, ok=abs(cad - ana) < 0.05))
+    return rows
+
+
+def corridor_table():
+    rows = []
+    for k, c in p.HEAD_CONFIGS.items():
+        cr = p.corridor(k)
+        tr = p.tip_at_ref(k)
+        cr.update(scope=c["scope"], tip_at_ref=tr,
+                  ref_ok=cr["lower"] - 1e-6 <= tr <= cr["upper"] + 1e-6)
+        rows.append(cr)
+    return rows
+
+
+def stage_centering():
+    """Issue #7: largest combined offset (stage travel centre vs axis + plate holder offset) that still
+    brings all 96 well centres of the V1 plate to the optical axis, per stage."""
+    span_x = (p.N_COLS - 1) * p.WELL_PITCH.v
+    span_y = (p.N_ROWS - 1) * p.WELL_PITCH.v
+    off_x = p.STAGE_AXIS_OFFSET[0].v + p.PLATE_HOLDER_OFFSET[0].v
+    off_y = p.STAGE_AXIS_OFFSET[1].v + p.PLATE_HOLDER_OFFSET[1].v
+    rows = []
+    for name, st in p.STAGES.items():
+        ax = (st["travel"][0] - span_x) / 2
+        ay = (st["travel"][1] - span_y) / 2
+        rows.append(dict(stage=name, travel=st["travel"], allow_x=ax, allow_y=ay,
+                         current_offset=(off_x, off_y),
+                         ok=ax >= abs(off_x) and ay >= abs(off_y)))
+    return rows
+
+
+def moment_table(workflow="WB"):
+    """Issue #7: rigid-body static + acceleration moments on each carriage (reference pose, tip on axis)."""
+    import numpy as np
+    m = build(p.V1_HEAD, "IX-ULWCD", workflow)
+    L = p.layout(workflow)
+    parts = {"Y": [], "X": [], "Z": []}
+    for q in m.parts:
+        if q.group in parts:
+            key = next((k for k in p.MASS_APX if q.name.startswith(k)), None)
+            if key is None:
+                continue
+            b = q.solid.bounding_box()
+            c = np.array([(b.min.X + b.max.X) / 2, (b.min.Y + b.max.Y) / 2, (b.min.Z + b.max.Z) / 2])
+            mass = p.MASS_APX[key] if not q.name.startswith("tubing_head") else p.MASS_APX[key] / 4
+            parts[q.group].append((mass, c))
+    carried = {"Z": ["Z"], "X": ["X", "Z"], "Y": ["Y", "X", "Z"]}
+    # carriage reference points and axis directions
+    arm_z0 = head_geometry_cfg(p.V1_HEAD)["hold_top"][2] - p.ARM_HALF_HEIGHT.v
+    refs = {"Y": (np.array([L["tower_x"], L["yc0"], p.Y_ACT_Z[1]]), np.array([0, 1, 0])),
+            "X": (np.array([L["xcc"], p.X_BAND[0], sum(p.X_Z) / 2]), np.array([1, 0, 0])),
+            "Z": (np.array([L["arm_l"] - 5, 0.0, arm_z0 + 20]), np.array([0, 0, 1]))}
+    g, a = 9.81, p.ACCEL.v
+    rows = []
+    for ax, groups in carried.items():
+        items = [it for gname in groups for it in parts[gname]]
+        M = sum(mm for mm, _ in items)
+        com = sum(mm * c for mm, c in items) / M
+        ref, d = refs[ax]
+        r = (com - ref) / 1000.0                                   # m
+        m_static = np.cross(r, np.array([0, 0, -M * g]))
+        m_dyn = np.abs(np.cross(r, -M * a * d))
+        tot = np.abs(m_static) + m_dyn
+        rows.append(dict(axis=ax, mass=M, com_offset=list((com - ref).round(1)), m_static=list(np.abs(m_static).round(2)),
+                         m_total=list(tot.round(2)), max_moment=float(tot.max()),
+                         allowable=p.ALLOWABLE_MOMENTS[ax]))
+    return rows
+
+
+def breakaway_check():
+    """Issue #8: kinematic-mount release force at the tip vs capillary bending-break force."""
+    Lb = p.layout("WB")
+    release = p.BREAKAWAY_HOLD_N.v * p.BREAKAWAY_LEVER.v / Lb["arm_l"]
+    rows = []
+    for c in p.CAPILLARY_SET:
+        I = math.pi * (c["od"] ** 4 - c["id"] ** 4) / 64
+        Fb = p.GLASS_STRENGTH.v * I / (c["od"] / 2 * p.CAP_EXPOSED.v)
+        rows.append(dict(cls=c["name"].strip(), od=c["od"], id=c["id"], break_n=Fb, release_n=release,
+                         capillary_protected=release < Fb, plate_protected=release < p.PLATE_FORCE_LIMIT.v))
+    return rows
+
+
 def params_hash():
     """Hash of the inputs that change analysis results (params.py + model.py + analysis.py)."""
     import hashlib
@@ -371,9 +493,15 @@ if __name__ == "__main__":
             print(f"{wf} {var:4s} {cond:28s} pick ok {s['pick']['ok']:3d}/96  safe ok {s['safe']['ok']:3d}/96 "
                   f" grid_safe {s['grid_safe']['ok']}/35 grid_top {s['grid_top']['ok']}/35  "
                   f"minclear(pick)={s['pick']['min_clear']} {s['pick']['worst_pair']}  [{time.time()-t0:.0f}s]")
+    out["v1_target"] = v1_target_check()
+    out["head_consistency"] = head_consistency()
+    out["corridors"] = corridor_table()
+    out["stage_centering"] = stage_centering()
+    out["moments"] = moment_table()
+    out["breakaway"] = breakaway_check()
     out["params_hash"] = params_hash()
     with open(os.path.join(OUT, "analysis.json"), "w") as f:
-        json.dump(out, f, indent=1, default=lambda o: None)
+        json.dump(out, f, indent=1, default=lambda o: float(o) if hasattr(o, '__float__') else None)
 
     # markdown tables
     L = ["<!-- generated by cad/analysis.py - do not edit by hand -->",
@@ -403,8 +531,9 @@ if __name__ == "__main__":
         L.append(f"| {r['fmt']} | {r['theta']:.0f}° | {r['tz']:.2f} | {r['rim']:.2f} | {nose} | {r['cond']:.1f} | {reach} | "
                  f"{r['block']:.0%} | {'yes' if r['ok'] else 'no'} |")
     L += ["", "Recommended angle block and exposed length per plate and capillary class "
-          f"(max holder stack = longest HOLDER_L that keeps {p.MIN_MARGIN.v} mm under the condenser):", "",
-          "| plate | class | block | exposed | tz (mm) | rim | condenser at safe-Z | reachable | light blocked | max holder stack (mm) | note |",
+          f"(max nose-to-head-top = largest M23 value that keeps {p.MIN_MARGIN.v} mm under the condenser; model value "
+          f"{p.head_top_from_nose(8.0):.1f} mm at 8°):", "",
+          "| plate | class | block | exposed | tz (mm) | rim | condenser at safe-Z | reachable | light blocked | max nose-to-head-top (mm) | note |",
           "|---|---|---|---|---|---|---|---|---|---|---|"]
     for key, r in out["format_angle"]["recommended"].items():
         fmt, cls = key.split("|")
@@ -413,7 +542,7 @@ if __name__ == "__main__":
             continue
         reach = "centre (U)" if r["reach"] is None else f"{r['reach']:.0%}"
         L.append(f"| {fmt} | {cls} | {r['theta']:.0f}° | {r['exposed']:.0f} mm | {r['tz']:.2f} | {r['rim']:.2f} | {r['cond']:.1f} | "
-                 f"{reach} | {r['block']:.0%} | {r['holder_l_max']:.1f} | {r.get('note', '')} |")
+                 f"{reach} | {r['block']:.0%} | {r['nose_top_max']:.1f} | {r.get('note', '')} |")
     L += ["", "## 2. Transmitted light blocked by the head (holder Ø10 + 12 mm arm, ray test; capillary ignored)", "",
           "| angle | condenser NA used | cone radius at holder nose (mm) | holder offset (mm) | blocked fraction |",
           "|---|---|---|---|---|"]
@@ -451,6 +580,43 @@ if __name__ == "__main__":
           "| stage | travel X x Y (mm) | motorised | wells reachable on the axis |", "|---|---|---|---|"]
     for sname, st in out["d1"]["WB"]["stages"].items():
         L.append(f"| {sname} | {st['travel'][0]:.0f} x {st['travel'][1]:.0f} | {'yes' if st['motorised'] else 'no'} | {st['wells_to_axis']}/96 |")
+    L += ["", "## 5. Safety, acceptance and load checks (issues #5-#8, #10)", "",
+          "### 5a. Safe-Z corridor per head configuration (tip height above the stage datum)", "",
+          "Lower = highest moving plate/stage feature + margin (stage moves only at or above it). Upper = condenser "
+          "front - head top - margin. The ONE physical Z reference switch puts the tip at 'tip at ref'.", "",
+          "| config | scope | plate | lower | upper | width | tip at reference | feasible | >= preferred width | ref inside corridor |",
+          "|---|---|---|---|---|---|---|---|---|---|"]
+    for r in out["corridors"]:
+        L.append(f"| {r['cfg']} | {r['scope']} | {r['plate']} | {r['lower']:.2f} | {r['upper']:.2f} | {r['width']:.2f} | "
+                 f"{r['tip_at_ref']:.2f} | {'yes' if r['feasible'] else 'NO'} | {'yes' if r['preferred'] else 'no'} | "
+                 f"{'yes' if r['ref_ok'] else 'NO'} |")
+    L += ["", f"### 5b. V1 acceptance: target offset from the U-bottom centre (required <= {p.V1_TARGET_RADIUS.v} mm)", "",
+          "| capillary class | largest allowed offset towards +X (mm) | meets requirement |", "|---|---|---|"]
+    for r in out["v1_target"]:
+        L.append(f"| {r['cls']} | {r['allowed_radius']:.2f} | {'yes' if r['ok'] else 'NO'} |")
+    L += ["", "### 5c. Exported CAD head vs analytic head record (head top above tip, under the condenser)", "",
+          "| config | CAD | analytic | difference | consistent |", "|---|---|---|---|---|"]
+    for r in out["head_consistency"]:
+        L.append(f"| {r['cfg']} | {r['cad']:.3f} | {r['analytic']:.3f} | {r['diff']:+.3f} | {'yes' if r['ok'] else 'NO'} |")
+    L += ["", "### 5d. W-B stage centring tolerance (V1 plate, 99 x 63 mm well span)", "",
+          "| stage | travel | allowed combined offset X | allowed Y | current offset (PH) | OK |", "|---|---|---|---|---|---|"]
+    for r in out["stage_centering"]:
+        L.append(f"| {r['stage']} | {r['travel'][0]:.0f} x {r['travel'][1]:.0f} | ±{r['allow_x']:.1f} | ±{r['allow_y']:.1f} | "
+                 f"{r['current_offset'][0]:.1f}, {r['current_offset'][1]:.1f} | {'yes' if r['ok'] else 'NO'} |")
+    L += ["", f"### 5e. Carriage moment loads (rigid body, W-B reference pose, masses APX, acceleration {p.ACCEL.v} m/s²)", "",
+          "| axis | moving mass (kg) | COM offset from carriage x,y,z (mm) | static |M| x,y,z (N·m) | static + accel |M| x,y,z (N·m) | allowable (catalogue) |",
+          "|---|---|---|---|---|---|---|"]
+    for r in out["moments"]:
+        L.append(f"| {r['axis']} | {r['mass']:.2f} | {', '.join(f'{v:.0f}' for v in r['com_offset'])} | "
+                 f"{', '.join(f'{v:.2f}' for v in r['m_static'])} | {', '.join(f'{v:.2f}' for v in r['m_total'])} | "
+                 f"{r['allowable'] if r['allowable'] else 'to enter'} |")
+    L += ["", f"### 5f. Break-away mount vs capillary (release force at the tip: {p.BREAKAWAY_HOLD_N.v:.0f} N x "
+          f"{p.BREAKAWAY_LEVER.v} mm / arm)", "",
+          "| capillary | break force at 30 mm (N) | mount release at tip (N) | protects capillary | protects plate (limit PH) |",
+          "|---|---|---|---|---|"]
+    for r in out["breakaway"]:
+        L.append(f"| {r['cls']} | {r['break_n']:.2f} | {r['release_n']:.2f} | {'yes' if r['capillary_protected'] else 'no'} | "
+                 f"{'yes' if r['plate_protected'] else 'no'} |")
     with open(os.path.join(DOCS, "generated_analysis_tables.md"), "w") as f:
         f.write("\n".join(L) + "\n")
     print("total", time.time() - t0)
