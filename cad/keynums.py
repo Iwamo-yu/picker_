@@ -23,6 +23,12 @@ def keynums():
     k["ARM_T_TXT"] = f"{p.ARM_T.v:.0f} × {p.ARM_T.v:.0f} mm"
     k.update(PLATE_H=p.PLATE_H.v, SAFE_Z=p.SAFE_Z_TIP.v, COND_D=p.COND_D.v, COND_R=p.COND_D.v / 2,
              STAGE_TOP=p.STAGE_TOP_ABOVE_TABLE.v, FOV=p.FOV_4X.v, IX73_HALF_W=p.IX73_W.v / 2)
+    import model as mdl
+    k["BEAM_Z0"], k["BEAM_Z1"] = mdl.BEAM_Z
+    k["XSB_Z0"], k["XSB_Z1"] = mdl.XSB_Z
+    k["Z_PICK"] = mdl.Z_PICK
+    k["BEAM_ABOVE_TABLE"] = mdl.BEAM_Z[0] + p.STAGE_TOP_ABOVE_TABLE.v
+    k["WB_Y_BEAM_LEN"] = p.layout("WB")["post_y"][1] - p.layout("WB")["post_y"][0] + 80
     an = json.load(open(os.path.join(OUT, "analysis.json")))
     k["MAX_ANGLE"] = an["max_angle_centre_deg"]
     for w in an["well_access"]:

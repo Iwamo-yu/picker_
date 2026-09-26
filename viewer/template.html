@@ -335,5 +335,24 @@ const h = (location.hash||"").replace("#","");
 if (h.includes("render")) document.body.classList.add("render-only");
 bg(); syncButtons(); applyColours(); applyVisibility(); applyPose(); renderTable();
 setView(["top","front","side","head"].find(v=>h.includes(v)) || "iso");
+// assembly-step mode (#stepN): parts of steps <= N, current step highlighted
+const sm = h.match(/step(\d+)/);
+if (sm){
+  const N = +sm[1];
+  document.body.classList.add("render-only");
+  const rx = s => new RegExp(s);
+  const stepOf = key => { if (!key.startsWith("WB__")) return 0;
+    const k = key.slice(4); for (const st of DATA.steps) if (st.parts.some(r=>rx(r).test(k))) return st.n; return 99; };
+  for (const m of meshes){
+    const d = m.userData, st = stepOf(d.key);
+    if (d.workflow==="all"){ m.visible = m.visible && d.category!=="zone"; if (m.visible && d.category!=="plate" && d.category!=="condenser") m.material.color.setHex(0xd5dadc); continue; }
+    if (d.category==="zone"){ m.visible=false; continue; }
+    if (d.workflow!=="WB"){ m.visible=false; continue; }
+    if (d.group==="Z" && d.variant!=="R08"){ m.visible=false; continue; }
+    m.visible = st <= N;
+    if (st === N) m.material.color.setHex(0xe8792b);
+  }
+  persp.position.set(640,-620,430); controls.target.set(170,0,50); controls.update();
+}
 (function loop(){ requestAnimationFrame(loop); controls.update(); renderer.render(scene, camera); })();
 </script>

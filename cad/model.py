@@ -197,7 +197,7 @@ def build(variant="R08", condenser="IX-ULWCD", workflow=p.DEFAULT_WORKFLOW) -> M
     m.add("base_plate", box(bx0, bx1, POST_Y[0] - 70, POST_Y[1] + 70, T, T + 15), "frame", "DES",
           note="15 mm Al plate bolted to table (M25 hole grid)")
     for i, py in enumerate(POST_Y):
-        m.add(f"post_{i}", box(TOWER_X - 40, TOWER_X + 40, py - 40, py + 40, T + 15, BEAM_Z[1]),
+        m.add(f"post_{i}", box(TOWER_X - 40, TOWER_X + 40, py - 40, py + 40, T + 15, BEAM_Z[0]),
               "frame", "APX", note="80x80 extrusion/column")
         m.add(f"post_brace_{i}", rod((TOWER_X + 40, py, T + 20), (TOWER_X + 88, py, T + 170), 8),
               "frame", "APX")
