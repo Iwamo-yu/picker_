@@ -232,7 +232,7 @@ def build(variant="R08", condenser="IX-ULWCD", workflow=p.DEFAULT_WORKFLOW) -> M
     yc0 = sum(X_BAND) / 2
     y_lo = LY["y_lo"]
     m.add("Y_actuator_body", box(TOWER_X - 13, TOWER_X + 13, y_lo, y_lo + Y_BODY_L, *Y_ACT_Z),
-          "actuator", "APX", note="100 mm stroke, ball-screw, width-26 class")
+          "actuator", "APX", note=f"{LY['stroke_y']:.0f} mm catalogue stroke (tip travel {LY['travel_y']:.0f} mm), ball-screw, width-26 class")
     m.add("Y_motor", box(TOWER_X - 21, TOWER_X + 21, y_lo + Y_BODY_L, y_lo + Y_BODY_L + p.NEMA17_L.v,
                          Y_ACT_Z[0] - 6, Y_ACT_Z[0] + 36), "motor", "APX")
     m.add("Y_home_switch", box(TOWER_X + 14, TOWER_X + 24, y_lo + 2, y_lo + 14, Y_ACT_Z[0], Y_ACT_Z[0] + 10),
@@ -257,7 +257,7 @@ def build(variant="R08", condenser="IX-ULWCD", workflow=p.DEFAULT_WORKFLOW) -> M
     m.add("X_support_beam", box(x_lo - 5, TOWER_X + 25, XSB_BAND[0], XSB_BAND[1], *XSB_Z),
           "frame", "APX", group="Y", note="stiff box section carrying the X actuator")
     m.add("X_actuator_body", box(x_lo, x_hi, X_BAND[0], X_BAND[1], *X_Z), "actuator", "APX", group="Y",
-          note="150 mm stroke, ball-screw, width-26 class, table facing -Y")
+          note=f"{LY['stroke_x']:.0f} mm catalogue stroke (tip travel {LY['travel_x']:.0f} mm), ball-screw, width-26 class, table facing -Y")
     m.add("X_motor", box(x_hi, x_hi + p.NEMA17_L.v, X_BAND[0] - 8, X_BAND[1] + 8,
                          X_Z[0] - 6, X_Z[0] + 36), "motor", "APX", group="Y")
     m.add("X_home_switch", box(x_hi - 12, x_hi, X_BAND[1], X_BAND[1] + 8, X_Z[0], X_Z[0] + 10),
@@ -272,7 +272,7 @@ def build(variant="R08", condenser="IX-ULWCD", workflow=p.DEFAULT_WORKFLOW) -> M
     m.add("X_carriage_bracket", box(xcc - 25, xcc + 25, ZB_W / 2, X_BAND[0], X_Z[0], X_Z[1]),
           "actuator", "APX", group="X")
     m.add("Z_actuator_body", box(zx0, zx0 + ZB_D, -ZB_W / 2, ZB_W / 2, z_lo, z_hi),
-          "actuator", "APX", group="X", note="50 mm stroke, lead 1 mm ball screw or TR8x2")
+          "actuator", "APX", group="X", note=f"{LY['stroke_z']:.0f} mm catalogue stroke (tip travel {LY['travel_z']:.0f} mm), lead 1 mm ball screw or TR8x2")
     m.add("Z_motor", box(zx0 - 6, zx0 + 36, -21, 21, z_hi, z_hi + p.NEMA17_L.v), "motor", "APX", group="X")
     m.add("Z_home_switch_top", box(zx0 + ZB_D, zx0 + ZB_D + 8, -5, 5, z_hi - 14, z_hi - 2),
           "switch", "DES", group="X", note="top limit (not the homing reference)")
@@ -291,7 +291,7 @@ def build(variant="R08", condenser="IX-ULWCD", workflow=p.DEFAULT_WORKFLOW) -> M
           "moving", "APX", group="Z")
     # kinematic magnetic break-away interface (concept)
     m.add("breakaway_kinematic_mount", box(zx0 - 22, zx0 - 10, -15, 15, arm_z0 - 5, arm_z0 + 30),
-          "moving", "DES", group="Z", note="3-ball kinematic + magnet preload: collision fuse")
+          "moving", "DES", group="Z", note="3-ball kinematic + magnet preload: kinematic repositioner after a crash; NOT a capillary force limiter (docs/06)")
     # dog-leg arm: thin section under condenser (first 120 mm), deep section outboard
     thin_end = ht[0] + LY["thin_l"]  # covers |tip_x min| + condenser radius + margin
     m.add("arm_thin", box(ht[0] - 6, thin_end, -ARM_T / 2, ARM_T / 2, arm_z0, arm_z0 + ARM_T),

@@ -13,6 +13,10 @@ def test_v1_plate_frozen():
     assert [n for n, g in p.PLATE_PROFILES.items() if g["scope"] == "V1"] == [p.V1_PLATE]
 
 
+def test_v1_target_radius_single_source():
+    assert p.PLATE_PROFILES[p.V1_PLATE]["target"]["radius"] == p.V1_TARGET_RADIUS.v
+
+
 def test_max_angle_corning_7007():
     import analysis
     assert abs(analysis.max_angle_centre() - 14.8) < 0.1

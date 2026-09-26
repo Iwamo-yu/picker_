@@ -61,6 +61,8 @@ N_COLS, N_ROWS = 12, 8
 # Plate profiles.  height = plate top above the stage datum; bottom = "U" | "flat".
 # scope: "V1" = frozen for the first prototype; "experimental" = kept for later, not a V1 requirement.
 # target: where in the well the object must be pickable (acceptance test).
+# V1 acceptance radius: the single source of truth; the V1 plate profile's target refers to it.
+V1_TARGET_RADIUS = P(0.5, "DES", "", "V1 acceptance: spheroid pickable when within this radius of the U-bottom centre (confirm from real samples)")
 PLATE_PROFILES = {
     "96 U-bottom (Corning 7007)": dict(
         manufacturer="Corning", sku="7007", bottom="U", rows=8, cols=12,
@@ -68,8 +70,8 @@ PLATE_PROFILES = {
         status="MFR", src="S13",
         drawing="Corning 7007 product description PDF (rev. 2026-02-09) + SLAS 2-2004 height; search excerpts",
         lid="removed during picking", scope="V1",
-        target=dict(kind="bottom centre", radius=1.0,
-                    note="one spheroid settled at the U-bottom centre, within 1.0 mm of the well axis")),
+        target=dict(kind="bottom centre", radius=V1_TARGET_RADIUS.v,
+                    note=f"one spheroid settled at the U-bottom centre, within {V1_TARGET_RADIUS.v} mm of the well axis")),
     "48-well (Corning 3548)": dict(manufacturer="Corning", sku="3548", bottom="flat", rows=6, cols=8,
         d_top=11.56, d_bot=11.05, depth=17.4, pitch=13.08, height=None, status="MFR", src="S16",
         drawing="Corning dimension sheet (search excerpt)", lid="removed", scope="experimental",
@@ -284,7 +286,6 @@ XSB_Z = (180.0, 260.0)        # X support beam, 40 wide x 80 tall
 X_BAND = (24.0, 50.0)         # X actuator y-band
 XSB_BAND = (24.0, 64.0)       # X support beam y-band (40 mm)
 # ---------------------------------------------------------------- V1 acceptance, stage centring, loads, safety
-V1_TARGET_RADIUS = P(0.5, "DES", "", "V1 acceptance: spheroid pickable when within this radius of the U-bottom centre (confirm from real samples)")
 STAGE_SELECTED = "Maerzhaeuser SCAN IM for IX73"
 STAGE_AXIS_OFFSET = (P(0.0, "PH", "", "stage travel centre vs optical axis, X (M4)"), P(0.0, "PH", "", "Y (M4)"))
 PLATE_HOLDER_OFFSET = (P(0.0, "PH", "", "plate centre vs stage insert centre, X (M3)"), P(0.0, "PH", "", "Y (M3)"))

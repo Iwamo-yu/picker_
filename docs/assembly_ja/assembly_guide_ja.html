@@ -55,7 +55,7 @@ a{color:var(--accent)}
 
 <main>
 <header style="display:grid;gap:10px">
-  <div class="meta"><span>picker_ / 第1段階(配置検討)</span><span>更新: 2026-09-26 · bbbae37</span><span>未実測の仮値: 19 件</span><span>前提ワークフロー: W-B(ステージが各ウェルを光軸へ運ぶ)</span><span>数値は cad/params.py から自動生成</span></div>
+  <div class="meta"><span>picker_ / 第1段階(配置検討)</span><span>更新: 2026-09-26 · 74d1d51</span><span>未実測の仮値: 19 件</span><span>前提ワークフロー: W-B(ステージが各ウェルを光軸へ運ぶ)</span><span>数値は cad/params.py から自動生成</span></div>
   <h1>IX73 キャピラリピッカー 組立手順書</h1>
   <p class="lede">IX73 の右側に独立した架台を置き、XYZ ピッカーを組み立てて調整するまでの流れを、図と文章で示します。現時点の部品は外形だけの概念モデルで、型番は決まっていません。<b>赤い【要実測】の値を測って入力するまで、ブラケット設計や部品発注に進まないでください。</b></p>
   <div class="legend">
@@ -329,6 +329,6 @@ a{color:var(--accent)}
   <p>この手順書は <code>cad/params.py</code> から自動で作られます。実測値や部品が決まったら、<code>params.py</code> の該当する値を書き換え、状態を <code>PH</code> から <code>MEAS</code> や <code>MFR</code> に変えてください。そのうえで <code>python tools/build_all.py</code> を実行すると、CAD、干渉チェック、図、英語の文書、この手順書の数値と図がまとめて更新されます。仮の値の一覧も自動で短くなります。</p>
   <p>文章そのものを直すときは、<code>docs/assembly_ja/guide.src.html</code> を編集します。生成された <code>assembly_guide_ja.html</code> は直接編集しないでください。</p>
   <h3>最近の変更</h3>
-  <ul><li>2026-09-26: Merge pull request #3 from Iwamo-yu/claude/zen-hopper-eyc1eb</li><li>2026-09-26: Address full review: Z reference homing, head-top allowance, per-class angle blocks</li><li>2026-09-26: Add pre-assembly action list, parts candidates; fix doc inconsistencies</li><li>2026-09-26: Merge remote-tracking branch &#x27;origin/main&#x27; into claude/zen-hopper-eyc1eb</li><li>2026-09-26: Plate formats (6-96 well) with exchangeable angle blocks; auto-updating guide</li><li>2026-09-26: Merge pull request #2 from Iwamo-yu/claude/zen-hopper-eyc1eb</li><li>2026-09-26: Add Japanese assembly guide with step renders and measurement-point figure</li><li>2026-09-26: D1 workflow comparison (stage-fixed vs stage-moving) and single source of truth</li></ul>
+  <ul><li>2026-09-26: Address issues #4-#10: V1 plate freeze, safe-Z corridor, head consistency, provenance, CI</li><li>2026-09-26: Merge pull request #3 from Iwamo-yu/claude/zen-hopper-eyc1eb</li><li>2026-09-26: Address full review: Z reference homing, head-top allowance, per-class angle blocks</li><li>2026-09-26: Add pre-assembly action list, parts candidates; fix doc inconsistencies</li><li>2026-09-26: Merge remote-tracking branch &#x27;origin/main&#x27; into claude/zen-hopper-eyc1eb</li><li>2026-09-26: Plate formats (6-96 well) with exchangeable angle blocks; auto-updating guide</li><li>2026-09-26: Merge pull request #2 from Iwamo-yu/claude/zen-hopper-eyc1eb</li><li>2026-09-26: Add Japanese assembly guide with step renders and measurement-point figure</li></ul>
 </section>
 </main>

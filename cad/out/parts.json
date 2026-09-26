@@ -109,7 +109,7 @@
    "group": "fixed",
    "workflow": "WA",
    "variant": "all",
-   "note": "100 mm stroke, ball-screw, width-26 class",
+   "note": "100 mm catalogue stroke (tip travel 100 mm), ball-screw, width-26 class",
    "ver": "NOT_VERIFIED"
   },
   "WA__Y_motor": {
@@ -199,7 +199,7 @@
    "group": "Y",
    "workflow": "WA",
    "variant": "all",
-   "note": "150 mm stroke, ball-screw, width-26 class, table facing -Y",
+   "note": "150 mm catalogue stroke (tip travel 150 mm), ball-screw, width-26 class, table facing -Y",
    "ver": "NOT_VERIFIED"
   },
   "WA__X_motor": {
@@ -249,7 +249,7 @@
    "group": "X",
    "workflow": "WA",
    "variant": "all",
-   "note": "50 mm stroke, lead 1 mm ball screw or TR8x2",
+   "note": "80 mm catalogue stroke (tip travel 50 mm), lead 1 mm ball screw or TR8x2",
    "ver": "NOT_VERIFIED"
   },
   "WA__Z_motor": {
@@ -309,7 +309,7 @@
    "group": "Z",
    "workflow": "WA",
    "variant": "R08",
-   "note": "3-ball kinematic + magnet preload: collision fuse",
+   "note": "3-ball kinematic + magnet preload: kinematic repositioner after a crash; NOT a capillary force limiter (docs/06)",
    "ver": "DESIGN"
   },
   "WA__R08__arm_thin": {
@@ -569,7 +569,7 @@
    "group": "Z",
    "workflow": "WA",
    "variant": "V00",
-   "note": "3-ball kinematic + magnet preload: collision fuse",
+   "note": "3-ball kinematic + magnet preload: kinematic repositioner after a crash; NOT a capillary force limiter (docs/06)",
    "ver": "DESIGN"
   },
   "WA__V00__arm_thin": {
@@ -679,7 +679,7 @@
    "group": "Z",
    "workflow": "WA",
    "variant": "V20",
-   "note": "3-ball kinematic + magnet preload: collision fuse",
+   "note": "3-ball kinematic + magnet preload: kinematic repositioner after a crash; NOT a capillary force limiter (docs/06)",
    "ver": "DESIGN"
   },
   "WA__V20__arm_thin": {
@@ -789,7 +789,7 @@
    "group": "Z",
    "workflow": "WA",
    "variant": "V30",
-   "note": "3-ball kinematic + magnet preload: collision fuse",
+   "note": "3-ball kinematic + magnet preload: kinematic repositioner after a crash; NOT a capillary force limiter (docs/06)",
    "ver": "DESIGN"
   },
   "WA__V30__arm_thin": {
@@ -899,7 +899,7 @@
    "group": "Z",
    "workflow": "WA",
    "variant": "V45",
-   "note": "3-ball kinematic + magnet preload: collision fuse",
+   "note": "3-ball kinematic + magnet preload: kinematic repositioner after a crash; NOT a capillary force limiter (docs/06)",
    "ver": "DESIGN"
   },
   "WA__V45__arm_thin": {
@@ -1059,7 +1059,7 @@
    "group": "fixed",
    "workflow": "WB",
    "variant": "all",
-   "note": "100 mm stroke, ball-screw, width-26 class",
+   "note": "50 mm catalogue stroke (tip travel 30 mm), ball-screw, width-26 class",
    "ver": "NOT_VERIFIED"
   },
   "WB__Y_motor": {
@@ -1149,7 +1149,7 @@
    "group": "Y",
    "workflow": "WB",
    "variant": "all",
-   "note": "150 mm stroke, ball-screw, width-26 class, table facing -Y",
+   "note": "110 mm catalogue stroke (tip travel 100 mm), ball-screw, width-26 class, table facing -Y",
    "ver": "NOT_VERIFIED"
   },
   "WB__X_motor": {
@@ -1199,7 +1199,7 @@
    "group": "X",
    "workflow": "WB",
    "variant": "all",
-   "note": "50 mm stroke, lead 1 mm ball screw or TR8x2",
+   "note": "80 mm catalogue stroke (tip travel 50 mm), lead 1 mm ball screw or TR8x2",
    "ver": "NOT_VERIFIED"
   },
   "WB__Z_motor": {
@@ -1259,7 +1259,7 @@
    "group": "Z",
    "workflow": "WB",
    "variant": "R08",
-   "note": "3-ball kinematic + magnet preload: collision fuse",
+   "note": "3-ball kinematic + magnet preload: kinematic repositioner after a crash; NOT a capillary force limiter (docs/06)",
    "ver": "DESIGN"
   },
   "WB__R08__arm_thin": {
@@ -1519,7 +1519,7 @@
    "group": "Z",
    "workflow": "WB",
    "variant": "V20",
-   "note": "3-ball kinematic + magnet preload: collision fuse",
+   "note": "3-ball kinematic + magnet preload: kinematic repositioner after a crash; NOT a capillary force limiter (docs/06)",
    "ver": "DESIGN"
   },
   "WB__V20__arm_thin": {
@@ -1629,7 +1629,7 @@
    "group": "Z",
    "workflow": "WB",
    "variant": "V30",
-   "note": "3-ball kinematic + magnet preload: collision fuse",
+   "note": "3-ball kinematic + magnet preload: kinematic repositioner after a crash; NOT a capillary force limiter (docs/06)",
    "ver": "DESIGN"
   },
   "WB__V30__arm_thin": {
