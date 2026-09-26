@@ -55,7 +55,7 @@ a{color:var(--accent)}
 
 <main>
 <header style="display:grid;gap:10px">
-  <div class="meta"><span>picker_ / 第1段階(配置検討)</span><span>前提ワークフロー: W-B(ステージが各ウェルを光軸へ運ぶ)</span><span>数値は cad/params.py から自動生成</span></div>
+  <div class="meta"><span>picker_ / 第1段階(配置検討)</span><span>更新: {{BUILD_INFO}}</span><span>未実測の仮値: {{PH_COUNT}} 件</span><span>前提ワークフロー: W-B(ステージが各ウェルを光軸へ運ぶ)</span><span>数値は cad/params.py から自動生成</span></div>
   <h1>IX73 キャピラリピッカー 組立手順書</h1>
   <p class="lede">IX73 の右側に独立した架台を置き、XYZ ピッカーを組み立てて調整するまでの流れを、図と文章で示します。現時点の部品は外形だけの概念モデルで、型番は決まっていません。<b>赤い【要実測】の値を測って入力するまで、ブラケット設計や部品発注に進まないでください。</b></p>
   <div class="legend">
@@ -70,10 +70,12 @@ a{color:var(--accent)}
     <li><a href="#s0">全体像</a></li>
     <li><a href="#s1">組立前の実測</a></li>
     <li><a href="#s2">用意するもの</a></li>
+    <li><a href="#s2b">プレートと角度ブロック</a></li>
     <li><a href="#s3">組立工程 1–10</a></li>
     <li><a href="#s4">立ち上げと校正</a></li>
     <li><a href="#s5">安全の決まりごと</a></li>
     <li><a href="#s6">まだ決まっていないこと</a></li>
+    <li><a href="#s7">この手順書の更新</a></li>
   </ol>
 </nav>
 
@@ -122,6 +124,24 @@ a{color:var(--accent)}
       <tr><td>顕微鏡側</td><td>IX-ULWCD コンデンサ、電動 XY ステージ(移動量 99 × 63 mm 以上。IX3-SSU は不足)</td><td>手元の機材を先に確認する</td></tr>
     </tbody>
   </table></div>
+</section>
+
+<section id="s2b">
+  <h2>プレートと角度ブロック</h2>
+  <p>キャピラリの角度は、交換式の角度ブロック({{ANGLE_BLOCKS_TXT}})で変えます。ブロックはキネマティックマウントとホルダーの間に入れ、ピン 2 本とねじ 1 本で固定します。ウェルに入れるキャピラリの長さ(露出長)は、コレットの深さストップで合わせます。</p>
+  <figure><img src="{{IMG:formats_angle_blocks.png}}" alt="プレート形式ごとの角度ブロックと露出長の断面図"><figcaption>先端をウェル底の中央に置いたときの断面。紫線はコンデンサ下端、点線は安全高さ(ウェル縁 + 5 mm)。</figcaption></figure>
+  <div class="tbl"><table>
+    <thead><tr><th>プレート</th><th>角度ブロック</th><th>露出長</th><th>ウェル縁との余裕</th><th>コンデンサとの余裕(安全高さ)</th><th>透過光の遮り</th></tr></thead>
+    <tbody>
+      <tr><td>96-well U 底(Corning 7007)</td><td>{{FMT96_ANGLE:.0f}}°</td><td>{{FMT96_EXP:.0f}} mm</td><td>{{FMT96_RIM:.2f}} mm</td><td>{{FMT96_COND:.1f}} mm</td><td>{{FMT96_BLOCK:.0f}} %</td></tr>
+      <tr><td>48-well(Corning 3548)</td><td>{{FMT48_ANGLE:.0f}}°</td><td>{{FMT48_EXP:.0f}} mm</td><td>{{FMT48_RIM:.2f}} mm</td><td>{{FMT48_COND:.1f}} mm</td><td>{{FMT48_BLOCK:.0f}} %</td></tr>
+      <tr><td>24-well(Corning 3524)</td><td>{{FMT24_ANGLE:.0f}}°</td><td>{{FMT24_EXP:.0f}} mm</td><td>{{FMT24_RIM:.2f}} mm</td><td>{{FMT24_COND:.1f}} mm</td><td>{{FMT24_BLOCK:.0f}} %</td></tr>
+      <tr><td>12-well(Corning 3513)</td><td>{{FMT12_ANGLE:.0f}}°</td><td>{{FMT12_EXP:.0f}} mm</td><td>{{FMT12_RIM:.2f}} mm</td><td>{{FMT12_COND:.1f}} mm</td><td>{{FMT12_BLOCK:.0f}} %</td></tr>
+      <tr><td>6-well(Corning 3516)</td><td>{{FMT6_ANGLE:.0f}}°</td><td>{{FMT6_EXP:.0f}} mm</td><td>{{FMT6_RIM:.2f}} mm</td><td>{{FMT6_COND:.1f}} mm</td><td>{{FMT6_BLOCK:.0f}} %</td></tr>
+    </tbody>
+  </table></div>
+  <p style="margin-top:10px">大きいウェルほど角度を急にでき、ホルダーが光路から外れて像が明るくなります。一方、6〜48-well は深さが約 17.4 mm あり、96-well より 6 mm 深いぶん、安全高さまで上げたときにヘッドがコンデンサへ近づきます。露出長と角度はこの二つの兼ね合いで決めています。45° は、どのプレートでも縁かプレート上面に近すぎるため用意しません。</p>
+  <div class="box"><p style="margin:0"><b>ブロックを交換する手順。</b>ヘッドを待避位置(X +{{WB_X_MAX}} mm、Z 上端)に動かし、キャピラリを外してからブロックを差し替えます。露出長を合わせてキャピラリを付け直し、3 点校正をやり直します。コンデンサとの余裕は仮の外形で計算した値なので、M6 と M8 を測ったあとに見直します。<span class="chip meas">要実測</span></p></div>
 </section>
 
 <section id="s3" style="display:grid;gap:16px">
@@ -210,7 +230,7 @@ a{color:var(--accent)}
       <ol>
         <li>Z キャリッジにキネマティックマウント(3 球 + 磁石)を付け、アームを載せます。</li>
         <li>アームの薄い部分({{ARM_T_TXT}}、長さ {{WB_THIN_L}} mm)がコンデンサの下に入り、先端のホルダーが光軸の真上に来ます。</li>
-        <li>ホルダーの傾きを 8° にしてロックします(調整範囲 0–12°)。</li>
+        <li>使うプレートに合う角度ブロック({{ANGLE_BLOCKS_TXT}})を入れて固定します。96-well なら {{FMT96_ANGLE:.0f}}° です(「プレートと角度ブロック」の表を参照)。</li>
         <li>Z を上端にしたままステージを動かさず、アームがコンデンサに当たらない高さか目視で確認します。</li>
       </ol>
       <ul><li><span class="chip meas">要実測</span> M8 ピント状態でのコンデンサ下端の高さ。余裕が 5 mm を切るならアームを薄くするか、照明支柱を倒す案に切り替えます。</li></ul>
@@ -249,7 +269,7 @@ a{color:var(--accent)}
     <div>
       <ol>
         <li>Z を上端、X を +{{WB_X_MAX}} mm の待避位置へ動かします。コンデンサの外で作業します。</li>
-        <li>対象サイズに合うコレットインサートを入れ、キャピラリを深さストップまで差し込みます(掴み代 10 mm、露出 30 mm)。</li>
+        <li>対象サイズに合うコレットインサートを入れます。深さストップをプレートに合う露出長(96-well は {{FMT96_EXP:.0f}} mm、48-well は {{FMT48_EXP:.0f}} mm)に合わせ、キャピラリを突き当てるまで差し込みます。</li>
         <li>コレットを締め、端面の O リングで液が漏れないか確認します。</li>
       </ol>
       <ul><li>キャピラリを交換したら、必ず工程 11 の 3 点校正をやり直します(先端位置は最大 ±0.5 mm ずれます)。</li></ul>
@@ -290,6 +310,16 @@ a{color:var(--accent)}
     <li><span class="chip open">未確定</span> 支柱の長さ(M1 次第)、ベース板の穴配置(M16 次第)</li>
     <li>寸法を変えるときは <code>cad/params.py</code> だけを書き換え、<code>cad/model.py → analysis.py → views.py → render_docs.py</code> の順に再計算すると、この手順書の数値も含めて更新されます。</li>
   </ul>
+  <h3 style="margin-top:14px">まだ仮の値(自動で集計した一覧、{{PH_COUNT}} 件)</h3>
+  <div class="tbl"><table><thead><tr><th>パラメータ</th><th>いまの値</th><th>内容 / 対応する実測項目</th></tr></thead><tbody>{{PH_TABLE}}</tbody></table></div>
   <p class="lede" style="margin-top:10px">出典と各数値の確度は <code>docs/source_manifest.md</code> にあります。IX73 の本体寸法(W 323 × D 475 × H 656 mm)とコンデンサの作動距離はメーカー値ですが、配置と形状の多くは仮の値です。</p>
+</section>
+
+<section id="s7">
+  <h2>この手順書の更新</h2>
+  <p>この手順書は <code>cad/params.py</code> から自動で作られます。実測値や部品が決まったら、<code>params.py</code> の該当する値を書き換え、状態を <code>PH</code> から <code>MEAS</code> や <code>MFR</code> に変えてください。そのうえで <code>python tools/build_all.py</code> を実行すると、CAD、干渉チェック、図、英語の文書、この手順書の数値と図がまとめて更新されます。仮の値の一覧も自動で短くなります。</p>
+  <p>文章そのものを直すときは、<code>docs/assembly_ja/guide.src.html</code> を編集します。生成された <code>assembly_guide_ja.html</code> は直接編集しないでください。</p>
+  <h3>最近の変更</h3>
+  <ul>{{CHANGELOG}}</ul>
 </section>
 </main>

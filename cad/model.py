@@ -91,7 +91,8 @@ class Model:
 VARIANTS = {
     "V00": dict(theta=0.0, label="0 deg (vertical)"),
     "R08": dict(theta=8.0, label="8 deg near-vertical dog-leg (RECOMMENDED)"),
-    "V30": dict(theta=30.0, label="30 deg inclined"),
+    "V20": dict(theta=20.0, label="20 deg block (24/12-well)"),
+    "V30": dict(theta=30.0, label="30 deg block (12/6-well)"),
     "V45": dict(theta=45.0, label="45 deg inclined"),
 }
 CONDENSER_CHOICES = ["IX2-LWUCD", "IX2-MLWCD", "IX-ULWCD", "NONE (pillar tilted back)"]
@@ -345,7 +346,7 @@ def zones(condenser="IX-ULWCD", workflow=p.DEFAULT_WORKFLOW):
 
 
 SHARED_CATS = {"ix73", "plate", "table", "condenser"}
-EXPORT_SET = {"WA": list(VARIANTS), "WB": ["R08"]}
+EXPORT_SET = {"WA": list(VARIANTS), "WB": ["R08", "V20", "V30"]}
 
 
 def safe_key(k):

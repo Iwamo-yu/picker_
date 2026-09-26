@@ -27,6 +27,46 @@ Maximum angle for reaching the bottom centre: **14.8°** (tip 0.3 mm above botto
 | L  (600-1000 um) | 2.0 | 1.12 | 12.3° | 0.87 | WPI 1B200-4 - only 1.12x a 1 mm object | MFR |
 | L' (800-1000 um) | 2.0 | 1.56 | 12.3° | 0.87 | WPI thin-wall 2.00/1.56 (no filament) | MFR |
 
+### 1c. Plate formats x capillary angle (exposed length 30 mm, IX-ULWCD; OK = rim >= 0.5 mm, holder and condenser >= 2.0 mm)
+
+| plate | angle | rim clearance | holder over plate material | condenser clearance at safe-Z | light blocked (NA 0.3) | OK |
+|---|---|---|---|---|---|---|
+| 96 U-bottom (Corning 7007) | 0° | 2.93 | 19.0 | 6.7 | 28% | yes |
+| 96 U-bottom (Corning 7007) | 8° | 1.38 | 18.0 | 7.1 | 28% | yes |
+| 96 U-bottom (Corning 7007) | 20° | -1.11 | 15.5 | 9.4 | 9% | no |
+| 96 U-bottom (Corning 7007) | 30° | -3.50 | 12.5 | 12.6 | 0% | no |
+| 96 U-bottom (Corning 7007) | 45° | -8.28 | 6.7 | 19.6 | 0% | no |
+| 48-well (Corning 3548) | 0° | 5.28 | not over rim | 0.6 | 28% | no |
+| 48-well (Corning 3548) | 8° | 2.87 | 11.9 | 1.0 | 28% | no |
+| 48-well (Corning 3548) | 20° | -0.98 | 9.4 | 3.3 | 9% | no |
+| 48-well (Corning 3548) | 30° | -4.67 | 6.4 | 6.5 | 0% | no |
+| 48-well (Corning 3548) | 45° | -12.03 | 0.6 | 13.5 | 0% | no |
+| 24-well (Corning 3524) | 0° | 7.63 | not over rim | 0.6 | 28% | no |
+| 24-well (Corning 3524) | 8° | 5.22 | 11.9 | 1.0 | 28% | no |
+| 24-well (Corning 3524) | 20° | 1.37 | 9.4 | 3.3 | 9% | yes |
+| 24-well (Corning 3524) | 30° | -2.32 | 6.4 | 6.5 | 0% | no |
+| 24-well (Corning 3524) | 45° | -9.68 | 0.6 | 13.5 | 0% | no |
+| 12-well (Corning 3513) | 0° | 10.87 | not over rim | 0.5 | 28% | no |
+| 12-well (Corning 3513) | 8° | 8.44 | not over rim | 0.9 | 28% | no |
+| 12-well (Corning 3513) | 20° | 4.57 | 9.3 | 3.2 | 9% | yes |
+| 12-well (Corning 3513) | 30° | 0.86 | 6.3 | 6.4 | 0% | yes |
+| 12-well (Corning 3513) | 45° | -6.54 | 0.5 | 13.4 | 0% | no |
+| 6-well (Corning 3516) | 0° | 16.90 | not over rim | 0.6 | 28% | no |
+| 6-well (Corning 3516) | 8° | 14.49 | not over rim | 1.0 | 28% | no |
+| 6-well (Corning 3516) | 20° | 10.64 | not over rim | 3.3 | 9% | yes |
+| 6-well (Corning 3516) | 30° | 6.95 | 6.4 | 6.5 | 0% | yes |
+| 6-well (Corning 3516) | 45° | -0.41 | 0.6 | 13.5 | 0% | no |
+
+Recommended angle block per plate format:
+
+| plate | block | exposed length | rim | condenser at safe-Z | light blocked |
+|---|---|---|---|---|---|
+| 96 U-bottom (Corning 7007) | 8° | 30 mm | 1.38 | 7.1 | 28% |
+| 48-well (Corning 3548) | 8° | 27 mm | 2.87 | 4.0 | 34% |
+| 24-well (Corning 3524) | 20° | 30 mm | 1.37 | 3.3 | 9% |
+| 12-well (Corning 3513) | 30° | 30 mm | 0.86 | 6.4 | 0% |
+| 6-well (Corning 3516) | 30° | 30 mm | 6.95 | 6.5 | 0% |
+
 ## 2. Holder obstruction of transmitted light (holder Ø10 at the collet nose)
 
 | angle | condenser NA used | cone radius at holder nose (mm) | holder offset (mm) | blocked fraction |
@@ -57,6 +97,10 @@ PH = placeholder geometry is involved in every condenser/IX73 result; treat as p
 | WA | R08 | IX2-MLWCD | 18 | 16 | 20 | 20 | – | condenser_IX2-MLWCD (511) | 0.0 |
 | WA | R08 | IX-ULWCD | 96 | 96 | 35 | 20 | – | condenser_IX-ULWCD (47) | 4.83 |
 | WA | R08 | NONE (pillar tilted back) | 96 | 96 | 35 | 35 | – | none | 5.74 |
+| WA | V20 | IX2-LWUCD | 0 | 22 | 20 | 20 | – | condenser_IX2-LWUCD (617), plate_96_SLAS (96) | 0.0 |
+| WA | V20 | IX2-MLWCD | 0 | 22 | 20 | 20 | – | condenser_IX2-MLWCD (571), plate_96_SLAS (96) | 0.0 |
+| WA | V20 | IX-ULWCD | 0 | 96 | 35 | 20 | – | plate_96_SLAS (96), condenser_IX-ULWCD (45) | 5.0 |
+| WA | V20 | NONE (pillar tilted back) | 0 | 96 | 35 | 35 | – | plate_96_SLAS (96) | 5.66 |
 | WA | V30 | IX2-LWUCD | 0 | 22 | 20 | 20 | – | condenser_IX2-LWUCD (574), plate_96_SLAS (96) | 0.0 |
 | WA | V30 | IX2-MLWCD | 0 | 26 | 22 | 20 | – | condenser_IX2-MLWCD (448), plate_96_SLAS (96) | 0.0 |
 | WA | V30 | IX-ULWCD | 0 | 96 | 35 | 22 | – | plate_96_SLAS (96), condenser_IX-ULWCD (44) | 5.0 |
@@ -69,6 +113,14 @@ PH = placeholder geometry is involved in every condenser/IX73 result; treat as p
 | WB | R08 | IX2-MLWCD | 0 | 0 | 15 | 15 | 0/9 | condenser_IX2-MLWCD (612) | 0.0 |
 | WB | R08 | IX-ULWCD | 96 | 96 | 35 | 15 | 9/9 | condenser_IX-ULWCD (59) | 4.83 |
 | WB | R08 | NONE (pillar tilted back) | 96 | 96 | 35 | 35 | 9/9 | none | 5.74 |
+| WB | V20 | IX2-LWUCD | 0 | 0 | 17 | 15 | 0/9 | condenser_IX2-LWUCD (786), plate_96_SLAS (96) | 0.0 |
+| WB | V20 | IX2-MLWCD | 0 | 0 | 20 | 15 | 0/9 | condenser_IX2-MLWCD (805), plate_96_SLAS (96) | 0.0 |
+| WB | V20 | IX-ULWCD | 0 | 96 | 35 | 20 | 9/9 | plate_96_SLAS (96), condenser_IX-ULWCD (47) | 5.0 |
+| WB | V20 | NONE (pillar tilted back) | 0 | 96 | 35 | 35 | 9/9 | plate_96_SLAS (96) | 5.66 |
+| WB | V30 | IX2-LWUCD | 0 | 0 | 20 | 15 | 0/9 | condenser_IX2-LWUCD (783), plate_96_SLAS (96) | 0.0 |
+| WB | V30 | IX2-MLWCD | 0 | 0 | 20 | 15 | 0/9 | condenser_IX2-MLWCD (706), plate_96_SLAS (96) | 0.0 |
+| WB | V30 | IX-ULWCD | 0 | 96 | 35 | 20 | 9/9 | plate_96_SLAS (96), condenser_IX-ULWCD (56) | 5.0 |
+| WB | V30 | NONE (pillar tilted back) | 0 | 96 | 35 | 35 | 9/9 | plate_96_SLAS (96) | 5.62 |
 
 ## 4. Workflow comparison (D1): wells that can be picked while observed through the IX73
 

@@ -64,6 +64,50 @@ def max_angle_centre(r_cap=None):
     return lo
 
 
+def format_angle_check(fmt, theta, exposed=None, cond="IX-ULWCD"):
+    """Per plate format and capillary angle.  Tip 0.3 mm above well-bottom centre.
+    rim: shaft clearance at the rim; nose: holder nose (lowest edge) above the rim plane, only counted when the
+    nose sits over plate material (outside the well radius); cond: arm/holder top vs condenser front when the
+    tip is at safe-Z (= rim + 5 mm; plate lid removed); block: holder shadow fraction at NA 0.3."""
+    f = p.PLATE_FORMATS[fmt]
+    t = math.radians(theta)
+    L = p.CAP_EXPOSED.v if exposed is None else exposed
+    r_top, depth = f["d_top"] / 2, f["depth"]
+    h = depth - p.TIP_CLEAR_BOTTOM.v                         # tip -> rim height
+    rim = r_top - (h * math.tan(t) + R_CAP / math.cos(t))
+    nose_x, nose_z = L * math.sin(t), L * math.cos(t)
+    hr = p.HOLDER_D.v / 2
+    nose_low = nose_z - hr * math.sin(t) - h                 # lowest holder edge above rim plane
+    over_material = nose_x + hr * math.cos(t) > r_top
+    nose = nose_low if over_material else float("inf")
+    hold_top = (L + p.HOLDER_L.v) * math.cos(t)              # above tip
+    arm_top_pick = hold_top + p.ARM_T.v / 2
+    lift = h + 5.0                                           # pick -> safe-Z
+    wd = p.CONDENSERS[cond]["WD"].v
+    cond_clear = (wd - p.TIP_CLEAR_BOTTOM.v) - (arm_top_pick + lift)
+    rc = h_c = None
+    # illumination obstruction at NA 0.3 (holder disc at nose height)
+    rc = (nose_z + p.TIP_CLEAR_BOTTOM.v) * math.tan(math.asin(0.3))
+    blk = circle_overlap(rc, hr, abs(nose_x)) / (math.pi * rc * rc)
+    ok = rim >= p.RIM_MARGIN.v and nose >= p.MIN_MARGIN.v and cond_clear >= p.MIN_MARGIN.v
+    return dict(fmt=fmt, theta=theta, exposed=L, rim=rim, nose=nose, cond=cond_clear, block=blk, ok=ok)
+
+
+def format_angle_matrix():
+    rows = []
+    for fmt in p.PLATE_FORMATS:
+        for th in (0.0,) + tuple(p.ANGLE_BLOCKS):
+            rows.append(format_angle_check(fmt, th))
+    rec = {}
+    for fmt in p.PLATE_FORMATS:
+        cands = [format_angle_check(fmt, th, exposed=L) for th in p.ANGLE_BLOCKS for L in p.EXPOSED_OPTIONS]
+        oks = [r for r in cands if r["ok"]]
+        # least light obstruction first, then the longest exposed length, then the largest worst-case margin
+        rec[fmt] = min(oks, key=lambda r: (round(r["block"], 2), -r["exposed"],
+                                            -min(r["rim"], r["nose"], r["cond"]))) if oks else None
+    return rows, rec
+
+
 def capillary_set_table():
     rows = []
     global R_CAP
@@ -239,6 +283,8 @@ if __name__ == "__main__":
             out["illumination"].append(dict(theta=th, NA_c=na, cone_r_at_nose=round(rc, 2),
                                             holder_offset=round(nx, 2), blocked_fraction=round(f, 3)))
     out["capillary_set"] = capillary_set_table()
+    fm_rows, fm_rec = format_angle_matrix()
+    out["format_angle"] = dict(rows=fm_rows, recommended=fm_rec)
     out["d1"] = d1_metrics()
     from model import EXPORT_SET
     for wf, variants in EXPORT_SET.items():
@@ -269,6 +315,16 @@ if __name__ == "__main__":
           "|---|---|---|---|---|---|---|"]
     for c in out["capillary_set"]:
         L.append(f"| {c['name']} | {c['od']} | {c['id']} | {c['max_angle']:.1f}° | {c['rim_clear_8deg']:.2f} | {c['part']} | {c['status']} |")
+    L += ["", "### 1c. Plate formats x capillary angle (exposed length 30 mm, IX-ULWCD; OK = rim >= "
+          f"{p.RIM_MARGIN.v} mm, holder and condenser >= {p.MIN_MARGIN.v} mm)", "",
+          "| plate | angle | rim clearance | holder over plate material | condenser clearance at safe-Z | light blocked (NA 0.3) | OK |",
+          "|---|---|---|---|---|---|---|"]
+    for r in out["format_angle"]["rows"]:
+        nose = "not over rim" if r["nose"] == float("inf") else f"{r['nose']:.1f}"
+        L.append(f"| {r['fmt']} | {r['theta']:.0f}° | {r['rim']:.2f} | {nose} | {r['cond']:.1f} | {r['block']:.0%} | {'yes' if r['ok'] else 'no'} |")
+    L += ["", "Recommended angle block per plate format:", "", "| plate | block | exposed length | rim | condenser at safe-Z | light blocked |", "|---|---|---|---|---|---|"]
+    for fmt, r in out["format_angle"]["recommended"].items():
+        L.append(f"| {fmt} | " + (f"{r['theta']:.0f}° | {r['exposed']:.0f} mm | {r['rim']:.2f} | {r['cond']:.1f} | {r['block']:.0%} |" if r else "none | – | – | – | – |"))
     L += ["", "## 2. Holder obstruction of transmitted light (holder Ø10 at the collet nose)", "",
           "| angle | condenser NA used | cone radius at holder nose (mm) | holder offset (mm) | blocked fraction |",
           "|---|---|---|---|---|"]

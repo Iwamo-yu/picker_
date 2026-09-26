@@ -54,4 +54,23 @@ def keynums():
         for sname, st in d["stages"].items():
             tag = {"IX3-SVR (manual)": "SVR", "IX3-SSU (ultrasonic, motorised)": "SSU"}.get(sname, "SCANIM")
             k[f"D1_{wf}_{tag}_WELLS"] = st["wells_to_axis"]
+    fa = an.get("format_angle", {}).get("recommended", {})
+    for fmt, r in fa.items():
+        tag = fmt.split("-")[0].split(" ")[0]          # "96", "48", "24", "12", "6"
+        if r:
+            k[f"FMT{tag}_ANGLE"], k[f"FMT{tag}_EXP"] = r["theta"], r["exposed"]
+            k[f"FMT{tag}_RIM"], k[f"FMT{tag}_COND"], k[f"FMT{tag}_BLOCK"] = r["rim"], r["cond"], r["block"] * 100
+    k["ANGLE_BLOCKS_TXT"] = " / ".join(f"{a:.0f}°" for a in sorted({r["theta"] for r in fa.values() if r}))
+    k["PH_COUNT"] = len(placeholders())
     return k
+
+
+def placeholders():
+    """All parameters still marked PH (placeholder, to be measured)."""
+    out = []
+    for name, v in vars(p).items():
+        if isinstance(v, p.P) and v.status == "PH":
+            out.append((name, v.v, v.note))
+        elif isinstance(v, dict) and v.get("status") == "PH":
+            out.append((name, "", v.get("note", "")))
+    return out

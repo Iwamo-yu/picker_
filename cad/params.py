@@ -50,6 +50,26 @@ WELL_BOTTOM_Z = P(PLATE_H.v - WELL_DEPTH.v, "DER", "S11,S13",
 PLATE_CENTER_XY = (P(0.0, "DES", "", "plate centred on optical axis = 'stage reference position'"),
                    P(0.0, "DES", "", ""))
 
+# Other plate formats (SBS footprint).  Flat-bottom Corning Costar TC plates.
+# d_top/d_bot/depth/pitch from Corning dimension-sheet excerpts (S16); 6-well diameter is a single value.
+PLATE_FORMATS = {
+    "96 U-bottom (Corning 7007)": dict(rows=8, cols=12, d_top=6.86, d_bot=6.35, depth=11.30, pitch=9.00,
+                                       status="MFR", src="S13"),
+    "48-well (Corning 3548)": dict(rows=6, cols=8, d_top=11.56, d_bot=11.05, depth=17.4, pitch=13.08,
+                                   status="MFR", src="S16"),
+    "24-well (Corning 3524)": dict(rows=4, cols=6, d_top=16.26, d_bot=15.62, depth=17.4, pitch=19.3,
+                                   status="MFR", src="S16"),
+    "12-well (Corning 3513)": dict(rows=3, cols=4, d_top=22.73, d_bot=22.11, depth=17.5, pitch=26.01,
+                                   status="MFR", src="S16"),
+    "6-well (Corning 3516)": dict(rows=2, cols=3, d_top=34.8, d_bot=34.8, depth=17.4, pitch=39.12,
+                                  status="MFR", src="S16"),
+}
+# Exchangeable angle blocks on the kinematic mount (design choice; 0-12 deg fine tilt is replaced by blocks)
+ANGLE_BLOCKS = [8.0, 20.0, 30.0, 45.0]
+MIN_MARGIN = P(2.0, "DES", "", "minimum clearance accepted for rim / holder-over-rim / condenser at safe-Z (placeholder condenser -> keep >= 2 mm)")
+RIM_MARGIN = P(0.5, "DES", "", "minimum shaft-to-rim clearance (well geometry is MFR data, +-0.25 mm)")
+EXPOSED_OPTIONS = [30.0, 27.0, 24.0]  # capillary length below the collet nose; set by the depth stop
+
 # ----------------------------------------------------------------------------
 # IX73  (Evident).  Only a few numbers are manufacturer-verified.
 # ----------------------------------------------------------------------------

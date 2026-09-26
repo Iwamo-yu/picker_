@@ -398,7 +398,43 @@ def d1_compare():
     fig.savefig(os.path.join(IMG, "d1_workflows.svg")); plt.close(fig)
 
 
+def formats_angles():
+    """Recommended angle block and exposed length per plate format: well section, capillary, holder, condenser."""
+    from analysis import format_angle_matrix
+    _, rec = format_angle_matrix()
+    fmts = list(p.PLATE_FORMATS)
+    fig, axs = plt.subplots(1, len(fmts), figsize=(3.3 * len(fmts), 5.2), sharey=True)
+    wd = p.CONDENSERS["IX-ULWCD"]["WD"].v
+    for ax, fmt in zip(axs, fmts):
+        f, r = p.PLATE_FORMATS[fmt], rec[fmt]
+        rt, rb, dep = f["d_top"] / 2, f["d_bot"] / 2, f["depth"]
+        wall = 4.0
+        ax.add_patch(Polygon([(-rt - wall, dep), (-rt, dep), (-rb, 0), (rb, 0), (rt, dep), (rt + wall, dep),
+                              (rt + wall, -1.2), (-rt - wall, -1.2)], fc="#dfe6e8", ec="#555", lw=0.7))
+        ax.plot([-45, 45], [wd, wd], color="#7d6aa8", lw=1.2)
+        ax.text(-44, wd + 1.5, "IX-ULWCD front", color="#7d6aa8", fontsize=7)
+        ax.axhline(dep + 5, color="#3a64b0", lw=0.8, ls=":")
+        ax.text(-44, dep + 6, "safe-Z (rim + 5)", color="#3a64b0", fontsize=7)
+        if r:
+            t = math.radians(r["theta"]); L = r["exposed"]
+            tip = (0.0, p.TIP_CLEAR_BOTTOM.v)
+            nose = (L * math.sin(t), tip[1] + L * math.cos(t))
+            top = ((L + p.HOLDER_L.v) * math.sin(t), tip[1] + (L + p.HOLDER_L.v) * math.cos(t))
+            ax.plot([tip[0], nose[0]], [tip[1], nose[1]], color="#1596a8", lw=2)
+            ax.plot([nose[0], top[0]], [nose[1], top[1]], color=FILL["holder"], lw=9, solid_capstyle="butt")
+            ax.plot([top[0] - 4, top[0] + 30], [top[1], top[1]], color=FILL["moving"], lw=5)
+            ax.set_title(f"{fmt.split(' (')[0]}\nblock {r['theta']:.0f}°, exposed {L:.0f} mm", fontsize=9.5)
+            ax.text(0, -11, f"rim {r['rim']:.1f} · cond {r['cond']:.1f} mm\nlight blocked {r['block']:.0%}",
+                    ha="center", fontsize=8)
+        ax.set_xlim(-46, 46); ax.set_ylim(-18, 82); ax.set_aspect("equal"); ax.grid(alpha=0.2)
+    axs[0].set_ylabel("mm above well bottom")
+    fig.suptitle("Angle block and exposed length per plate format (tip at well-bottom centre; condenser geometry PH)",
+                 fontsize=10)
+    fig.tight_layout(); fig.savefig(os.path.join(IMG, "formats_angle_blocks.png"), dpi=150); plt.close(fig)
+
+
 if __name__ == "__main__":
+    formats_angles()
     d1_compare()
     top_view(); front_view(); side_view(); angle_detail(); functional_diagram(); electrical_diagram()
     print("views written to", os.path.abspath(IMG))
