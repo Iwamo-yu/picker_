@@ -54,6 +54,8 @@ The layout follows from three constraints found and quantified in this study:
 | – | Japanese assembly guide (auto-updated) | `docs/assembly_ja/assembly_guide_ja.html` (`python tools/build_all.py`) |
 | – | Literature review (5 papers) | `docs/01_literature_review.md` |
 | – | Functional diagram (pump → tubing → capillary; PC → XYZ) | `docs/img/functional_diagram.png` |
+| – | Part map: which part is which CAD solid, parts-list line, assembly step (Japanese) | `docs/13_part_map_ja.md`, `docs/assembly_ja/part_map_ja.html` |
+| – | Python control layer (TMCM-3110 via pytrinamic; safe homing order, soft limits, simulator backend) | `control/picker.py`, `tests/test_control.py` |
 
 ## Data confidence
 

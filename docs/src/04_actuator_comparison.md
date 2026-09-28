@@ -17,13 +17,16 @@ Values marked (S..) come from the source manifest. Values marked ~ are typical c
 | Suitability around IX73 | best: compact bodies keep the X cantilever light and the Z envelope narrow | acceptable for Y (fixed beam); weaker as a cantilevered X | acceptable for Y; weakest for Z (backlash) |
 | Typical cost (rough) | highest (~JPY 50–120k per axis) | lowest | lowest in parts, highest in labour |
 
-## Recommendation (to be frozen only after the geometry is validated)
+## Decision (frozen as the V1 baseline in issue #12)
 
 "Tip travel" is what the capillary tip must cover; "actuator stroke" is the catalogue stroke bought, which is at least the tip travel (`03_architecture.md` §3).
 
-- **Z: architecture A, 1 mm lead ball screw** (THK KR20 class; tip travel {{WB_TRAVEL_Z}} mm, catalogue actuator stroke {{WB_STROKE_Z:.0f}} mm in the model), or an Oriental DRS2 guide type with brake if a closed-loop absolute axis is preferred. Z sets landing accuracy and must not drop, so this is where the money should go.
-- **X: architecture A** (KR20/LX26 class, lead 1–2 mm; tip travel {{WB_TRAVEL_X}} mm in W-B → actuator stroke {{WB_STROKE_X:.0f}} mm, tip travel {{WA_TRAVEL_X}} mm in W-A → {{WA_STROKE_X:.0f}} mm). It is the cantilevered axis, so body stiffness and low mass matter most.
-- **Y: A or B** (tip travel {{WB_TRAVEL_Y}} mm in W-B → actuator stroke {{WB_STROKE_Y:.0f}} mm). It is fixed on a supported beam, so a good integrated stage from B is acceptable, but its carriage carries the X and Z groups (≈{{MASS_Y:.1f}} kg, largest moment ≈{{MOM_Y:.1f}} N·m, `03_architecture.md` §5b): check the catalogue moment ratings. Choose A if one supplier and consistent documentation matter.
+All three axes are architecture A (MISUMI LX family, S39), with three Oriental PKP244D15A2 motors (S42) and one ADI/Trinamic TMCM-3110-TMCL controller driven from Python (`06_electrical.md`).
+
+- **Z: MISUMI LX20 precision grade, lead 1 mm, motor direct-coupled** (tip travel {{WB_TRAVEL_Z}} mm, catalogue actuator stroke {{WB_STROKE_Z:.0f}} mm in the model). Landing height is the most sensitive axis, so Z keeps the direct coupling: no belt stage and the least backlash. It must not drop unpowered (`03_architecture.md` §5).
+- **X: MISUMI LXR26, lead 2 mm, motor folded back** (tip travel {{WB_TRAVEL_X}} mm → actuator stroke {{WB_STROKE_X:.0f}} mm). The timing belt sits only between the motor and the ball screw; positioning is still by the ball screw. Folding the motor beside the actuator shortens the envelope: the tower now sits {{WB_TOWER_X}} mm from the optical axis in the model (368 mm with direct-coupled motors). X/Y repeatability matters more than absolute accuracy, because the image calibration absorbs systematic offsets.
+- **Y: MISUMI LXR26, lead 2 mm, motor folded back** (tip travel {{WB_TRAVEL_Y}} mm → actuator stroke {{WB_STROKE_Y:.0f}} mm). Its carriage carries the X and Z groups (≈{{MASS_Y:.1f}} kg, largest moment ≈{{MOM_Y:.1f}} N·m, `03_architecture.md` §5b). **Open check:** the LXR26 allowable static moments (MP/MY/MR) were not readable here and must be compared with this value before ordering.
+- The SpheroidPicker (S20) drove M8 threaded rods (2 mm pitch) directly with NEMA17 motors and mechanical end stops; ball-screw LX/LXR stages should repeat substantially better while keeping the same vision-guided correction.
 - **Architecture C** is kept as a comparison and fallback. It is appropriate only if lead times block A/B. In that case, use a Tr8×2 single-start screw (2 mm lead, **not** Tr8×8), an anti-backlash nut, a fixed-floating bearing arrangement, and always approach from one direction.
 
-This mix fits the stated budget order (about JPY 200k, cost secondary) with A on X and Z. The exact part numbers are **not** frozen (see `07_…`).
+The configured MISUMI part numbers, the LXR26 allowable moments and the PKP244D15A2 current setting are the remaining open checks in issue #12 (see also `07_…`).

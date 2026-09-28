@@ -140,8 +140,8 @@ Field of view assumed 5.5 mm at 4x (APX). W-A: plate centred on the axis.
 
 | workflow | wells observed while picking | wells reachable by picker XY alone | picker travel X x Y x Z (mm) | arm length / thin section (mm) | tower axis x (mm) |
 |---|---|---|---|---|---|
-| W-A stage fixed: picker covers the plate | 1 (at a centred plate: 0) | 96 | 150 x 100 x 50 | 180 / 120 | 408 |
-| W-B stage moves wells to the optical axis: picker works locally | 96 (best stage) | 32 | 100 x 30 x 50 | 120 / 60 | 368 |
+| W-A stage fixed: picker covers the plate | 1 (at a centred plate: 0) | 96 | 150 x 100 x 50 | 180 / 120 | 385 |
+| W-B stage moves wells to the optical axis: picker works locally | 96 (best stage) | 32 | 100 x 30 x 50 | 120 / 60 | 345 |
 
 W-B: wells the stage can bring to the optical axis, per stage (needs >= 99 x 63 mm travel):
 
@@ -195,7 +195,7 @@ Lower = highest moving plate/stage feature + margin (stage moves only at or abov
 |---|---|---|---|---|---|---|
 | Z | 0.31 | -38, -0, -7 | 0.00, 0.12, 0.00 | 0.00, 0.12, 0.00 | to enter |
 | X | 1.34 | -13, -23, -20 | 0.30, 0.17, 0.00 | 0.30, 0.19, 0.02 | to enter |
-| Y | 3.95 | -180, -9, 3 | 0.35, 6.97, 0.00 | 0.36, 6.97, 0.36 | to enter |
+| Y | 4.05 | -161, -1, 3 | 0.04, 6.41, 0.00 | 0.05, 6.41, 0.33 | to enter |
 
 ### 5f. Break-away mount vs capillary (release force at the tip: 16 N x 12.5 mm / arm)
 

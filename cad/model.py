@@ -232,9 +232,16 @@ def build(variant="R08", condenser="IX-ULWCD", workflow=p.DEFAULT_WORKFLOW) -> M
     yc0 = sum(X_BAND) / 2
     y_lo = LY["y_lo"]
     m.add("Y_actuator_body", box(TOWER_X - 13, TOWER_X + 13, y_lo, y_lo + Y_BODY_L, *Y_ACT_Z),
-          "actuator", "APX", note=f"{LY['stroke_y']:.0f} mm catalogue stroke (tip travel {LY['travel_y']:.0f} mm), ball-screw, width-26 class")
-    m.add("Y_motor", box(TOWER_X - 21, TOWER_X + 21, y_lo + Y_BODY_L, y_lo + Y_BODY_L + p.NEMA17_L.v,
-                         Y_ACT_Z[0] - 6, Y_ACT_Z[0] + 36), "motor", "APX")
+          "actuator", "APX", note=f"{p.DRIVE['Y']['model']}, lead {p.DRIVE['Y']['lead']:g} mm, {LY['stroke_y']:.0f} mm catalogue stroke (tip travel {LY['travel_y']:.0f} mm)")
+    y_end = y_lo + Y_BODY_L
+    if p.DRIVE["Y"]["drive"] == "folded":   # LXR: motor beside the body (outboard, +x), belt housing past the end
+        m.add("Y_motor", box(TOWER_X + 14, TOWER_X + 14 + p.NEMA17.v, y_end - p.NEMA17_L.v, y_end,
+                             Y_ACT_Z[0], Y_ACT_Z[0] + p.NEMA17.v), "motor", "APX", note=p.MOTOR_MODEL + ", folded back")
+        m.add("Y_fold_unit", box(TOWER_X - 13, TOWER_X + 14 + p.NEMA17.v, y_end, y_end + p.FOLD_UNIT_L.v,
+                                 Y_ACT_Z[0], Y_ACT_Z[0] + p.NEMA17.v), "actuator", "APX", note="LXR fold-back belt housing")
+    else:
+        m.add("Y_motor", box(TOWER_X - 21, TOWER_X + 21, y_end, y_end + p.NEMA17_L.v,
+                             Y_ACT_Z[0] - 6, Y_ACT_Z[0] + 36), "motor", "APX", note=p.MOTOR_MODEL)
     m.add("Y_home_switch", box(TOWER_X + 14, TOWER_X + 24, y_lo + 2, y_lo + 14, Y_ACT_Z[0], Y_ACT_Z[0] + 10),
           "switch", "DES")
     m.add("Y_cable_chain", box(TOWER_X + 45, TOWER_X + 70, y_lo, y_lo + Y_BODY_L, BEAM_Z[1] - 30, BEAM_Z[1]),
@@ -257,12 +264,19 @@ def build(variant="R08", condenser="IX-ULWCD", workflow=p.DEFAULT_WORKFLOW) -> M
     m.add("X_support_beam", box(x_lo - 5, TOWER_X + 25, XSB_BAND[0], XSB_BAND[1], *XSB_Z),
           "frame", "APX", group="Y", note="stiff box section carrying the X actuator")
     m.add("X_actuator_body", box(x_lo, x_hi, X_BAND[0], X_BAND[1], *X_Z), "actuator", "APX", group="Y",
-          note=f"{LY['stroke_x']:.0f} mm catalogue stroke (tip travel {LY['travel_x']:.0f} mm), ball-screw, width-26 class, table facing -Y")
-    m.add("X_motor", box(x_hi, x_hi + p.NEMA17_L.v, X_BAND[0] - 8, X_BAND[1] + 8,
-                         X_Z[0] - 6, X_Z[0] + 36), "motor", "APX", group="Y")
+          note=f"{p.DRIVE['X']['model']}, lead {p.DRIVE['X']['lead']:g} mm, {LY['stroke_x']:.0f} mm catalogue stroke (tip travel {LY['travel_x']:.0f} mm), table facing -Y")
+    if p.DRIVE["X"]["drive"] == "folded":   # LXR: motor beside the body (+y side, below the support beam)
+        # beside the support beam (y > XSB_BAND[1]) so it clears the beam and the Y beam below
+        m.add("X_motor", box(x_hi - p.NEMA17_L.v, x_hi, XSB_BAND[1] + 2, XSB_BAND[1] + 2 + p.NEMA17.v,
+                             X_Z[0], X_Z[0] + p.NEMA17.v), "motor", "APX", group="Y", note=p.MOTOR_MODEL + ", folded back")
+        m.add("X_fold_unit", box(x_hi, x_hi + p.FOLD_UNIT_L.v, X_BAND[0], XSB_BAND[1] + 2 + p.NEMA17.v,
+                                 X_Z[0], X_Z[1]), "actuator", "APX", group="Y", note="LXR fold-back belt housing")
+    else:
+        m.add("X_motor", box(x_hi, x_hi + p.NEMA17_L.v, X_BAND[0] - 8, X_BAND[1] + 8,
+                             X_Z[0] - 6, X_Z[0] + 36), "motor", "APX", group="Y", note=p.MOTOR_MODEL)
     m.add("X_home_switch", box(x_hi - 12, x_hi, X_BAND[1], X_BAND[1] + 8, X_Z[0], X_Z[0] + 10),
           "switch", "DES", group="Y")
-    m.add("X_cable_chain", box(x_lo + 60, x_hi, X_BAND[1] + 10, X_BAND[1] + 30, XSB_Z[0], XSB_Z[0] + 25),
+    m.add("X_cable_chain", box(x_lo + 60, x_hi, XSB_BAND[1] + 50, XSB_BAND[1] + 70, XSB_Z[0], XSB_Z[0] + 25),
           "cable", "DES", group="Y")
 
     # ------------------------------------------------------------------ X group
@@ -272,8 +286,9 @@ def build(variant="R08", condenser="IX-ULWCD", workflow=p.DEFAULT_WORKFLOW) -> M
     m.add("X_carriage_bracket", box(xcc - 25, xcc + 25, ZB_W / 2, X_BAND[0], X_Z[0], X_Z[1]),
           "actuator", "APX", group="X")
     m.add("Z_actuator_body", box(zx0, zx0 + ZB_D, -ZB_W / 2, ZB_W / 2, z_lo, z_hi),
-          "actuator", "APX", group="X", note=f"{LY['stroke_z']:.0f} mm catalogue stroke (tip travel {LY['travel_z']:.0f} mm), lead 1 mm ball screw or TR8x2")
-    m.add("Z_motor", box(zx0 - 6, zx0 + 36, -21, 21, z_hi, z_hi + p.NEMA17_L.v), "motor", "APX", group="X")
+          "actuator", "APX", group="X", note=f"{p.DRIVE['Z']['model']}, lead {p.DRIVE['Z']['lead']:g} mm, direct-coupled, {LY['stroke_z']:.0f} mm catalogue stroke (tip travel {LY['travel_z']:.0f} mm)")
+    m.add("Z_motor", box(zx0 - 6, zx0 + 36, -21, 21, z_hi, z_hi + p.NEMA17_L.v), "motor", "APX", group="X",
+          note=p.MOTOR_MODEL + ", direct-coupled")
     m.add("Z_home_switch_top", box(zx0 + ZB_D, zx0 + ZB_D + 8, -5, 5, z_hi - 14, z_hi - 2),
           "switch", "DES", group="X", note="top limit (not the homing reference)")
     # Z reference switch: carriage level where the head top is Z_REF_MARGIN below the condenser front

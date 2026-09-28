@@ -109,7 +109,7 @@
    "group": "fixed",
    "workflow": "WA",
    "variant": "all",
-   "note": "100 mm catalogue stroke (tip travel 100 mm), ball-screw, width-26 class",
+   "note": "MISUMI LXR26, lead 2 mm, 100 mm catalogue stroke (tip travel 100 mm)",
    "ver": "NOT_VERIFIED"
   },
   "WA__Y_motor": {
@@ -119,7 +119,17 @@
    "group": "fixed",
    "workflow": "WA",
    "variant": "all",
-   "note": "",
+   "note": "Oriental Motor PKP244D15A2, folded back",
+   "ver": "NOT_VERIFIED"
+  },
+  "WA__Y_fold_unit": {
+   "file": "stl/WA__Y_fold_unit.stl",
+   "category": "actuator",
+   "status": "APX",
+   "group": "fixed",
+   "workflow": "WA",
+   "variant": "all",
+   "note": "LXR fold-back belt housing",
    "ver": "NOT_VERIFIED"
   },
   "WA__Y_home_switch": {
@@ -199,7 +209,7 @@
    "group": "Y",
    "workflow": "WA",
    "variant": "all",
-   "note": "150 mm catalogue stroke (tip travel 150 mm), ball-screw, width-26 class, table facing -Y",
+   "note": "MISUMI LXR26, lead 2 mm, 150 mm catalogue stroke (tip travel 150 mm), table facing -Y",
    "ver": "NOT_VERIFIED"
   },
   "WA__X_motor": {
@@ -209,7 +219,17 @@
    "group": "Y",
    "workflow": "WA",
    "variant": "all",
-   "note": "",
+   "note": "Oriental Motor PKP244D15A2, folded back",
+   "ver": "NOT_VERIFIED"
+  },
+  "WA__X_fold_unit": {
+   "file": "stl/WA__X_fold_unit.stl",
+   "category": "actuator",
+   "status": "APX",
+   "group": "Y",
+   "workflow": "WA",
+   "variant": "all",
+   "note": "LXR fold-back belt housing",
    "ver": "NOT_VERIFIED"
   },
   "WA__X_home_switch": {
@@ -249,7 +269,7 @@
    "group": "X",
    "workflow": "WA",
    "variant": "all",
-   "note": "80 mm catalogue stroke (tip travel 50 mm), lead 1 mm ball screw or TR8x2",
+   "note": "MISUMI LX20 precision grade, lead 1 mm, direct-coupled, 80 mm catalogue stroke (tip travel 50 mm)",
    "ver": "NOT_VERIFIED"
   },
   "WA__Z_motor": {
@@ -259,7 +279,7 @@
    "group": "X",
    "workflow": "WA",
    "variant": "all",
-   "note": "",
+   "note": "Oriental Motor PKP244D15A2, direct-coupled",
    "ver": "NOT_VERIFIED"
   },
   "WA__Z_home_switch_top": {
@@ -1059,7 +1079,7 @@
    "group": "fixed",
    "workflow": "WB",
    "variant": "all",
-   "note": "50 mm catalogue stroke (tip travel 30 mm), ball-screw, width-26 class",
+   "note": "MISUMI LXR26, lead 2 mm, 50 mm catalogue stroke (tip travel 30 mm)",
    "ver": "NOT_VERIFIED"
   },
   "WB__Y_motor": {
@@ -1069,7 +1089,17 @@
    "group": "fixed",
    "workflow": "WB",
    "variant": "all",
-   "note": "",
+   "note": "Oriental Motor PKP244D15A2, folded back",
+   "ver": "NOT_VERIFIED"
+  },
+  "WB__Y_fold_unit": {
+   "file": "stl/WB__Y_fold_unit.stl",
+   "category": "actuator",
+   "status": "APX",
+   "group": "fixed",
+   "workflow": "WB",
+   "variant": "all",
+   "note": "LXR fold-back belt housing",
    "ver": "NOT_VERIFIED"
   },
   "WB__Y_home_switch": {
@@ -1149,7 +1179,7 @@
    "group": "Y",
    "workflow": "WB",
    "variant": "all",
-   "note": "110 mm catalogue stroke (tip travel 100 mm), ball-screw, width-26 class, table facing -Y",
+   "note": "MISUMI LXR26, lead 2 mm, 110 mm catalogue stroke (tip travel 100 mm), table facing -Y",
    "ver": "NOT_VERIFIED"
   },
   "WB__X_motor": {
@@ -1159,7 +1189,17 @@
    "group": "Y",
    "workflow": "WB",
    "variant": "all",
-   "note": "",
+   "note": "Oriental Motor PKP244D15A2, folded back",
+   "ver": "NOT_VERIFIED"
+  },
+  "WB__X_fold_unit": {
+   "file": "stl/WB__X_fold_unit.stl",
+   "category": "actuator",
+   "status": "APX",
+   "group": "Y",
+   "workflow": "WB",
+   "variant": "all",
+   "note": "LXR fold-back belt housing",
    "ver": "NOT_VERIFIED"
   },
   "WB__X_home_switch": {
@@ -1199,7 +1239,7 @@
    "group": "X",
    "workflow": "WB",
    "variant": "all",
-   "note": "80 mm catalogue stroke (tip travel 50 mm), lead 1 mm ball screw or TR8x2",
+   "note": "MISUMI LX20 precision grade, lead 1 mm, direct-coupled, 80 mm catalogue stroke (tip travel 50 mm)",
    "ver": "NOT_VERIFIED"
   },
   "WB__Z_motor": {
@@ -1209,7 +1249,7 @@
    "group": "X",
    "workflow": "WB",
    "variant": "all",
-   "note": "",
+   "note": "Oriental Motor PKP244D15A2, direct-coupled",
    "ver": "NOT_VERIFIED"
   },
   "WB__Z_home_switch_top": {
@@ -2256,7 +2296,7 @@
     "x_lo": 60.0,
     "x_hi": 330.0,
     "x_body": 270.0,
-    "tower_x": 408,
+    "tower_x": 385,
     "x_band": [
      24.0,
      50.0
@@ -2309,7 +2349,7 @@
     "x_lo": 60.0,
     "x_hi": 290.0,
     "x_body": 230.0,
-    "tower_x": 368,
+    "tower_x": 345,
     "x_band": [
      24.0,
      50.0

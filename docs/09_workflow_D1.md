@@ -31,7 +31,7 @@ A class that fails (allowed radius below 0.5 mm) can still pick objects that sit
 | Dispense | blind, anywhere the picker reaches | observed, same plate (stage brings the destination to the axis) |
 | Picker tip travel X × Y × Z | 150 × 100 × 50 mm | 100 × 30 × 50 mm (X -15…+85: +X is the park / capillary-change retreat) |
 | Dog-leg arm / thin section under the condenser | 180 / 120 mm | **120 / 60 mm** (shorter, stiffer) |
-| Tower axis from optical axis | +408 mm | +368 mm |
+| Tower axis from optical axis | +385 mm | +345 mm |
 | Clearance sweep, R08 head, IX-ULWCD: pick / safe-Z | 96/96, 96/96 | 96/96, 96/96 (plate and stage translated for each well) |
 | Stage-travel corners (stage moves with tip at safe-Z) | – | 9/9 clear |
 | Min clearance at safe-Z (PH condenser) | 4.83 mm | 4.83 mm |

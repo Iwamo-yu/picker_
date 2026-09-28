@@ -58,7 +58,7 @@ Why Y is the fixed axis and X the cantilever: the side tower gives a naturally l
 
 ## 5. Z axis: low backlash and no drop on power loss
 
-- **Screw.** Ball screw, lead 1 mm (THK KR20 class, S30), or TR8×2 *single-start, 2 mm lead* in the fallback architecture. Never the common Tr8×8(P2) four-start (8 mm lead), which can back-drive under load (S35).
+- **Screw.** Ball screw, lead 1 mm: MISUMI LX20 precision grade with the motor direct-coupled (issue #12, S39). TR8×2 *single-start, 2 mm lead* only in the fallback architecture. Never the common Tr8×8(P2) four-start (8 mm lead), which can back-drive under load (S35).
 - **Holding without power.** Back-driving torque from the Z load is T = F·l·η/(2π). With F ≈ 3 N (0.3 kg), l = 1 mm and η ≈ 0.8, T ≈ 0.4 mN·m. A NEMA17's unpowered detent torque is typically about 10–20 mN·m (catalogue class, to be confirmed for the chosen motor), a margin of roughly 25–50×. With a TR8×2 bronze nut, the lead angle (≈5.2° at 7 mm pitch diameter) is below the friction angle (≈6–11° for μ = 0.1–0.2), so the screw is nominally self-locking. Vibration can still creep a marginal self-locking screw.
 - **Conclusion.** No brake and no counterbalance are needed at this Z load. Add a brake (for example the Oriental DRS2 brake option, S32) if the holding ratio (motor detent torque ÷ back-driving torque) falls below about 10×. That happens with a Z group above about 1 kg on a 2 mm lead, or with any lead ≥ 5 mm.
 - **Resolution.** 1 mm lead / 200 full steps = 5 µm per full step, and 16× microstepping gives 0.31 µm commanded increments. Microstep linearity limits real incremental accuracy to a fraction of a full step, which is sufficient for the ≤5 µm command and 10–20 µm repeatability targets.

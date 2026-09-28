@@ -10,7 +10,7 @@
 5. **V1 plate: Corning 7007 only** (U-bottom ULA, rim Ø6.86, depth 11.30), with no lid during picking. Targets within 0.5 mm of the well-bottom centre. Other plates are experimental.
 6. Capillary: OD 1.0 / ID 0.6 / L 40, gripped 10 mm, 30 mm exposed. Tip stand-off 0.3 mm above the well bottom (model value; the process value is set experimentally).
 7. The IX73 stage is modelled as the manual IX3-SVR (114 × 75 mm). In W-B it is replaced by, or treated as, a motorised stage with ≥ 99 × 63 mm travel that carries only the plate. The picker never loads the stage.
-8. The table has free space to the right of the microscope to about +498 mm (W-A) / +458 mm (W-B) from the optical axis, plus the pump and controller beyond.
+8. The table has free space to the right of the microscope to about +475 mm (W-A) / +435 mm (W-B) from the optical axis, plus the pump and controller beyond.
 9. Actuator envelopes are width-26 class ball-screw stages; masses are ±30 % estimates.
 10. Deflections are hand estimates (aluminium, simple beams); no FEA.
 11. The pump, tubing and fluid volumes do not constrain the mechanics beyond a 1/16" tubing path with ≥25 mm bend radius.
@@ -34,15 +34,15 @@
 Freeze gate: nothing below is frozen before the 10 items M1, M3, M4, M6, M7, M8, M10, M15, M19, M23 are measured and entered in `cad/params.py`.
 
 
-- Actuator part numbers, strokes rounded to catalogue steps, motor frame lengths.
+- Actuator **families are frozen** (issue #12: X/Y MISUMI LXR26, Z MISUMI LX20 precision direct, PKP244D15A2 motors, TMCM-3110 controller). Still open: configured part numbers, strokes rounded to catalogue steps, LXR26 allowable moments vs the Y-axis moment, motor current setting.
 - Bracket geometry, fasteners, dowel positions, machining tolerances and drawings.
 - Frame section sizes (80 × 80 posts/beam, 40 × 80 X support) beyond the envelope level. They need the real height (M1) and a stiffness check.
 - Dog-leg arm length (120 mm in W-B, 180 mm in W-A) and thickness (12 × 12 mm). Both depend on the condenser diameter and height (M6–M8).
-- Holder design (collet size, port type, kinematic mount). No commercial holder was found that positively grips OD 1.0/1.5/2.0 with a side port; the lead candidate is a custom body with ER8 collets (P10). Its nut may exceed the Ø10 mm holder envelope used in the analysis (unverified). If so, re-run `analysis.py` with the larger `HOLDER_D`.
+- Holder design (collet size, kinematic mount). The liquid seal can sit behind the holder as a short sleeve + heat-shrink joint (issue #12), so the holder only locates and retains the glass. No commercial holder was found that positively grips OD 1.0/1.5/2.0 with a side port; the lead candidate is a custom body with ER8 collets (P10). Its nut may exceed the Ø10 mm holder envelope used in the analysis (unverified). If so, re-run `analysis.py` with the larger `HOLDER_D`.
 - Budget: industrial stages on all three axes are estimated at roughly JPY 250–350k for the picker (parts research, unverified); a cheaper integrated Y stage keeps it near JPY 200k.
 - IX-ULWCD availability (P09): one excerpt reports it as not available in some regions. Confirm with Evident Japan first.
 - Base-plate hole pattern (M16).
 - Tubing type, bore and length (pump choice M17, dead volume).
-- Cable chain sizes, connector types, controller board, PSU rating.
+- Cable chain sizes, connector types, PSU rating (the controller is the TMCM-3110).
 - Safe-Z value, keep-out zone radius and approach speeds (process tests).
 - Any change to the IX73 (none planned).

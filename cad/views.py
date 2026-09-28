@@ -308,7 +308,7 @@ def functional_diagram():
         "cap": (69, 40, 14, 11, "Glass capillary\nOD 1.0 / ID 0.6\nL 40, 8° lean", M),
         "obj": (88, 40, 11, 11, "Target object\nin 96-well\n(U-bottom)", S),
         "pc": (2, 12, 17, 11, "PC\n(later: vision +\nsequencing)", C),
-        "ctl": (25, 12, 17, 11, "Motion controller\nG-code / serial\nTMC5160-class drivers", C),
+        "ctl": (25, 12, 17, 11, "TMCM-3110 controller\nPython over USB\n(integrated drivers)", C),
         "xyz": (48, 12, 15, 11, "Y -> X -> Z stages\n(ball screw,\nhome switches)", C),
         "ix": (88, 12, 11, 11, "IX73 + camera\n(fixed, observes\nfrom below)", S),
     }
@@ -332,26 +332,24 @@ def electrical_diagram():
         "mains": (1, 44, 12, 9, "Mains\n100 V AC", I),
         "psu": (17, 44, 14, 9, "24 V DC PSU\n~150 W, fused", P),
         "estop": (35, 44, 15, 9, "E-stop (NC) +\nsafety relay / contactor\ncuts MOTOR power", S),
-        "logic": (17, 12, 14, 9, "5 V / 3.3 V logic\n(DC-DC from 24 V)", P),
-        "ctl": (35, 26, 15, 13, "Motion controller\n(e.g. 32-bit board,\nG-code over USB)", C),
-        "pc": (1, 28, 12, 9, "PC\nUSB", I),
-        "dx": (56, 48, 13, 7, "X driver\nTMC5160", D), "dy": (56, 38, 13, 7, "Y driver\nTMC5160", D),
-        "dz": (56, 28, 13, 7, "Z driver\nTMC5160", D),
-        "mx": (74, 48, 13, 7, "X NEMA17", D), "my": (74, 38, 13, 7, "Y NEMA17", D), "mz": (74, 28, 13, 7, "Z NEMA17\n(+ brake opt.)", D),
-        "sw": (35, 8, 15, 11, "Inputs\nX/Y/Z home (NC)\nopt. far limits (NC)\nE-stop status", I),
+        "ctl": (35, 24, 17, 15, "TMCM-3110-TMCL\n3-axis controller\n+ integrated drivers", C),
+        "pc": (1, 28, 12, 9, "PC\nPython (pytrinamic)\nUSB", I),
+        "mx": (60, 46, 17, 7, "X PKP244D15A2\nLXR26 (folded)", D), "my": (60, 36, 17, 7, "Y PKP244D15A2\nLXR26 (folded)", D),
+        "mz": (60, 26, 17, 7, "Z PKP244D15A2\nLX20 (direct)", D),
+        "sw": (35, 8, 15, 11, "Switch inputs (NC)\nX/Y home\nZ reference + overtravel", I),
         "il": (56, 8, 13, 11, "Optional\ninterlock\n(e.g. lid/door)", I),
         "pump": (74, 15, 15, 9, "Syringe pump\nhardware STOP/INHIBIT in\n(interface: M17)", S),
         "valve": (74, 4, 15, 7, "NC pinch valve\n(fallback: closes\nwhen de-energised)", S),
         "stg": (1, 12, 12, 9, "Motorised stage\ncontroller (W-B)\nstop input", C),
     }
-    arrows = [("mains", "psu", "", "-"), ("psu", "estop", "24 V", "-"), ("psu", "logic", "", "-"), ("logic", "ctl", "logic", "-"), ("estop", "dx", "", "-"), ("estop", "dy", "", "-"),
-              ("estop", "dz", "", "-"), ("pc", "ctl", "", "-"), ("ctl", "dx", "", "-"), ("ctl", "dy", "", "-"), ("ctl", "dz", "SPI/step", "-"),
-              ("dx", "mx", "", "-"), ("dy", "my", "", "-"), ("dz", "mz", "", "-"), ("sw", "ctl", "", "-"), ("il", "ctl", "", "--"),
+    arrows = [("mains", "psu", "", "-"), ("psu", "estop", "24 V", "-"), ("estop", "ctl", "24 V", "-"),
+              ("pc", "ctl", "USB", "-"), ("ctl", "mx", "", "-"), ("ctl", "my", "", "-"), ("ctl", "mz", "", "-"),
+              ("sw", "ctl", "", "-"), ("il", "ctl", "", "--"),
               ("estop", "pump", "", "-"), ("ctl", "pump", "", "--"), ("estop", "valve", "", "-"), ("pc", "stg", "", "-"),
               ("estop", "stg", "", "-")]
     boxes(ax, spec, arrows)
-    ax.text(50, 62, "Preliminary electrical block diagram (stage 1, not frozen). Motor power is cut by the E-stop; "
-            "logic stays up so the controller reports the stop.\nZ must not fall when motor power is removed "
+    ax.text(50, 62, "Electrical block diagram (drive train frozen in issue #12). Motor power is cut by the E-stop "
+            "(logic/motor supply split per the TMCM-3110 manual).\nZ must not fall when motor power is removed "
             "(1 mm lead + detent torque; add a brake if Z carries >0.5 kg). The E-stop also stops the PUMP and the STAGE:\n"
             "pump hardware stop/inhibit input > dedicated input > controller command with the NC pinch valve as fallback.",
             ha="center", fontsize=8.5)

@@ -18,14 +18,14 @@
 | 1 | ベース板 | 架台全体を定盤に固定する土台。長穴で位置と向きを調整する | 製作 | P16, P37 | 工程 1 | M15, M16 | `base_plate` |
 | 2 | 支柱と筋交い | Y 梁を必要な高さに支える 2 本の柱 | 購入 | P17, P20 | 工程 2 | M1 | `post_*, post_brace_*` |
 | 3 | Y 梁 | 両端で支えた固定梁。Y ステージを載せる | 購入 | P18 | 工程 3 | M1 | `y_beam` |
-| 4 | Y ステージ | 先端を Y(奥行き)方向に動かす軸 | 購入 | P03, P04, P06 | 工程 4 | モーメント(03 §5b) | `Y_actuator_body, Y_motor` |
+| 4 | Y ステージ | 先端を Y(奥行き)方向に動かす軸。MISUMI LXR26(モーター折り返し) | 購入 | P03, P04, P06 | 工程 4 | モーメント(03 §5b) | `Y_actuator_body, Y_fold_unit, Y_motor` |
 | 5 | Y 原点スイッチ | Y の原点(手前側端) | 購入 | P30 | 工程 4 | — | `Y_home_switch` |
 | 6 | Y キャリッジ | Y ステージの可動台。X 支持梁を載せる | 製作 | P15 | 工程 5 | — | `Y_carriage` |
 | 7 | X 支持梁 | Y キャリッジから光軸側へ張り出す片持ち梁 | 購入 | P19 | 工程 5 | M7 | `X_support_beam` |
-| 8 | X ステージ | 先端を X(左右)方向に動かす軸。待避位置もこの軸 | 購入 | P02, P04, P06 | 工程 5 | — | `X_actuator_body, X_motor` |
+| 8 | X ステージ | 先端を X(左右)方向に動かす軸。待避位置もこの軸。MISUMI LXR26(モーター折り返し) | 購入 | P02, P04, P06 | 工程 5 | — | `X_actuator_body, X_fold_unit, X_motor` |
 | 9 | X 原点スイッチ | X の原点(外側端) | 購入 | P30 | 工程 5 | — | `X_home_switch` |
 | 10 | X キャリッジブラケット | X の可動台に Z ステージを鉛直に固定する | 製作 | P15 | 工程 6 | — | `X_carriage_bracket` |
-| 11 | Z ステージ | 先端を上下させる軸。着地精度と停電時に落ちないことが要 | 購入 | P01, P05, P06 | 工程 6 | — | `Z_actuator_body, Z_motor` |
+| 11 | Z ステージ | 先端を上下させる軸。着地精度と停電時に落ちないことが要。MISUMI LX20 精密級、モーター直結 | 購入 | P01, P05, P06 | 工程 6 | — | `Z_actuator_body, Z_motor` |
 | 12 | Z 上端リミットスイッチ | 行き過ぎ防止のみ。安全な位置ではない | 購入 | P30 | 工程 6 | — | `Z_home_switch_top` |
 | 13 | Z 基準スイッチ | Z の原点。ヘッド最上部がコンデンサ下端より余裕を残す高さ(1 個だけ) | 購入 | P42 | 工程 6 | M8, M23 | `Z_reference_switch` |
 | 14 | Z キャリッジ | Z ステージの可動台。マウントとアームを付ける | 製作 | P15 | 工程 6 | — | `Z_carriage` |
@@ -36,7 +36,7 @@
 | 19 | チューブとクランプ | ポンプからキャピラリまでの液の経路。サービスループで動きを逃がす | 購入 | P25, P26 | 工程 9 | — | `tubing_clamp_Zbody, tubing_fixed_clamp, tubing_head_*, tubing_loopXY_*, tubing_loopZ_*, tubing_to_pump_*` |
 | 20 | シリンジポンプ | 吸引と吐出。架台には載せない | 既存 | P38, P40, P27, P41 | 工程 9 | M17 | `syringe_pump_existing` |
 | 21 | ケーブルチェーン | モーターとスイッチの配線を可動部の奥側で逃がす | 購入 | P34, P35 | 工程 8 | — | `X_cable_chain, Y_cable_chain` |
-| 22 | 制御箱 | コントローラ、ドライバ、24 V 電源、非常停止回路 | 購入 | P28, P29, P31, P32, P33, P36 | 工程 8 | — | `motion_controller_24V` |
+| 22 | 制御箱 | 3 軸コントローラ兼ドライバ(TMCM-3110)、24 V 電源、非常停止回路 | 購入 | P28, P29, P31, P32, P33, P36 | 工程 8 | — | `motion_controller_24V` |
 | 23 | 電動 XY ステージとプレートホルダー | W-B でウェルを光軸へ運ぶ(ピッカーは触れない) | 顕微鏡 | P07, P08, P39 | — | M3, M4 | `ix73_stage` |
 | 24 | 96 穴プレート(Corning 7007) | V1 の対象プレート。蓋は外して使う | 既存 | — | — | M19 | `plate_96_SLAS` |
 | 25 | コンデンサ(IX-ULWCD)と保持アーム | 透過照明。アームはこの下を通る | 顕微鏡 | P09 | — | M6, M7, M8 | `condenser_IX-ULWCD, condenser_carrier_arm, illum_arm_to_pillar` |
@@ -49,11 +49,11 @@
 
 | 部品候補 | 分類 | 品目(候補リストの表記) | 図の番号 |
 |---|---|---|---|
-| P01 | Actuator | Z stage (vertical, landing axis) | 11 |
-| P02 | Actuator | X stage (cantilevered, tip X) | 8 |
-| P03 | Actuator | Y stage (on fixed Y beam) | 4 |
-| P04 | Motor | NEMA17 stepper motors, X and Y | 4, 8 |
-| P05 | Motor | NEMA17 stepper motor for Z (optional brake) | 11 |
+| P01 | Actuator | Z stage (vertical, landing axis) - FROZEN: MISUMI LX20 precision grade, direct-coupled (issue #12) | 11 |
+| P02 | Actuator | X stage (cantilevered, tip X) - FROZEN: MISUMI LXR26, motor folded back (issue #12) | 8 |
+| P03 | Actuator | Y stage (on fixed Y beam) - FROZEN: MISUMI LXR26, motor folded back (issue #12) | 4 |
+| P04 | Motor | Stepper motors X and Y: Oriental Motor PKP244D15A2 (issue #12) | 4, 8 |
+| P05 | Motor | Stepper motor for Z: Oriental Motor PKP244D15A2, direct-coupled (issue #12) | 11 |
 | P06 | Mechanical | Motor brackets + shaft couplings | 4, 8, 11 |
 | P07 | Microscope | Motorised XY stage for IX73 (W-B) | 23 |
 | P08 | Microscope | Stage controller + joystick | 23 |
@@ -76,8 +76,8 @@
 | P25 | Fluidics | PTFE/FEP tubing 1/16" OD | 19 |
 | P26 | Fluidics | Fittings 1/4-28 flat-bottom for 1/16" tubing (+ferrules, unions) | 19 |
 | P27 | Fluidics | Pump interface: Luer to 1/4-28 adapter (Harvard) / direct 1/4-28 (Tecan Cavro) | 20 |
-| P28 | Electronics | Motion controller (G-code / serial, >=3 axes, >=6 NC inputs) | 22 |
-| P29 | Electronics | TMC5160 stepper drivers (only if controller has sockets) | 22 |
+| P28 | Electronics | 3-axis controller/driver (USB, Python): ADI/Trinamic TMCM-3110-TMCL (issue #12) | 22 |
+| P29 | Electronics | (not needed) separate stepper drivers - TMCM-3110 has integrated drivers | 22 |
 | P30 | Electronics | Home switches, NC / fail-safe (X out, Y front, Z top) + optional far limits | 5, 9, 12 |
 | P31 | Electronics | 24 V DC PSU (~150 W) | 22 |
 | P32 | Safety | E-stop push button (2NC) | 22 |

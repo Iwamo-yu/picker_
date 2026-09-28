@@ -203,13 +203,29 @@ TIP_CLEAR_BOTTOM = P(0.3, "DES", "", "pick height of tip above well bottom")
 TRAVEL_Z = P(50.0, "DES", "", "user spec 30-50")
 # SAFE_Z_TIP (V1 corridor lower bound) is defined at the end of this file from safe_z_lower().
 
-# actuator envelopes (catalogue class: THK KR20/KR26, MISUMI LX20/LX26 size)
+# Drive train (issue #12, frozen as the V1 baseline): X/Y = MISUMI LXR26 (motor folded back beside the
+# actuator via a timing belt to the ball screw; positioning is still by the ball screw), Z = MISUMI LX20
+# precision grade, motor direct-coupled; motors Oriental PKP244D15A2 (42 mm frame) x3; USB 3-axis
+# controller/driver ADI-Trinamic TMCM-3110-TMCL, driven from Python (pytrinamic, control/picker.py).
+# Catalogue values not yet read from the vendor sheets (blocked here): LXR26 allowable moments, LX20/LXR26
+# exact part numbers, PKP244D15A2 rated current -> open checks in issue #12.
+DRIVE = {
+    "X": dict(model="MISUMI LXR26", lead=2.0, drive="folded", status="MFR", src="S39"),
+    "Y": dict(model="MISUMI LXR26", lead=2.0, drive="folded", status="MFR", src="S39"),
+    "Z": dict(model="MISUMI LX20 precision grade", lead=1.0, drive="direct", status="MFR", src="S39"),
+}
+MOTOR_MODEL = "Oriental Motor PKP244D15A2"
+CONTROLLER_MODEL = "ADI/Trinamic TMCM-3110-TMCL"
+FULL_STEPS = 200                                   # 1.8 deg two-phase stepper
+MICROSTEPS = 16                                    # controller setting (TMCM-3110 supports up to 256)
+FOLD_UNIT_L = P(25.0, "APX", "", "LXR fold-back belt/pulley housing beyond the actuator end (verify with CAD)")
+# actuator envelopes (catalogue class: MISUMI LX20/LX26 size)
 ACT_W = P(26.0, "APX", "S30,S31", "rail/body width class")
 ACT_H = P(30.0, "APX", "S30,S31", "body+table height class")
 ACT_END = P(35.0, "APX", "", "end blocks + table length beyond stroke (each side)")
 ACT_TABLE_L = P(50.0, "APX", "", "carriage length")
-NEMA17 = P(42.3, "APX", "S34", "NEMA17 flange")
-NEMA17_L = P(48.0, "APX", "S34", "")
+NEMA17 = P(42.3, "APX", "S34", "42 mm frame flange (PKP244D15A2 class)")
+NEMA17_L = P(48.0, "APX", "S34", "motor body length (APX; PKP244D15A2 length not read from the datasheet)")
 
 # ----------------------------------------------------------------------------
 # Workflows (decision D1) and the frame layout derived from them.
@@ -273,7 +289,7 @@ WORKFLOWS = {
     "WB": dict(
         label="W-B stage moves wells to the optical axis: picker works locally",
         tip_x=(-15.0, 85.0), tip_y=(-15.0, 15.0), travel_z=50.0,
-        stroke=(110.0, 50.0, 80.0),    # catalogue strokes X/Y/Z: KR26-0110 / LX26 >=50 / KR2001A-0080 (APX, P01-P03)
+        stroke=(110.0, 50.0, 80.0),    # catalogue strokes X/Y/Z: LXR26 >=100 / LXR26 ~50 / LX20 80 (APX, P01-P03)
         stage_moves=True,
         note="source and destination wells are brought to the axis by the IX73 stage; "
              "+X travel is the park / capillary-change retreat outside the condenser keep-out"),
@@ -296,7 +312,7 @@ MASS_APX = {
     "capillary_holder_collet": 0.04, "glass_capillary_OD1.0": 0.001, "tubing_head": 0.01,
     "X_carriage_bracket": 0.10, "Z_actuator_body": 0.55, "Z_motor": 0.35, "Z_home_switch_top": 0.01,
     "Z_reference_switch": 0.01, "tubing_clamp_Zbody": 0.01,
-    "Y_carriage": 0.15, "X_support_beam": 0.80, "X_actuator_body": 1.10, "X_motor": 0.35,
+    "Y_carriage": 0.15, "X_support_beam": 0.80, "X_actuator_body": 1.10, "X_motor": 0.35, "X_fold_unit": 0.10,
     "X_home_switch": 0.01, "X_cable_chain": 0.20,
 }
 # allowable static moments of the chosen actuators [N m]: fill from the catalogue (MA pitch, MB yaw, MC roll)
@@ -387,7 +403,8 @@ def layout(wf=DEFAULT_WORKFLOW):
     x_lo = xcc + x_min - end
     x_body = stroke_x + ACT_TABLE_L.v + 2 * ACT_END.v
     x_hi = x_lo + x_body
-    tower_x = round(x_hi + NEMA17_L.v + 30.0)
+    x_motor_out = FOLD_UNIT_L.v if DRIVE["X"]["drive"] == "folded" else NEMA17_L.v
+    tower_x = round(x_hi + x_motor_out + 30.0)
     x_band = X_BAND
     yc0 = sum(x_band) / 2                                     # Y carriage centre rel. tip y
     y_body = stroke_y + ACT_TABLE_L.v + 2 * ACT_END.v
@@ -410,10 +427,11 @@ SAFE_Z_TIP = P(safe_z_lower(V1_PLATE), "DER", "", "V1 safe-Z corridor lower boun
 # the authoring session; only the SpheroidPicker git repositories were downloaded.
 SOURCE_RETRIEVAL = {sid: "SEARCH_EXCERPT" for sid in
                     ["S01", "S02", "S03", "S10", "S11", "S12", "S13", "S14", "S15", "S16", "S20", "S21", "S22",
-                     "S23", "S24", "S30", "S31", "S32", "S33", "S34", "S35", "S36", "S38"]}
+                     "S23", "S24", "S30", "S31", "S32", "S33", "S34", "S35", "S36", "S38", "S39", "S40", "S42"]}
 SOURCE_RETRIEVAL.update({"S04": "SECONDARY_SOURCE", "S27": "FILE_RETRIEVED", "S28": "FILE_RETRIEVED",
                          "S05": "NOT_RETRIEVED", "S06": "NOT_RETRIEVED", "S25": "NOT_RETRIEVED",
-                         "S26": "NOT_RETRIEVED", "S37": "NOT_RETRIEVED"})
+                         "S26": "NOT_RETRIEVED", "S37": "NOT_RETRIEVED",
+                         "S41": "FILE_RETRIEVED"})
 VERIFICATION_RANK = ["MEASURED", "DIRECT_OFFICIAL", "FILE_RETRIEVED", "SECONDARY_SOURCE", "SEARCH_EXCERPT",
                      "NOT_VERIFIED", "PLACEHOLDER"]
 
